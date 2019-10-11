@@ -12,6 +12,10 @@
     "url": "https://github.com/brandonLi8/rotational-motion.git"
   },
   "devDependencies": {
+    "@brandonli8/grunt-config": "~0.0.0-dev.2",
+    "eslint": "^6.1.0",
+    "grunt": "~1.0.0",
+    "md5": "^2.2.1"
   },
   "bugs": {
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
