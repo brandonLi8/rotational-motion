@@ -25,5 +25,11 @@
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
     "email": "brandon.li820@gmail.com"
   },
-  "homepage": ""
+  "homepage": "",
+  "grunt-config": {
+    "relativePath": "./node_modules/@brandonli8/grunt-config"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/@brandonli8/grunt-config/eslint/.eslintrc.js"
+  }
 }
