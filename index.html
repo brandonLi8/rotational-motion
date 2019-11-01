@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<!-- Top-level HTML file for rotational-motion -->
+<html>
+<head>
+  <title>Rotational Motion</title>
+</head>
+
+<script type="text/javascript">
+
+  // Function that loads a script tag, with optional data-main parameter.
+  const loadURL = ( scriptPath, main ) => {
+    const script = document.createElement( 'script' );
+    if ( typeof main === 'string' ) {
+      script.setAttribute( 'data-main', main );
+    }
+    script.type = 'text/javascript';
+    script.src = scriptPath;
+    script.async = false;
+    document.head.appendChild( script );
+  };
+
+  loadURL( './node_modules/requirejs/require.js',  'config.js' );
+
+</script>
+</body>
+</html>
