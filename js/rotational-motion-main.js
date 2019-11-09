@@ -10,7 +10,9 @@ define( require => {
   'use strict';
 
   // modules
-  const assert = require( 'SIM_CORE/util/assert' );
+  const assert = require( 'SIM_CORE/Loader' );
 
-  console.log( assert )
+  const l = new assert();
+
+  // console.log( assert )
 } );
