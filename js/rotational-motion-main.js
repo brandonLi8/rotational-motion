@@ -10,9 +10,9 @@ define( require => {
   'use strict';
 
   // modules
-  const assert = require( 'SIM_CORE/Loader' );
-
-  const l = new assert();
+  const sim = require( 'SIM_CORE/Sim' );
+  const test = require( 'ROTATIONAL_MOTION/Test' );
+  const Sim = new sim( test );
 
   // console.log( assert )
 } );

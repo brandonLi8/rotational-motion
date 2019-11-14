@@ -9,19 +9,13 @@
 
 requirejs.config( {
 
-  deps: [ 'SIM_CORE/sim-core-main', 'rotational-motion-main' ],
+  deps: [ 'rotational-motion-main' ],
 
-  shim: {
-    'Point': {
-      //These script dependencies should be loaded before loading
-      //backbone.js
-      deps: ['SIM_CORE/../preloads/assert'],
-      //Once loaded, use the global 'Backbone' as the
-      //module value.
-      exports: 'assert'
-    }
-  },
   paths: {
+
+    image: '../node_modules/sim-core/src/util/image-plugin',
+
     SIM_CORE: '../node_modules/sim-core/src',
+    ROTATIONAL_MOTION: '.'
   }
 } );
