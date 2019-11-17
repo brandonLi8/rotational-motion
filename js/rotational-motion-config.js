@@ -13,7 +13,7 @@ requirejs.config( {
 
   paths: {
 
-    image: '../node_modules/sim-core/src/util/image-plugin',
+    image: '../node_modules/sim-core/src/core-internal/image-plugin',
 
     SIM_CORE: '../node_modules/sim-core/src',
     ROTATIONAL_MOTION: '.'
