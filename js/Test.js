@@ -7,6 +7,4 @@ define( require => {
 
 
   return h;
-
-
 } );
