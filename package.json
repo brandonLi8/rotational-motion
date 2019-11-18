@@ -21,7 +21,6 @@
     "md5": "^2.2.1"
   },
   "dependencies": {
-    "express": "^4.17.1",
     "requirejs": "^2.3.6",
     "sim-core": "0.0.0-dev.3"
   },
