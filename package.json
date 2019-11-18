@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/brandonLi8/rotational-motion.git"
   },
+  "scripts": {
+    "start": "node index.js"
+  },
   "devDependencies": {
     "@brandonli8/grunt-config": "~0.0.0-dev.4",
     "eslint": "^6.1.0",
@@ -18,8 +21,9 @@
     "md5": "^2.2.1"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "requirejs": "^2.3.6",
-    "sim-core": "0.0.0-dev.1"
+    "sim-core": "0.0.0-dev.2"
   },
   "bugs": {
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
