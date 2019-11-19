@@ -28,7 +28,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152885910-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() => { dataLayer.push( arguments ); }
+    function gtag() { dataLayer.push( arguments ); }
     gtag( 'js', new Date() );
     gtag( 'config', 'UA-152885910-1' );
   </script>
@@ -67,17 +67,22 @@
   <!-- TODO <link rel="icon" type="image/JPG?" href="./assets/..."/> -->
 </head>
 
-
+<!-- Made dark-gray for the loading phase so that the splash screen is black -->
+<body style="background-color:#0f0f0f;">
 <script type="text/javascript">
 
-  // Function that loads a script tag, with optional data-main parameter.
-  const loadURL = ( scriptPath, main ) => {
+  // Loads a synchronously-executed asynchronously-downloaded script tag, with
+  // optional data-main parameter.
+  // See http://www.html5rocks.com/en/tutorials/speed/script-loading/ for more about
+  // script loading. It helps to load all of the scripts with this method, so they
+  // are treated the same (and placed in the correct execution order)
+  const loadURL = ( preloadURL, main ) => {
     const script = document.createElement( 'script' );
     if ( typeof main === 'string' ) {
       script.setAttribute( 'data-main', main );
     }
     script.type = 'text/javascript';
-    script.src = scriptPath;
+    script.src = preloadURL;
     script.async = false;
     document.head.appendChild( script );
   };
