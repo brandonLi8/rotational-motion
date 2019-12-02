@@ -14,8 +14,11 @@ requirejs.config( {
   paths: {
 
     image: '../node_modules/sim-core/src/core-internal/image-plugin',
+    text: '../node_modules/sim-core/src/core-internal/text-plugin',
 
     SIM_CORE: '../node_modules/sim-core/src',
-    ROTATIONAL_MOTION: '.'
+    ROTATIONAL_MOTION: '.',
+    IMAGES: '../images',
+    REPOSITORY: '..'
   }
 } );

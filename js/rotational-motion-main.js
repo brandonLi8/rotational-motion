@@ -11,8 +11,7 @@ define( require => {
 
   // modules
   const sim = require( 'SIM_CORE/Sim' );
-  const test = require( 'ROTATIONAL_MOTION/Test' );
-  const Sim = new sim( test );
+  const Sim = new sim();
 
   // console.log( assert )
 } );
