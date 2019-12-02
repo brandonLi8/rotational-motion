@@ -12,7 +12,7 @@ module.exports = ( () => {
   const express = require( 'express' );
 
   // constants
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   //----------------------------------------------------------------------------------------
   // Create the website with express.
