@@ -10,7 +10,7 @@ define( require => {
   'use strict';
 
   // modules
-  const IntroScreenView = require( 'ROTATIONAL_MOTION/intro/IntroScreenView' );
+  const IntroScreenView = require( 'ROTATIONAL_MOTION/intro/view/IntroScreenView' );
   const Screen = require( 'SIM_CORE/Screen' );
 
   // constants
