@@ -7,6 +7,7 @@
  */
 
 module.exports = ( () => {
+  'use strict';
 
   // modules
   const express = require( 'express' );

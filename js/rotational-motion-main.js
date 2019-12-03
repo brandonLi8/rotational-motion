@@ -14,5 +14,6 @@ define( require => {
   const Sim = require( 'SIM_CORE/Sim' );
 
   //----------------------------------------------------------------------------------------
-  const rotationalMotion = new Sim( new IntroScreen() );
+  // Start the Rotational Motion Sim.
+  new Sim( new IntroScreen() );
 } );

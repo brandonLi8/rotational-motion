@@ -15,7 +15,7 @@
     "start": "node index.js"
   },
   "devDependencies": {
-    "@brandonli8/grunt-config": "~0.0.0-dev.8"
+    "@brandonli8/grunt-config": "~0.0.0-dev.11"
   },
   "dependencies": {
     "express": "^4.17.1",

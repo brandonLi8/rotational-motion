@@ -7,7 +7,7 @@
  * @author Brandon Li <brandon.li820@gmail.com>
  */
 
-requirejs.config( {
+require.config( {
 
   deps: [ 'rotational-motion-main' ],
 

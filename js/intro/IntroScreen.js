@@ -31,5 +31,5 @@ define( require => {
     }
   }
 
-  return IntroScreen
+  return IntroScreen;
 } );
