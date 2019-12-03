@@ -24,7 +24,11 @@ define( require => {
     constructor( tandem ) {
 
       const options = {
-        name: INTRO_SCREEN_NAME
+        name: INTRO_SCREEN_NAME,
+
+        style: {
+          background: 'rgb( 255, 250, 227 )'
+        }
       };
 
       super( () => 5, () => new IntroScreenView(), options );
