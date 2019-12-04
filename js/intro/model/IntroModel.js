@@ -13,10 +13,22 @@ define( require => {
   'use strict';
 
   // modules
+  const Bounds = require( 'SIM_CORE/util/Bounds' );
+
+  // constants
+  const SPINNER_BOUNDS_SIZE = 2; // in meters
 
   class IntroModel {
 
     constructor() {
+
+      // @public (read-only) - the spinner play area bounds, as a perfect circle
+      this.spinnerAreaBounds = new Bounds(
+        -SPINNER_BOUNDS_SIZE / 2,
+        -SPINNER_BOUNDS_SIZE / 2,
+        SPINNER_BOUNDS_SIZE / 2,
+        SPINNER_BOUNDS_SIZE / 2 );
+
 
 
     }

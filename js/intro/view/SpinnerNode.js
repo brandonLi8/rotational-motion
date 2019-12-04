@@ -35,8 +35,8 @@ define( require => {
       const defaults = {
 
         center: modelViewTransform.modelToViewPoint( Vector.ZERO ),
-        width: 50,
-        height: 50,
+        width: modelViewTransform.modelToViewDeltaX( 2 ),
+        height: -modelViewTransform.modelToViewDeltaY( 2 ),
 
         style: {
           border: '2px solid red'
@@ -47,7 +47,6 @@ define( require => {
       options = { ...defaults, ...options };
 
       super( options );
-
     }
   }
 

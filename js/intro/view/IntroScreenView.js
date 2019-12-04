@@ -19,8 +19,7 @@ define( require => {
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
 
   // constants
-  const PLAY_AREA_BOUNDS = new Bounds( -1.6, -0.8, 1.6, 0.8 ); // in meters
-  const MODEL_TO_VIEW_SCALE = 200; // meter to view coordinates (1 m = 200 coordinates)
+  const MODEL_TO_VIEW_SCALE = 250; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
@@ -37,12 +36,12 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
       // Create the modelViewTransform
-      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
-        SCREEN_VIEW_Y_MARGIN,
-        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * PLAY_AREA_BOUNDS.width,
-        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * PLAY_AREA_BOUNDS.height );
+      const playAreaViewBounds = new Bounds( 60,
+        this.viewSize.centerY - MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2,
+        60 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
+        this.viewSize.centerY + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2 );
 
-      const modelViewTransform = new ModelViewTransform( PLAY_AREA_BOUNDS, playAreaViewBounds );
+      const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
       //----------------------------------------------------------------------------------------
       const spinnerNode = new SpinnerNode( modelViewTransform );
