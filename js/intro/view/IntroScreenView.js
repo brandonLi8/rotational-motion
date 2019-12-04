@@ -16,6 +16,7 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
+  const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
 
   // constants
   const PLAY_AREA_BOUNDS = new Bounds( -1.6, -0.8, 1.6, 0.8 ); // in meters
@@ -43,6 +44,10 @@ define( require => {
 
       const modelViewTransform = new ModelViewTransform( PLAY_AREA_BOUNDS, playAreaViewBounds );
 
+      //----------------------------------------------------------------------------------------
+      const spinnerNode = new SpinnerNode( modelViewTransform );
+
+      this.addChild( spinnerNode );
     }
   }
 
