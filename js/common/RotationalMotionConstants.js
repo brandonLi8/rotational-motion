@@ -3,7 +3,7 @@
 /**
  * Constants used in multiple locations within the 'Collision Lab' simulation.
  *
- * @author Martin Veillette
+ * @author Brandon Li <brandon.li820@gmail.com>
  */
 
 define( require => {

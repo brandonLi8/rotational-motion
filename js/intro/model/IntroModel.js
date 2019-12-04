@@ -16,16 +16,11 @@ define( require => {
 
   class IntroModel {
 
-    /**
-     *
-     *
-     *
-     */
     constructor() {
 
 
     }
   }
 
-  return IntroScreenView;
+  return IntroModel;
 } );

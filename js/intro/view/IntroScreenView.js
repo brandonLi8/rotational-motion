@@ -10,46 +10,39 @@ define( require => {
   'use strict';
 
   // modules
+  const assert = require( 'SIM_CORE/util/assert' );
+  const Bounds = require( 'SIM_CORE/util/Bounds' );
+  const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
+  const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
-  const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
+
+  // constants
+  const PLAY_AREA_BOUNDS = new Bounds( -1.6, -0.8, 1.6, 0.8 ); // in meters
+  const MODEL_TO_VIEW_SCALE = 200; // meter to view coordinates (1 m = 200 coordinates)
+  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
+  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
   class IntroScreenView extends ScreenView {
 
-    constructor() {
+    /**
+     * @param {IntroModel} introModel
+     */
+    constructor( introModel ) {
+
+      assert( introModel instanceof IntroModel, `invalid introModel: ${ introModel }` );
 
       super();
 
-      const node = new SVGNode( {
-        width: 100,
-        height: 100,
-        top: 50,
-        left: 50,
-        style: {
-          border: '2px solid green'
-        }
-      } );
+      //----------------------------------------------------------------------------------------
+      // Create the modelViewTransform
+      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
+        SCREEN_VIEW_Y_MARGIN,
+        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * PLAY_AREA_BOUNDS.width,
+        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * PLAY_AREA_BOUNDS.height );
 
-      const circle = new CircleNode( {
-        radius: 50,
-        fill: 'blue',
-        strokeWidth: 4,
-        stroke: 'green',
-        center: new Vector( 50, 50 )
+      const modelViewTransform = new ModelViewTransform( PLAY_AREA_BOUNDS, playAreaViewBounds );
 
-      } );
-
-
-      const node2 = new Node( {
-        width: 20,
-        height: 20,
-        style: {
-          border: '2px solid black'
-        }
-      } );
-      this.addChild( node.addChild( circle.addChild( node2 ) ) );
     }
   }
 
