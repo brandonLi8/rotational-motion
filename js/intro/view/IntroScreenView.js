@@ -37,14 +37,14 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Create the modelViewTransform
       const playAreaViewBounds = new Bounds( 60,
-        this.viewSize.centerY - MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2,
+        this.viewBounds.centerY - MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2,
         60 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
-        this.viewSize.centerY + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2 );
+        this.viewBounds.centerY + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2 );
 
       const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
       //----------------------------------------------------------------------------------------
-      const spinnerNode = new SpinnerNode( modelViewTransform );
+      const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform );
 
       this.addChild( spinnerNode );
     }
