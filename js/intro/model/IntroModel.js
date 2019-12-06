@@ -34,6 +34,15 @@ define( require => {
       // @public (read-only)
       this.spinner = new Spinner( this.spinnerAreaBounds );
     }
+
+    /**
+     * Moves this model by one time step.
+     * @param {number} dt - time in seconds
+     * @public
+     */
+    step( dt ) {
+      this.spinner.step( dt );
+    }
   }
 
   return IntroModel;

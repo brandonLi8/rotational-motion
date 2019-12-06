@@ -56,28 +56,33 @@ define( require => {
       // Create the Circle in the center that represents a Pin
 
       const localCenter = new Vector( modelViewTransform.viewBounds.width / 2, modelViewTransform.viewBounds.height / 2 );
-      const line = new LineNode( localCenter, Vector.ZERO, {
+      this.line = new LineNode( localCenter, Vector.ZERO, {
         stroke: 'black',
-        strokeWidth: 2,
-        fill: 'black'
+        strokeWidth: 2
       } );
 
       const pin = new CircleNode( {
-        radius: 8,
-        fill: 'rgb( 30, 30, 30 )',
+        radius: 3.2, // eye-balled
+        fill: 'rgb( 100, 100, 100 )',
         center: localCenter,
       } );
 
       const pinParent = new SVGNode( {
-        children: [ line, pin ],
+        children: [ this.line, pin ],
         width:  modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).width,
-        height: modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).height,
-        style: {
-          border: '2px solid blue'
-        }
+        height: modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).height
       } );
 
       this.addChild( pinParent );
+
+      //----------------------------------------------------------------------------------------
+
+      spinner.ballPositionProperty.link( ballPosition => {
+        this.line.end = localCenter.copy().add( modelViewTransform.modelToViewDelta( ballPosition ) );
+
+
+
+      } );
     }
   }
 

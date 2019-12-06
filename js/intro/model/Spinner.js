@@ -14,10 +14,13 @@ define( require => {
   // modules
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const assert = require( 'SIM_CORE/util/assert' );
+  const Property = require( 'SIM_CORE/util/Property' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
+  const Util = require( 'SIM_CORE/util/Util' );
 
   // constants
   const MIN_SPINNER_RADIUS = 0.1; // in meters
-  const BALL_RADIUS = 0.3;
+  const DEFAULT_STRING_RADIUS = 1; // in meters
 
   class Spinner {
 
@@ -38,9 +41,32 @@ define( require => {
       // @public (read-only) minSpinnerRadius
       this.minSpinnerRadius = MIN_SPINNER_RADIUS;
 
-      this.ballRadius = BALL_RADIUS;
+      this.stringAngleProperty = new Property( 0 ); // in degrees
+      this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS );
 
-      this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - BALL_RADIUS / 2;
+      this.ballVelocityProperty = new Property( 90 ); // in degrees per second
+      this.ballRadius = 10;
+      this.ballPositionProperty = new Property( new Vector( 0, 0 ) ); // temp
+
+
+      const stringAngleListener = angle => {
+        const radians = Util.toRadians( angle );
+        this.ballPositionProperty.value = new Vector(
+          Math.cos( radians ) * this.stringRadiusProperty.value,
+          Math.sin( radians ) * this.stringRadiusProperty.value,
+        );
+      }
+      this.stringAngleProperty.link( stringAngleListener );
+      // this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - this.ballRadiusProperty.value / 2;
+    }
+
+    /**
+     * Moves this spinner by one time step.
+     * @param {number} dt - time in seconds
+     * @public
+     */
+    step( dt ) {
+      this.stringAngleProperty.value = this.stringAngleProperty.value + dt * this.ballVelocityProperty.value;
     }
   }
 
