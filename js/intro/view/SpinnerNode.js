@@ -18,6 +18,8 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const assert = require( 'SIM_CORE/util/assert' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const Util = require( 'SIM_CORE/util/Util' );
+  const Property = require( 'SIM_CORE/util/Property' );
 
   class SpinnerNode extends Node {
 
@@ -28,7 +30,7 @@ define( require => {
      *                             may have different options for their API. See the code where the options are set in
      *                             the early portion of the constructor for details.
      */
-    constructor( spinner, modelViewTransform, options ) {
+    constructor( spinner, modelViewTransform, isPlayingProperty, options ) {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
@@ -43,10 +45,8 @@ define( require => {
         height: -modelViewTransform.modelToViewDeltaY( spinner.spinnerAreaBounds.height ),
 
         style: {
-          border: '2px solid red'
-        },
-        onClick: () => {
-          // console.log( 'erhehr')
+          border: '2px solid red',
+          boxSizing: 'content-box'
         }
       };
 
@@ -61,7 +61,10 @@ define( require => {
       const localCenter = new Vector( modelViewTransform.viewBounds.width / 2, modelViewTransform.viewBounds.height / 2 );
       this.line = new LineNode( localCenter, Vector.ZERO, {
         stroke: 'black',
-        strokeWidth: 2
+        strokeWidth: 2,
+        style: {
+          cursor: 'pointer'
+        }
       } );
 
       const pin = new CircleNode( {
@@ -70,11 +73,18 @@ define( require => {
         center: localCenter,
       } );
 
+      const ball = new CircleNode( {
+        radius: modelViewTransform.modelToViewDeltaX( spinner.ballRadius ),
+        center: localCenter,
+        fill: 'green'
+      } );
+
       const pinParent = new SVGNode( {
-        children: [ this.line, pin ],
+        children: [ this.line, pin, ball ],
         width:  modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).width,
         height: modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).height
       } );
+
 
       this.addChild( pinParent );
 
@@ -82,7 +92,30 @@ define( require => {
 
       spinner.ballPositionProperty.link( ballPosition => {
         this.line.end = localCenter.copy().add( modelViewTransform.modelToViewDelta( ballPosition ) );
+        ball._center = this.line.end;
       } );
+      //----------------------------------------------------------------------------------------
+
+      const ballCenterLocationProperty = new Property( modelViewTransform.modelToViewPoint( spinner.ballPositionProperty.value.copy() ) );
+
+      let wasPlayingWhenDragged = null;
+      const lineDrag = ( displacement ) => {
+        if ( wasPlayingWhenDragged === null ) {
+          wasPlayingWhenDragged = isPlayingProperty.value;
+        }
+        if ( wasPlayingWhenDragged ) isPlayingProperty.value = false;
+
+        const cursorPosition = modelViewTransform.viewToModelDelta( displacement );
+        const ballPosition = spinner.ballPositionProperty.value.copy().add( cursorPosition  );
+        spinner.dragBallTo( ballPosition );
+
+      };
+      const lineDragClose = () =>{
+        if ( wasPlayingWhenDragged ) isPlayingProperty.value = true;
+        wasPlayingWhenDragged = null;
+      }
+      ball.drag( lineDrag, lineDragClose);
+
     }
   }
 

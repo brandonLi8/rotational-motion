@@ -46,7 +46,7 @@ define( require => {
       const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
       //----------------------------------------------------------------------------------------
-      const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform );
+      const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform, introModel.playProperty );
 
       this.addChild( spinnerNode );
 

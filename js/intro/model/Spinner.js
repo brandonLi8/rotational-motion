@@ -20,7 +20,7 @@ define( require => {
 
   // constants
   const MIN_SPINNER_RADIUS = 0.1; // in meters
-  const DEFAULT_STRING_RADIUS = 1; // in meters
+  const DEFAULT_STRING_RADIUS = 0.5; // in meters
 
   class Spinner {
 
@@ -45,9 +45,11 @@ define( require => {
       this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS );
 
       this.ballVelocityProperty = new Property( 90 ); // in degrees per second
-      this.ballRadius = 10;
+      this.ballRadius = 0.05;
       this.ballPositionProperty = new Property( new Vector( 0, 0 ) ); // temp
 
+      this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - this.ballRadius;
+      this.minSpinnerRadius = 0.15;
 
       const stringAngleListener = angle => {
         const radians = Util.toRadians( angle );
@@ -57,7 +59,16 @@ define( require => {
         );
       }
       this.stringAngleProperty.link( stringAngleListener );
-      // this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - this.ballRadiusProperty.value / 2;
+
+      const radiusListener = radius => {
+        const radians = Util.toRadians( this.stringAngleProperty.value );
+        this.ballPositionProperty.value = new Vector(
+          Math.cos( radians ) * radius,
+          Math.sin( radians ) * radius,
+        );
+      }
+      this.stringRadiusProperty.link( radiusListener );
+
     }
 
     /**
@@ -67,6 +78,13 @@ define( require => {
      */
     step( dt ) {
       this.stringAngleProperty.value = this.stringAngleProperty.value + dt * this.ballVelocityProperty.value;
+    }
+
+    dragBallTo( point ) {
+      const degrees = Util.toDegrees( point.angle );
+      const correctedAngle = degrees > 0 ? degrees : 360 + degrees;
+      this.stringAngleProperty.value = correctedAngle;
+      this.stringRadiusProperty.value = Util.clamp( point.magnitude, this.minSpinnerRadius, this.maxSpinnerRadius );
     }
   }
 
