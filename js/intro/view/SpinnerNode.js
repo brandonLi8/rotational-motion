@@ -61,10 +61,7 @@ define( require => {
       const localCenter = new Vector( modelViewTransform.viewBounds.width / 2, modelViewTransform.viewBounds.height / 2 );
       this.line = new LineNode( localCenter, Vector.ZERO, {
         stroke: 'black',
-        strokeWidth: 2,
-        style: {
-          cursor: 'pointer'
-        }
+        strokeWidth: 2
       } );
 
       const pin = new CircleNode( {
@@ -76,7 +73,10 @@ define( require => {
       const ball = new CircleNode( {
         radius: modelViewTransform.modelToViewDeltaX( spinner.ballRadius ),
         center: localCenter,
-        fill: 'green'
+        fill: 'green',
+        style: {
+          cursor: 'pointer'
+        }
       } );
 
       const pinParent = new SVGNode( {
@@ -99,22 +99,20 @@ define( require => {
       const ballCenterLocationProperty = new Property( modelViewTransform.modelToViewPoint( spinner.ballPositionProperty.value.copy() ) );
 
       let wasPlayingWhenDragged = null;
+      const startDrag = () => {
+        wasPlayingWhenDragged = isPlayingProperty.value;
+        isPlayingProperty.value = false;
+      }
       const lineDrag = ( displacement ) => {
-        if ( wasPlayingWhenDragged === null ) {
-          wasPlayingWhenDragged = isPlayingProperty.value;
-        }
-        if ( wasPlayingWhenDragged ) isPlayingProperty.value = false;
-
         const cursorPosition = modelViewTransform.viewToModelDelta( displacement );
         const ballPosition = spinner.ballPositionProperty.value.copy().add( cursorPosition  );
         spinner.dragBallTo( ballPosition );
-
       };
-      const lineDragClose = () =>{
+      const lineDragClose = () => {
         if ( wasPlayingWhenDragged ) isPlayingProperty.value = true;
         wasPlayingWhenDragged = null;
       }
-      ball.drag( lineDrag, lineDragClose);
+      ball.drag( startDrag, lineDrag, lineDragClose );
 
     }
   }
