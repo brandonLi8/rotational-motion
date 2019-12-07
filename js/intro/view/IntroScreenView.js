@@ -17,6 +17,8 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
+  const PlayPauseButton = require( 'SIM_CORE/scenery/buttons/PlayPauseButton' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const MODEL_TO_VIEW_SCALE = 250; // meter to view coordinates (1 m = 200 coordinates)
@@ -37,9 +39,9 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Create the modelViewTransform
       const playAreaViewBounds = new Bounds( 60,
-        this.viewBounds.centerY - MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2,
+        20,
         60 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
-        this.viewBounds.centerY + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height / 2 );
+        20 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height );
 
       const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
@@ -47,6 +49,12 @@ define( require => {
       const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform );
 
       this.addChild( spinnerNode );
+
+      const playPauseButton = new PlayPauseButton( introModel.playProperty, {
+        center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + 40 )
+      } );
+      this.addChild( playPauseButton );
+
     }
   }
 

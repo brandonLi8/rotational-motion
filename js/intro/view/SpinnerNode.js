@@ -44,6 +44,9 @@ define( require => {
 
         style: {
           border: '2px solid red'
+        },
+        onClick: () => {
+          // console.log( 'erhehr')
         }
       };
 
@@ -62,7 +65,7 @@ define( require => {
       } );
 
       const pin = new CircleNode( {
-        radius: 3.2, // eye-balled
+        radius: 2, // eye-balled
         fill: 'rgb( 100, 100, 100 )',
         center: localCenter,
       } );
@@ -79,9 +82,6 @@ define( require => {
 
       spinner.ballPositionProperty.link( ballPosition => {
         this.line.end = localCenter.copy().add( modelViewTransform.modelToViewDelta( ballPosition ) );
-
-
-
       } );
     }
   }

@@ -15,6 +15,7 @@ define( require => {
   // modules
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const Property = require( 'SIM_CORE/util/Property' );
 
   // constants
   const SPINNER_BOUNDS_SIZE = 2; // in meters
@@ -30,6 +31,8 @@ define( require => {
         SPINNER_BOUNDS_SIZE / 2,
         SPINNER_BOUNDS_SIZE / 2 );
 
+      // @public
+      this.playProperty = new Property( false );
 
       // @public (read-only)
       this.spinner = new Spinner( this.spinnerAreaBounds );
@@ -41,7 +44,7 @@ define( require => {
      * @public
      */
     step( dt ) {
-      this.spinner.step( dt );
+      this.playProperty.value && this.spinner.step( dt );
     }
   }
 
