@@ -19,6 +19,7 @@ define( require => {
 
   // constants
   const SPINNER_BOUNDS_SIZE = 2; // in meters
+  const STEP_TIME = 0.01;
 
   class IntroModel {
 
@@ -46,6 +47,17 @@ define( require => {
     step( dt ) {
       this.playProperty.value && this.spinner.step( dt );
     }
+
+    stepBackwards() {
+      this.playProperty.value = false;
+      this.spinner.step( -STEP_TIME );
+    }
+
+    stepForwards() {
+      this.playProperty.value = false;
+      this.spinner.step( STEP_TIME );
+    }
+
   }
 
   return IntroModel;

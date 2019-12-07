@@ -17,7 +17,7 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
-  const PlayPauseButton = require( 'SIM_CORE/scenery/buttons/PlayPauseButton' );
+  const TimeControlBox = require( 'SIM_CORE/scenery/buttons/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
@@ -50,10 +50,17 @@ define( require => {
 
       this.addChild( spinnerNode );
 
-      const playPauseButton = new PlayPauseButton( introModel.playProperty, {
+      const timeControlBox = new TimeControlBox( {
+        playProperty: introModel.playProperty,
+        backwardsListener: () => {
+          introModel.stepBackwards();
+        },
+        forwardsListener: () => {
+          introModel.stepForwards();
+        },
         center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + 40 )
       } );
-      this.addChild( playPauseButton );
+      this.addChild( timeControlBox );
 
     }
   }
