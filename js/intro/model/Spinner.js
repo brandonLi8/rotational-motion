@@ -19,7 +19,7 @@ define( require => {
   const Util = require( 'SIM_CORE/util/Util' );
 
   // constants
-  const DEFAULT_STRING_RADIUS = 0.5; // in meters
+  const DEFAULT_STRING_RADIUS = 0.7; // in meters
 
   class Spinner {
 
