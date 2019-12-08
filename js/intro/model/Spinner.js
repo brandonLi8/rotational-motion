@@ -41,6 +41,7 @@ define( require => {
       this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS );
 
       this.ballVelocityProperty = new Property( 90 ); // in degrees per second
+      this.ballVelocityRange = new Vector( 0, 90 );
       this.ballRadius = 0.05;
       this.ballPositionProperty = new Property( new Vector( 0, 0 ) ); // temp
 

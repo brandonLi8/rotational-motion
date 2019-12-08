@@ -42,7 +42,7 @@ define( require => {
       // Defaults for options.
       const defaults = {
         width: 240,
-        height: 140,
+        height: 340,
         style: {
           background: 'rgb( 240, 240, 240 )',
           boxSizing: 'content-box'
@@ -88,11 +88,11 @@ define( require => {
       } );
       const radiusNumberDisplay = new Rectangle( {
         fill: 'white',
-        width: 60,
+        width: 90,
         stroke: 'rgb( 150, 150, 150 )',
         strokeWidth: 0.5,
         height: 26,
-        x: options.width - 60 - 2 * options.padding,
+        x: options.width - 90 - 2 * options.padding,
         y: -26 / 4
       } );
       const radiusNumberDisplayText = new Text( {
@@ -108,7 +108,7 @@ define( require => {
       spinner.stringRadiusProperty.link( radius => {
         radiusNumberDisplayText.setText( `${ Util.toFixed( radius, 2 ) } m` );
       } );
-      const svgContent = new SVGNode( {
+      const radiusSVGContent = new SVGNode( {
         children: [ radiusLabel, radiusNumberDisplay, radiusNumberDisplayText ],
         left: options.padding,
         top: radiusSlider._center.y - radiusSlider._height - 30,
@@ -117,9 +117,58 @@ define( require => {
       } );
 
 
+      //----------------------------------------------------------------------------------------
+      // Angular Velocity
 
+      const angularVelocitySlider = new SliderNode(
+        spinner.ballVelocityRange,
+        spinner.ballVelocityProperty, {
+          minorTickIncrement: 10,
+          center: new Vector( this.width / 2, 195 ),
+          startDrag: startDrag,
+          endDrag: lineDragClose
+      } );
 
-      this.setChildren( [ radiusSlider, svgContent ] );
+      const angularVelocityLabel = new Text( {
+        text: '\u03c9',
+        fontSize: 15,
+        fontWeight: 100,
+        attributes: {
+          'text-anchor': 'start',
+          'alignment-baseline': 'hanging'
+        }
+      } );
+      const angularVelocityNumberDisplay = new Rectangle( {
+        fill: 'white',
+        width: 90,
+        stroke: 'rgb( 150, 150, 150 )',
+        strokeWidth: 0.5,
+        height: 26,
+        x: options.width - 90 - 2 * options.padding,
+        y: -26 / 2
+      } );
+      const angularVelocityNumberDisplayText = new Text( {
+        fontSize: 13.8,
+        fontWeight: 1,
+        x: angularVelocityNumberDisplay.x + angularVelocityNumberDisplay.width / 2,
+        y: angularVelocityNumberDisplay.y + angularVelocityNumberDisplay.height / 2,
+        attributes: {
+          'text-anchor': 'middle',
+          'alignment-baseline': 'middle'
+        }
+      } );
+      spinner.ballVelocityProperty.link( angularVelocity => {
+        angularVelocityNumberDisplayText.setText( `${ Util.toFixed( angularVelocity, 2 ) } deg/sec` );
+      } );
+      const angularVelocitySVGContent = new SVGNode( {
+        children: [ angularVelocityLabel, angularVelocityNumberDisplay, angularVelocityNumberDisplayText ],
+        left: options.padding,
+        top: angularVelocitySlider._center.y - angularVelocitySlider._height - 20,
+        width: options.width,
+        height: 13
+      } );
+
+      this.setChildren( [ radiusSlider, radiusSVGContent, angularVelocitySlider, angularVelocitySVGContent ] );
     }
 
 
