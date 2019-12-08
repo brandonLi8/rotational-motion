@@ -20,6 +20,9 @@ define( require => {
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Util = require( 'SIM_CORE/util/Util' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
+  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
+  const Text = require( 'SIM_CORE/scenery/Text' );
 
   class SpinnerNode extends Node {
 
@@ -30,7 +33,7 @@ define( require => {
      *                             may have different options for their API. See the code where the options are set in
      *                             the early portion of the constructor for details.
      */
-    constructor( spinner, modelViewTransform, isPlayingProperty, options ) {
+    constructor( spinner, modelViewTransform, isPlayingProperty, linearVelocityVisibleProperty, options ) {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
@@ -79,8 +82,12 @@ define( require => {
         }
       } );
 
+      const linearVelocityVector = new VectorNode( Vector.ZERO, Vector.ZERO, {
+        fill: 'rgb( 10, 170, 250 )'
+      } );
+
       const pinParent = new SVGNode( {
-        children: [ this.line, pin, ball ],
+        children: [ this.line, pin, ball, linearVelocityVector ],
         width:  modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).width,
         height: modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).height
       } );
@@ -114,6 +121,31 @@ define( require => {
       }
       ball.drag( startDrag, lineDrag, lineDragClose );
 
+      //----------------------------------------------------------------------------------------
+      linearVelocityVisibleProperty.link( isVisible => {
+        linearVelocityVector.style.opacity = isVisible ? 1 : 0;
+      } );
+
+      const updateLinearVelocity = ( linearVelocity, ballPosition ) => {
+        if ( !linearVelocityVisibleProperty.value ) return;
+
+        const modelAngle = ballPosition.angle + Math.PI / 2;
+        const vector = new Vector( 1, 0 ).rotate( modelAngle ).multiply( linearVelocity / 2);
+        const tail = ballPosition.copy();
+        const tip = tail.copy().add( vector );
+
+        const tailView = localCenter.copy().add( modelViewTransform.modelToViewDelta( tail ) );
+        const tipView = localCenter.copy().add( modelViewTransform.modelToViewDelta( tip ) );
+
+        linearVelocityVector.set( tailView, tipView );
+      };
+
+      spinner.linearVelocityProperty.link( ( linearVelocity ) => {
+        updateLinearVelocity( linearVelocity, spinner.ballPositionProperty.value );
+      } );
+      spinner.ballPositionProperty.link( ( ballPosition ) => {
+        updateLinearVelocity( spinner.linearVelocityProperty.value, ballPosition );
+      } );
     }
   }
 

@@ -66,6 +66,16 @@ define( require => {
       }
       this.stringRadiusProperty.link( radiusListener );
 
+      //----------------------------------------------------------------------------------------
+      // linear velocity
+      this.linearVelocityProperty = new Property( 0 );
+      this.ballVelocityProperty.link( ballVelocity => {
+        this.linearVelocityProperty.value = Util.toRadians( ballVelocity ) * this.stringRadiusProperty.value;
+      } );
+      this.stringRadiusProperty.lazyLink( stringRadius => {
+        this.linearVelocityProperty.value = Util.toRadians( this.ballVelocityProperty.value ) * stringRadius;
+      } );
+
     }
 
     /**

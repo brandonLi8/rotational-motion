@@ -49,9 +49,8 @@ define( require => {
       const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
       //----------------------------------------------------------------------------------------
-      const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform, introModel.playProperty );
+      const spinnerNode = new SpinnerNode( introModel.spinner, modelViewTransform, introModel.playProperty, introModel.linearVelocityVisibleProperty );
 
-      this.addChild( spinnerNode );
 
       const timeControlBox = new TimeControlBox( {
         playProperty: introModel.playProperty,
@@ -63,15 +62,14 @@ define( require => {
         },
         center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + 40 )
       } );
-      this.addChild( timeControlBox );
 
       //----------------------------------------------------------------------------------------
       const controlPanel = new ControlPanel( introModel.spinner, introModel.playProperty );
       controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
       controlPanel._top = SCREEN_VIEW_Y_MARGIN;
 
-      this.addChild( controlPanel );
 
+      this.setChildren( [ controlPanel, timeControlBox, spinnerNode ] );
     }
   }
 
