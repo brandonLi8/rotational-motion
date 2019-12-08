@@ -19,7 +19,6 @@ define( require => {
   const Util = require( 'SIM_CORE/util/Util' );
 
   // constants
-  const MIN_SPINNER_RADIUS = 0.1; // in meters
   const DEFAULT_STRING_RADIUS = 0.5; // in meters
 
   class Spinner {
@@ -38,9 +37,6 @@ define( require => {
       // @public (read-only) spinnerAreaBounds - the bounds for the spinner area
       this.spinnerAreaBounds = spinnerAreaBounds;
 
-      // @public (read-only) minSpinnerRadius
-      this.minSpinnerRadius = MIN_SPINNER_RADIUS;
-
       this.stringAngleProperty = new Property( 0 ); // in degrees
       this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS );
 
@@ -49,7 +45,7 @@ define( require => {
       this.ballPositionProperty = new Property( new Vector( 0, 0 ) ); // temp
 
       this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - this.ballRadius;
-      this.minSpinnerRadius = 0.15;
+      this.minSpinnerRadius = 0.1;
 
       const stringAngleListener = angle => {
         const radians = Util.toRadians( angle );

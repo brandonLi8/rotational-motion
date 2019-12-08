@@ -19,6 +19,9 @@ define( require => {
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
   const TimeControlBox = require( 'SIM_CORE/scenery/buttons/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
+  const SliderNode = require( 'SIM_CORE/scenery/SliderNode' );
+  const Property = require( 'SIM_CORE/util/Property' );
+  const ControlPanel = require( 'ROTATIONAL_MOTION/intro/view/ControlPanel' );
 
   // constants
   const MODEL_TO_VIEW_SCALE = 250; // meter to view coordinates (1 m = 200 coordinates)
@@ -38,10 +41,10 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
       // Create the modelViewTransform
-      const playAreaViewBounds = new Bounds( 60,
-        20,
-        60 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
-        20 + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height );
+      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
+        SCREEN_VIEW_Y_MARGIN,
+        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
+        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height );
 
       const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
 
@@ -61,6 +64,13 @@ define( require => {
         center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + 40 )
       } );
       this.addChild( timeControlBox );
+
+      //----------------------------------------------------------------------------------------
+      const controlPanel = new ControlPanel( introModel.spinner, introModel.playProperty );
+      controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
+      controlPanel._top = SCREEN_VIEW_Y_MARGIN;
+
+      this.addChild( controlPanel );
 
     }
   }
