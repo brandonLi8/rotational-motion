@@ -37,13 +37,21 @@ define( require => {
       // @public (read-only) spinnerAreaBounds - the bounds for the spinner area
       this.spinnerAreaBounds = spinnerAreaBounds;
 
-      this.stringAngleProperty = new Property( 0 ); // in degrees
-      this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS );
+      this.stringAngleProperty = new Property( 0, {
+        type: 'number'
+      } ); // in degrees
+      this.stringRadiusProperty = new Property( DEFAULT_STRING_RADIUS, {
+        type: 'number'
+      } );
 
-      this.ballVelocityProperty = new Property( 90 ); // in degrees per second
+      this.ballVelocityProperty = new Property( 90, {
+        type: 'number'
+      } ); // in degrees per second
       this.ballVelocityRange = new Vector( 0, 90 );
       this.ballRadius = 0.05;
-      this.ballPositionProperty = new Property( new Vector( 0, 0 ) ); // temp
+      this.ballPositionProperty = new Property( new Vector( 0, 0 ), {
+        type: Vector
+      } ); // temp
 
       this.maxSpinnerRadius = spinnerAreaBounds.width / 2 - this.ballRadius;
       this.minSpinnerRadius = 0.1;
@@ -68,7 +76,9 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
       // linear velocity
-      this.linearVelocityProperty = new Property( 0 );
+      this.linearVelocityProperty = new Property( 0, {
+        type: 'number'
+      } );
       this.ballVelocityProperty.link( ballVelocity => {
         this.linearVelocityProperty.value = Util.toRadians( ballVelocity ) * this.stringRadiusProperty.value;
       } );

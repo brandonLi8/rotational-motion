@@ -33,9 +33,13 @@ define( require => {
         SPINNER_BOUNDS_SIZE / 2 );
 
       // @public
-      this.playProperty = new Property( false );
+      this.playProperty = new Property( false, {
+        type: 'boolean'
+      } );
 
-      this.linearVelocityVisibleProperty = new Property( false );
+      this.linearVelocityVisibleProperty = new Property( false, {
+        type: 'boolean'
+      } );
 
       // @public (read-only)
       this.spinner = new Spinner( this.spinnerAreaBounds );

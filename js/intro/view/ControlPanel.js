@@ -174,7 +174,6 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Velocity checkbox
       const velocityCheckbox = new Checkbox( velocityVisibleProperty );
-      console.log( velocityCheckbox._width )
       const velocityLabel = new Text( {
         text: 'Linear Velocity Vector',
         fontSize: 12,

@@ -103,7 +103,9 @@ define( require => {
       } );
       //----------------------------------------------------------------------------------------
 
-      const ballCenterLocationProperty = new Property( modelViewTransform.modelToViewPoint( spinner.ballPositionProperty.value.copy() ) );
+      const ballCenterLocationProperty = new Property( modelViewTransform.modelToViewPoint( spinner.ballPositionProperty.value.copy() ), {
+        type: Vector
+      } );
 
       let wasPlayingWhenDragged = null;
       const startDrag = () => {
