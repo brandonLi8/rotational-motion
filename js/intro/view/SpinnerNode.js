@@ -146,6 +146,9 @@ define( require => {
       spinner.ballPositionProperty.link( ( ballPosition ) => {
         updateLinearVelocity( spinner.linearVelocityProperty.value, ballPosition );
       } );
+      linearVelocityVisibleProperty.link( () => {
+        updateLinearVelocity( spinner.linearVelocityProperty.value, spinner.ballPositionProperty.value );
+      } );
     }
   }
 
