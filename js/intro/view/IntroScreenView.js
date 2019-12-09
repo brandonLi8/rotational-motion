@@ -64,7 +64,7 @@ define( require => {
       } );
 
       //----------------------------------------------------------------------------------------
-      const controlPanel = new ControlPanel( introModel.spinner, introModel.playProperty );
+      const controlPanel = new ControlPanel( introModel.spinner, introModel.playProperty, introModel.linearVelocityVisibleProperty );
       controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
       controlPanel._top = SCREEN_VIEW_Y_MARGIN;
 

@@ -20,6 +20,8 @@ define( require => {
   const Text = require( 'SIM_CORE/scenery/Text' );
   const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
+  const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
+  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
   const STYLES = {
     border: 'rgb( 100, 100, 100 )',
@@ -35,7 +37,7 @@ define( require => {
      *                             may have different options for their API. See the code where the options are set in
      *                             the early portion of the constructor for details.
      */
-    constructor( spinner, isPlayingProperty, options ) {
+    constructor( spinner, isPlayingProperty, velocityVisibleProperty, options ) {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
 
@@ -168,7 +170,44 @@ define( require => {
         height: 13
       } );
 
-      this.setChildren( [ radiusSlider, radiusSVGContent, angularVelocitySlider, angularVelocitySVGContent ] );
+
+      //----------------------------------------------------------------------------------------
+      // Velocity checkbox
+      const velocityCheckbox = new Checkbox( velocityVisibleProperty );
+      console.log( velocityCheckbox._width )
+      const velocityLabel = new Text( {
+        text: 'Linear Velocity Vector',
+        fontSize: 12,
+        fontWeight: 100,
+        attributes: {
+          'text-anchor': 'start',
+          'alignment-baseline': 'middle'
+        },
+        x: velocityCheckbox._width + 10,
+        y: velocityCheckbox._height / 2,
+        width: 90,
+        height: 20
+      } );
+
+      const velocityVector = new VectorNode(
+        new Vector( options.width - 2 * options.padding - 30 ,velocityCheckbox._height / 2 ),
+        new Vector( options.width - 2 * options.padding  , velocityCheckbox._height / 2 ), {
+          fill: 'rgb( 10, 170, 250 )'
+        } );
+      const velocitySVGContent = new SVGNode( {
+        left: options.padding,
+        top: 240,
+        width: options.width,
+        height: 13,
+        children: [ velocityCheckbox, velocityLabel, velocityVector ]
+      } );
+      this.setChildren( [
+        radiusSlider,
+        radiusSVGContent,
+        angularVelocitySlider,
+        angularVelocitySVGContent,
+        velocitySVGContent
+      ] );
     }
 
 

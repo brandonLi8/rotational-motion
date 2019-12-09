@@ -35,7 +35,7 @@ define( require => {
       // @public
       this.playProperty = new Property( false );
 
-      this.linearVelocityVisibleProperty = new Property( true );
+      this.linearVelocityVisibleProperty = new Property( false );
 
       // @public (read-only)
       this.spinner = new Spinner( this.spinnerAreaBounds );
