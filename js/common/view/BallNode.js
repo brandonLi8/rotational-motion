@@ -79,7 +79,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Create a multilink to update the Ball's appearance. Observe:
       //  - ball.centerPositionProperty - update the circle's location to match the Ball's position.
-      //  - ball.radiusProperty - update the circle's velocity to match the Ball's position.
+      //  - ball.radiusProperty - update the circle's radius to match the Ball's radius
       //
       // This should be disposed when the Ball Node is disposed.
       // @private {Multilink} updateBallNodeMultilink
@@ -87,6 +87,26 @@ define( require => {
         this.updateBallNode( ball, modelViewTransform );
       } );
 
+    }
+
+    /**
+     * Updates the Ball node:
+     *  - Moves the Ball nodes center location to the correct location.
+     *  - Updates the circle's radius to match the Ball's radius
+     * @protected
+     *
+     * @param {Ball} ball - the Ball model
+     * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
+     */
+    updateBallNode( ball, modelViewTransform ) {
+      assert( ball instanceof Ball, `invalid ball: ${ ball }` );
+      assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
+
+      // 1. Update the Ball's radius
+      this.ballCircle.radius = modelViewTransform.modelToViewDeltaX( ball.radius );
+
+      // 2. Move the Ball Node's center location
+      this._center = modelViewTransform.modelToViewPosition( ball.center );
     }
   }
 
