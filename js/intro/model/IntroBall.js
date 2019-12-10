@@ -11,7 +11,7 @@
  *      back to the Spinner the change in radians at each step.
  *    - Drag method and implements a Drag method to move the Ball and communicates with the Spinner.
  *
- * IntroBall's are created at the start of the sim and are never disposed, so no dispose method is necessary.
+ * IntroBalls are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */

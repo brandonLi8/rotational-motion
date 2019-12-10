@@ -24,6 +24,7 @@ define( require => {
   const SPINNER_BOUNDS_SIZE = 2; // in meters
   const STEP_TIME = 0.03;
   const DEFAULT_IS_PLAYING = false;
+  const DEFAULT_VECTOR_IS_VISIBLE = false;
 
   class IntroModel {
 
@@ -39,8 +40,13 @@ define( require => {
       // @public (read-only) - indicates if the sim is playing or paused
       this.isPlayingProperty = new Property( DEFAULT_IS_PLAYING, { type: 'boolean' } );
 
-      // @public (read-only) - indicates if the linear velocity is visible or not.
-      this.linearVelocityVisibleProperty = new Property( false, {
+      // @public (read-only) - indicates if the linear velocity Vector is visible or not.
+      this.linearVelocityVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, {
+        type: 'boolean'
+      } );
+
+      // @public (read-only) - indicates if the linear acceleration Vector is visible or not.
+      this.linearAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, {
         type: 'boolean'
       } );
 
