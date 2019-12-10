@@ -213,7 +213,7 @@ define( require => {
     layout( scale ) {
       super.layout( scale );
       this.addStyle( {
-        border: `${ STYLES.stroke * scale }px solid ${ STYLES.border }`,
+        border: `${ Math.max( STYLES.stroke * scale, 1 ) }px solid ${ STYLES.border }`,
         borderRadius: `${ STYLES.borderRadius * scale }px`
       } );
     }
