@@ -37,7 +37,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
       options = {
 
-        isDraggable: true,           // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
+        isDraggable: false,          // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
                                      //             override the dragTo() abstract method.
 
         startingRadius: 0.05,        // {number} - the default radius of Ball, in meters
