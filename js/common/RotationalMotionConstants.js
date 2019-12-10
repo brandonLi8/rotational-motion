@@ -12,7 +12,10 @@ define( require => {
   const RotationalMotionConstants = {
 
     SCREEN_VIEW_X_MARGIN: 60,
-    SCREEN_VIEW_Y_MARGIN: 25
+    SCREEN_VIEW_Y_MARGIN: 25,
+
+    // intro
+    INTRO_BALL_RADIUS: 0.05 // in meters
 
   };
 
