@@ -1,12 +1,29 @@
 // Copyright © 2019 Brandon Li. All rights reserved.
 
 /**
- * Model for the Spinner.
+ * Spinner is the model that spins a Ball model object in circular motion. This is specific
+ * to only the 'intro' screen.
  *
- * Responsible for:
+ * Primary responsibilities are:
+ *    - Keep track of the Angular Velocity (in rad/sec) in a Property
+ *    - Keep track of the Angular Acceleration (in rad/sec/sec) in a Property
+ *    - Keep track of the Circular Motion radius in a Property
+ *    - Move the circle in a circular motion based on the Properties above and handle a drag request.
+ *
+ * Generally, there are two types of 'Spinners'
+
+ *   (1) Uniform: Uniform Circular Motion is defined such that the angular acceleration (alpha)
+ *                is always 0. The Angular Velocity and the ball's linear velocity can change, however.
+ *
+ *   (2) Non-uniform: All variables can change. For this scene, we only allow the user to change
+ *                    the angular acceleration.
+ *
+ *   For the 'intro' screen, there are two scenes. Each scene represents the types stated above.
+ *   For more background, visit https://en.wikipedia.org/wiki/Circular_motion.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
+
 
 define( require => {
   'use strict';
