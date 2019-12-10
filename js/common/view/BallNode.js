@@ -100,6 +100,14 @@ define( require => {
       // 2. Move the Ball Node's center location
       this._center = modelViewTransform.modelToViewPosition( ball.center );
     }
+
+    /**
+     * Disposes the Ball node.
+     * @public
+     */
+    dispose() {
+      this.updateBallNodeMultilink.dispose();
+    }
   }
 
   return BallNode;

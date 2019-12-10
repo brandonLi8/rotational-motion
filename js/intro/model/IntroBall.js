@@ -49,8 +49,8 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Spinner} - reference the spinner passed in
-      this._spinner = spinner;
+      // @public (read-only) {Spinner} - reference the spinner passed in
+      this.spinner = spinner;
 
       //----------------------------------------------------------------------------------------
 
@@ -93,8 +93,8 @@ define( require => {
       // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
       // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
       // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
-      const deltaTheta = this._spinner.angularVelocity * dt + 0.5 * this._spinner.angularAcceleration * dt * dt;
-      this._spinner.angle += deltaTheta;
+      const deltaTheta = this.spinner.angularVelocity * dt + 0.5 * this.spinner.angularAcceleration * dt * dt;
+      this.spinner.angle += deltaTheta;
     }
 
     /**
@@ -106,7 +106,7 @@ define( require => {
      * @param {Vector} position - the position of the Center of the Ball
      */
     dragTo( position ) {
-      this._spinner.dragBallTo( position );
+      this.spinner.dragBallTo( position );
     }
 
     //----------------------------------------------------------------------------------------
