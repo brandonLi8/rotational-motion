@@ -19,11 +19,9 @@ define( require => {
   'use strict';
 
   // modules
-  const Bounds = require( 'SIM_CORE/util/Bounds' );
   const assert = require( 'SIM_CORE/util/assert' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
-  const Util = require( 'SIM_CORE/util/Util' );
 
   class Ball {
 
@@ -74,7 +72,7 @@ define( require => {
      *
      * @param {number} dt - time in seconds
      */
-    step( dt ) { assert( false, `abstract step class must be overriden` ); }
+    step( dt ) { assert( false, 'abstract step class must be overridden' ); }
 
     /**
      * @abstract
@@ -84,7 +82,7 @@ define( require => {
      *
      * @param {Vector} position - the position of the Center of the Ball
      */
-    dragTo( position ) { assert( false, `abstract dragTo class must be overriden` ); }
+    dragTo( position ) { assert( false, 'abstract dragTo class must be overridden' ); }
 
     /**
      * Resets the Ball.
@@ -130,7 +128,7 @@ define( require => {
      */
     set radius( radius ) {
       assert( typeof radius === 'number' && radius >= 0, `invalid radius: ${ radius }` );
-      this.radiusProperty.value = radus;
+      this.radiusProperty.value = radius;
     }
   }
 
