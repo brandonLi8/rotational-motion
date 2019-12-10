@@ -11,6 +11,8 @@
  *      back to the Spinner the change in radians at each step.
  *    - Drag method and implements a Drag method to move the Ball and communicates with the Spinner.
  *
+ * IntroBall's are created at the start of the sim and are never disposed, so no dispose method is necessary.
+ *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
 
@@ -53,7 +55,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @public (read-only) velocityProperty - Property of the linear (tangential) velocity of the center of mass of
-      //                                        the Ball.
+      //                                        the Ball. Link lasts for the entire sim and is never disposed.
       this.velocityProperty = new DerivedProperty( [
         spinner.angularVelocityProperty,  // in radians per second
         spinner.radiusProperty            // in meters
@@ -64,7 +66,7 @@ define( require => {
         } );
 
       // @public (read-only) accelerationProperty - Property of the linear (tangential) acceleration of the center of
-      //                                            mass of the Ball.
+      //                                            mass of the Ball. Link lasts for the entire sim and never disposed.
       this.accelerationProperty = new DerivedProperty( [
         spinner.angularAccelerationProperty,  // in radians per second
         spinner.radiusProperty            // in meters
@@ -94,14 +96,14 @@ define( require => {
     step( dt ) {
       // Calculate the average angular between now and the previous step. This is to simulate a changing angular
       // velocity if there is angular acceleration.
-      const averageAngularVelocity = ( this.previousStepAngularVelocity + spinner.angularVelocity ) / 2;
+      const averageAngularVelocity = ( this.previousStepAngularVelocity + this._spinner.angularVelocity ) / 2;
 
       // Calculate the change in angle (in radians) based on the average angular velocity (rad/sec)
       const deltaTheta = dt * averageAngularVelocity;
-      this._spinner.stepBall( deltaTheta );
+      this._spinner.angle += deltaTheta;
 
       // Record the new previous angularVelocity
-      this.previousStepAngularVelocity = spinner.angularVelocity;
+      this.previousStepAngularVelocity = this._spinner.angularVelocity;
     }
 
     /**
