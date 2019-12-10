@@ -17,12 +17,13 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
+  const BallNode = require( 'ROTATIONAL_MOTION/common/view/BallNode' );
+  const IntroBall = require( 'ROTATIONAL_MOTION/intro/model/IntroBall' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
-  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
-  const IntroBall = require( 'ROTATIONAL_MOTION/intro/model/IntroBall' );
-  const BallNode = require( 'ROTATIONAL_MOTION/common/view/BallNode' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
+  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
   // constants
   const VELOCITY_SCALAR = 0.5; // eye-balled
@@ -66,7 +67,7 @@ define( require => {
         ...options
       };
 
-      super( options );
+      super( ball, modelViewTransform, options );
 
       //----------------------------------------------------------------------------------------
       // Create the Vectors
@@ -106,11 +107,14 @@ define( require => {
      * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
      */
     updateBallNode( ball, modelViewTransform ) {
-      assert( ball instanceof Ball, `invalid ball: ${ ball }` );
+      assert( ball instanceof IntroBall, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
 
       // First update as defined in the super class.
       super.updateBallNode( ball, modelViewTransform );
+
+      // Don't do anything if its the first call in the super class.
+      if ( !this._linearVelocityVector ) return;
 
       //----------------------------------------------------------------------------------------
       // Update the Vectors, which are linear relative to the ball's motion.
@@ -126,7 +130,7 @@ define( require => {
         .multiply( ball.acceleration * ACCELERATION_SCALAR );
 
       // Same Tail Location at the center of the Ball Node
-      const tail = this._center;
+      const tail = this.center;
 
       this._linearVelocityVector.set( tail, tail.copy().add( modelViewTransform.modelToViewDelta( velocityVector ) ) );
       this._linearAccelerationVector.set(

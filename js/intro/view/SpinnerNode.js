@@ -12,17 +12,23 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
+  const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
   const LineNode = require( 'SIM_CORE/scenery/LineNode' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
   const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
+
+  // constants
+  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
+  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
   class SpinnerNode extends Node {
 
@@ -69,98 +75,52 @@ define( require => {
       super( options );
 
       //----------------------------------------------------------------------------------------
-      // Create the Circle in the center that represents a Pin
+      // Create a Node that represents the SVG content of the Spinner Node.
+      const svgContent = new SVGNode( {
+        width: this._width,
+        height: this._height,
+        left: -SCREEN_VIEW_X_MARGIN,
+        top: -SCREEN_VIEW_Y_MARGIN
+      } );
 
-      // const localCenter = new Vector( modelViewTransform.viewBounds.width / 2, modelViewTransform.viewBounds.height / 2 );
-      // this.line = new LineNode( localCenter, Vector.ZERO, {
-      //   stroke: 'black',
-      //   strokeWidth: 2
-      // } );
+      this.addChild( svgContent );
 
-      // const pin = new CircleNode( {
-      //   radius: 2, // eye-balled
-      //   fill: 'rgb( 100, 100, 100 )',
-      //   center: localCenter,
-      // } );
+      //----------------------------------------------------------------------------------------
+      // Create the Ball Node for the Intro screen
+      const ballNode = new IntroBallNode( spinner.ball,
+        modelViewTransform,
+        isPlayingProperty,
+        velocityVisibleProperty,
+        accelerationVisibleProperty );
 
-      // const ball = new CircleNode( {
-      //   radius: modelViewTransform.modelToViewDeltaX( spinner.ballRadius ),
-      //   center: localCenter,
-      //   fill: 'green',
-      //   style: {
-      //     cursor: 'pointer'
-      //   }
-      // } );
+      //----------------------------------------------------------------------------------------
+      // Create the Line and the Dot at the Center of the Play Area
 
-      // const linearVelocityVector = new VectorNode( Vector.ZERO, Vector.ZERO, {
-      //   fill: 'rgb( 10, 170, 250 )'
-      // } );
+      // Get the origin in terms of view coordinates
+      const viewCenter = modelViewTransform.modelToViewPoint( Vector.ZERO );
 
-      // const pinParent = new SVGNode( {
-      //   children: [ this.line, pin, ball, linearVelocityVector ],
-      //   width:  modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).width,
-      //   height: modelViewTransform.modelToViewBounds( spinner.spinnerAreaBounds ).height
-      // } );
+      // The string Line, to be set later.
+      const string = new LineNode( viewCenter, Vector.ZERO, {
+        stroke: 'black',
+        strokeWidth: 2
+      } );
 
+      // The pin at the center
+      const pin = new CircleNode( {
+        radius: 2, // eye-balled
+        fill: 'rgb( 100, 100, 100 )',
+        center: viewCenter,
+      } );
 
-      // this.addChild( pinParent );
+      // Set the content of the svgContent node in the correct z-layering.
+      svgContent.setChildren( [ string, pin, ballNode ] );
 
-      // //----------------------------------------------------------------------------------------
-
-      // spinner.ballPositionProperty.link( ballPosition => {
-      //   this.line.end = localCenter.copy().add( modelViewTransform.modelToViewDelta( ballPosition ) );
-      //   ball._center = this.line.end;
-      // } );
-      // //----------------------------------------------------------------------------------------
-
-      // const ballCenterLocationProperty = new Property( modelViewTransform.modelToViewPoint( spinner.ballPositionProperty.value.copy() ), {
-      //   type: Vector
-      // } );
-
-      // let wasPlayingWhenDragged = null;
-      // const startDrag = () => {
-      //   wasPlayingWhenDragged = isPlayingProperty.value;
-      //   isPlayingProperty.value = false;
-      // }
-      // const lineDrag = ( displacement ) => {
-      //   const cursorPosition = modelViewTransform.viewToModelDelta( displacement );
-      //   const ballPosition = spinner.ballPositionProperty.value.copy().add( cursorPosition  );
-      //   spinner.dragBallTo( ballPosition );
-      // };
-      // const lineDragClose = () => {
-      //   if ( wasPlayingWhenDragged ) isPlayingProperty.value = true;
-      //   wasPlayingWhenDragged = null;
-      // }
-      // ball.drag( startDrag, lineDrag, lineDragClose );
-
-      // //----------------------------------------------------------------------------------------
-      // linearVelocityVisibleProperty.link( isVisible => {
-      //   linearVelocityVector.style.opacity = isVisible ? 1 : 0;
-      // } );
-
-      // const updateLinearVelocity = ( linearVelocity, ballPosition ) => {
-      //   if ( !linearVelocityVisibleProperty.value ) return;
-
-      //   const modelAngle = ballPosition.angle + Math.PI / 2;
-      //   const vector = new Vector( 1, 0 ).rotate( modelAngle ).multiply( linearVelocity / 2);
-      //   const tail = ballPosition.copy();
-      //   const tip = tail.copy().add( vector );
-
-      //   const tailView = localCenter.copy().add( modelViewTransform.modelToViewDelta( tail ) );
-      //   const tipView = localCenter.copy().add( modelViewTransform.modelToViewDelta( tip ) );
-
-      //   linearVelocityVector.set( tailView, tipView );
-      // };
-
-      // spinner.linearVelocityProperty.link( ( linearVelocity ) => {
-      //   updateLinearVelocity( linearVelocity, spinner.ballPositionProperty.value );
-      // } );
-      // spinner.ballPositionProperty.link( ( ballPosition ) => {
-      //   updateLinearVelocity( spinner.linearVelocityProperty.value, ballPosition );
-      // } );
-      // linearVelocityVisibleProperty.link( () => {
-      //   updateLinearVelocity( spinner.linearVelocityProperty.value, spinner.ballPositionProperty.value );
-      // } );
+      //----------------------------------------------------------------------------------------
+      // Observe when the Ball's center changes and update the string to match.
+      // Doesn't need to be unlinked as the Spinner is never disposed.
+      spinner.ball.centerPositionProperty.link( centerPosition => {
+        string.end = modelViewTransform.modelToViewPoint( centerPosition );
+      } );
     }
   }
 

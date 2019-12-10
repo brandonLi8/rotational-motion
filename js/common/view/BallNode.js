@@ -23,9 +23,9 @@ define( require => {
   const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
+  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
 
-  class BallNode extends Node {
+  class BallNode extends SVGNode {
 
     /**
      * @param {Ball} ball - the Ball model
@@ -98,7 +98,8 @@ define( require => {
       this.ballCircle.radius = modelViewTransform.modelToViewDeltaX( ball.radius );
 
       // 2. Move the Ball Node's center location
-      this._center = modelViewTransform.modelToViewPosition( ball.center );
+      this.center = modelViewTransform.modelToViewPoint( ball.center );
+      this.ballCircle.center = this.center;
     }
 
     /**

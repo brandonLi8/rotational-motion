@@ -67,17 +67,17 @@ define( require => {
         introModel.linearAccelerationVisibleProperty
       );
 
-      // // Create a Time Control Box
-      // const timeControlBox = new TimeControlBox( {
-      //   isPlayingProperty: introModel.isPlayingProperty,
-      //   backwardsListener: () => {
-      //     introModel.stepBackwards();
-      //   },
-      //   forwardsListener: () => {
-      //     introModel.stepForwards();
-      //   },
-      //   center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN )
-      // } );
+      // Create a Time Control Box
+      const timeControlBox = new TimeControlBox( {
+        playProperty: introModel.isPlayingProperty,
+        backwardsListener: () => {
+          introModel.stepBackwards();
+        },
+        forwardsListener: () => {
+          introModel.stepForwards();
+        },
+        center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN )
+      } );
 
       // //----------------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ define( require => {
       // Render the contents in the correct z-layering.
       this.setChildren( [
         // controlPanel,
-        // timeControlBox,
+        timeControlBox,
         spinnerNode
       ] );
     }
