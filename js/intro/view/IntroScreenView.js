@@ -63,36 +63,38 @@ define( require => {
         introModel.spinner,
         modelViewTransform,
         introModel.isPlayingProperty,
-        introModel.linearVelocityVisibleProperty );
-
-      // Create a Time Control Box
-      const timeControlBox = new TimeControlBox( {
-        isPlayingProperty: introModel.isPlayingProperty,
-        backwardsListener: () => {
-          introModel.stepBackwards();
-        },
-        forwardsListener: () => {
-          introModel.stepForwards();
-        },
-        center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN )
-      } );
-
-      //----------------------------------------------------------------------------------------
-
-      // Create the Control Panel
-      const controlPanel = new ControlPanel(
-        introModel.spinner,
-        introModel.isPlayingProperty,
-        introModel.linearVelocityVisibleProperty
+        introModel.linearVelocityVisibleProperty,
+        introModel.linearAccelerationVisibleProperty
       );
-      // Relocate the Control Panel
-      controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
-      controlPanel._top = SCREEN_VIEW_Y_MARGIN;
+
+      // // Create a Time Control Box
+      // const timeControlBox = new TimeControlBox( {
+      //   isPlayingProperty: introModel.isPlayingProperty,
+      //   backwardsListener: () => {
+      //     introModel.stepBackwards();
+      //   },
+      //   forwardsListener: () => {
+      //     introModel.stepForwards();
+      //   },
+      //   center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN )
+      // } );
+
+      // //----------------------------------------------------------------------------------------
+
+      // // Create the Control Panel
+      // const controlPanel = new ControlPanel(
+      //   introModel.spinner,
+      //   introModel.isPlayingProperty,
+      //   introModel.linearVelocityVisibleProperty
+      // );
+      // // Relocate the Control Panel
+      // controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
+      // controlPanel._top = SCREEN_VIEW_Y_MARGIN;
 
       // Render the contents in the correct z-layering.
       this.setChildren( [
-        controlPanel,
-        timeControlBox,
+        // controlPanel,
+        // timeControlBox,
         spinnerNode
       ] );
     }

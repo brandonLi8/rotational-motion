@@ -64,6 +64,10 @@ define( require => {
       };
 
       //----------------------------------------------------------------------------------------
+      // @public (read-only) spinnerAreaBounds - reference to the spinnerAreaBounds
+      this.spinnerAreaBounds = spinnerAreaBounds;
+
+      //----------------------------------------------------------------------------------------
 
       // @public (read-only) angularVelocityProperty - Property of the angular velocity of the ciruclar motion
       //                                               in rad / sec

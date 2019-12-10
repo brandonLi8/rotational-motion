@@ -60,7 +60,7 @@ define( require => {
      * @public
      */
     step( dt ) {
-      this.playProperty.value && this.spinner.step( dt );
+      this.isPlayingProperty.value && this.spinner.step( dt );
     }
 
     /**
@@ -68,7 +68,7 @@ define( require => {
      * @public
      */
     stepBackwards() {
-      this.playProperty.value = false;
+      this.isPlayingProperty.value = false;
       this.spinner.step( -STEP_TIME );
     }
 
@@ -77,7 +77,7 @@ define( require => {
      * @public
      */
     stepForwards() {
-      this.playProperty.value = false;
+      this.isPlayingProperty.value = false;
       this.spinner.step( STEP_TIME );
     }
   }
