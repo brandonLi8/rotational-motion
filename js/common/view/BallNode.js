@@ -21,17 +21,9 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Ball = require( 'ROTATIONAL_MOTION/common/model/Ball' );
   const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
-  const LineNode = require( 'SIM_CORE/scenery/LineNode' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const Property = require( 'SIM_CORE/util/Property' );
-  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
-  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
   class BallNode extends Node {
 
