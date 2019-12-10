@@ -64,12 +64,6 @@ define( require => {
       };
 
       //----------------------------------------------------------------------------------------
-      // Create a Ball to spin
-
-      // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
-      this.ball = new IntroBall( Vector.ZERO, this );
-
-      //----------------------------------------------------------------------------------------
 
       // @public (read-only) angularVelocityProperty - Property of the angular velocity of the ciruclar motion
       //                                               in rad / sec
@@ -82,13 +76,19 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @public (read-only) {Vector} radiusRange - the range (x as min, y as max) of the circular motion radius, in m.
-      this.radiusRange = new Vector( options.minRadius, spinnerAreaBounds.width / 2 - this.ball.radius );
+      this.radiusRange = new Vector( options.minRadius, spinnerAreaBounds.width / 2 - 0.05 );
 
       // @public (read-only) radiusProperty - Property of the radius of the ciruclar motion, in meters
       this.radiusProperty = new Property( options.initialRadius, {
         type: 'number',
         isValidValue: value => value >= this.radiusRange.y && this.radiusRange.y
       } );
+
+      //----------------------------------------------------------------------------------------
+      // Create a Ball to spin
+
+      // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
+      this.ball = new IntroBall( Vector.ZERO, this );
 
       //----------------------------------------------------------------------------------------
       // Internals and listeners.

@@ -4,7 +4,10 @@
  * Top Level model for the 'Intro' screen.
  *
  * Responsible for:
- *
+ *   - Keeping track of the Simulation's state.
+ *   - Creating Visibility Properties for:
+ *        - Linear Velocity Vectors
+ * TODO: this functionality should be split into a scene model, and this class should just make 2 scenes.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -14,29 +17,29 @@ define( require => {
 
   // modules
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
 
   // constants
   const SPINNER_BOUNDS_SIZE = 2; // in meters
-  const STEP_TIME = 0.01;
+  const STEP_TIME = 0.03;
+  const DEFAULT_IS_PLAYING = false;
 
   class IntroModel {
 
     constructor() {
 
-      // @public (read-only) - the spinner play area bounds, as a perfect circle
+      // @public (read-only) - the spinner play area bounds
       this.spinnerAreaBounds = new Bounds(
         -SPINNER_BOUNDS_SIZE / 2,
         -SPINNER_BOUNDS_SIZE / 2,
         SPINNER_BOUNDS_SIZE / 2,
         SPINNER_BOUNDS_SIZE / 2 );
 
-      // @public
-      this.playProperty = new Property( false, {
-        type: 'boolean'
-      } );
+      // @public (read-only) - indicates if the sim is playing or paused
+      this.isPlayingProperty = new Property( DEFAULT_IS_PLAYING, { type: 'boolean' } );
 
+      // @public (read-only) - indicates if the linear velocity is visible or not.
       this.linearVelocityVisibleProperty = new Property( false, {
         type: 'boolean'
       } );
@@ -54,16 +57,23 @@ define( require => {
       this.playProperty.value && this.spinner.step( dt );
     }
 
+    /**
+     * Moves this model back one time step.
+     * @public
+     */
     stepBackwards() {
       this.playProperty.value = false;
       this.spinner.step( -STEP_TIME );
     }
 
+    /**
+     * Moves this model forward one time step.
+     * @public
+     */
     stepForwards() {
       this.playProperty.value = false;
       this.spinner.step( STEP_TIME );
     }
-
   }
 
   return IntroModel;

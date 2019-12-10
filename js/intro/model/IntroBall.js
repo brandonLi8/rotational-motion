@@ -45,7 +45,7 @@ define( require => {
         ...options
       };
 
-      super( options );
+      super( initialCenterPosition, options );
 
       //----------------------------------------------------------------------------------------
 
@@ -75,11 +75,6 @@ define( require => {
           // For more details on this calculation, see https://en.wikipedia.org/wiki/Angular_acceleration
           return angularAcceleration * radius;
       } );
-
-      // @private (read-only) {number} previousStepAngularVelocity - keep track of the angular velocity
-      //                                                             at each step to calculate the average angular
-      //                                                             velocity between frames.
-      this.previousStepAngularVelocity = spinner.angularVelocity;
     }
 
     /**
@@ -94,16 +89,12 @@ define( require => {
      * @param {number} dt - time in seconds
      */
     step( dt ) {
-      // Calculate the average angular between now and the previous step. This is to simulate a changing angular
-      // velocity if there is angular acceleration.
-      const averageAngularVelocity = ( this.previousStepAngularVelocity + this._spinner.angularVelocity ) / 2;
-
       // Calculate the change in angle (in radians) based on the average angular velocity (rad/sec)
-      const deltaTheta = dt * averageAngularVelocity;
+      // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
+      // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
+      // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
+      const deltaTheta = this._spinner.angularVelocity * dt + 0.5 * this._spinner.angularAcceleration * dt * dt;
       this._spinner.angle += deltaTheta;
-
-      // Record the new previous angularVelocity
-      this.previousStepAngularVelocity = this._spinner.angularVelocity;
     }
 
     /**
