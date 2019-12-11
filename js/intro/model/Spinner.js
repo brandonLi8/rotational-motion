@@ -138,6 +138,23 @@ define( require => {
       this.ball.reset();
     }
 
+    /**
+     * Called when the Ball is dragged. Attempts position to the Ball at the new Radius
+     * but constrains its bounds to remain in the radius range. Angles and radii are updated.
+     * @public
+     *
+     * @param {Vector} position - the position of the Center of the Ball
+     */
+    dragBallTo( position ) {
+      // First update the angle, which has no bounds. Correct the Bounds such that it outputs
+      // angles from [0, 2PI)
+      const positionAngle = position.angle;
+      this.angle = positionAngle > 0 ? positionAngle : Math.PI * 2 + positionAngle;
+
+      // Update the radius, restraining it in the radius range.
+      this.radius = Util.clamp( position.magnitude, this.radiusRange.x, this.radiusRange.y );
+    }
+
     //----------------------------------------------------------------------------------------
     // Convenience Methods
     //----------------------------------------------------------------------------------------
@@ -164,6 +181,16 @@ define( require => {
     get radius() { return this.radiusProperty.value; }
 
     /**
+     * Sets the Spinner's radius, in meters.
+     * @public
+     * @param {number} radius - in meters.
+     */
+    set radius( radius ) {
+      assert( typeof radius === 'number', `invalid radius: ${ radius }` );
+      this.radiusProperty.value = radius;
+    }
+
+    /**
      * Gets the Spinner's angle, in radians.
      * @public
      * @returns {number} - in radians.
@@ -179,13 +206,6 @@ define( require => {
       assert( typeof angle === 'number', `invalid angle: ${ angle }` );
       this.angleProperty.value = angle;
     }
-
-    // dragBallTo( point ) {
-    //   const degrees = Util.toDegrees( point.angle );
-    //   const correctedAngle = degrees > 0 ? degrees : 360 + degrees;
-    //   this.stringAngleProperty.value = correctedAngle;
-    //   this.stringRadiusProperty.value = Util.clamp( point.magnitude, this.minSpinnerRadius, this.maxSpinnerRadius );
-    // }
   }
 
   return Spinner;

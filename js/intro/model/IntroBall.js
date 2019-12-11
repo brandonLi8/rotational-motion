@@ -99,6 +99,7 @@ define( require => {
 
     /**
      * @abstract
+     * @override
      * Called when the Ball is dragged. Passes a new attempted position to the Spinner, which will determine
      * new radii and constrain the dragging bounds.
      * @public

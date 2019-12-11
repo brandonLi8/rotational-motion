@@ -79,6 +79,31 @@ define( require => {
         this.updateBallNode( ball, modelViewTransform );
       } );
 
+      //----------------------------------------------------------------------------------------
+      // Add a Drag listener if the Ball is draggable
+      // TODO: sim-core should refactored out a Drag listener that does this!
+      // Also, the drag listener should be referenced and unlinked in the dispose method.
+      if ( ball.isDraggable ) {
+        let playAtDragStart;
+        this.ballCircle.drag( {
+          start: () => {
+            if ( options.dragPauseProperty ) {
+              playAtDragStart = options.dragPauseProperty.value;
+              options.dragPauseProperty.value = false;
+            }
+          },
+          end: () => {
+            if ( options.dragPauseProperty ) {
+              playAtDragStart && options.dragPauseProperty.toggle();
+              playAtDragStart = null;
+            }
+          },
+          listener: ( displacement ) => {
+            const ballPosition = ball.center.copy().add( modelViewTransform.viewToModelDelta( displacement ) );
+            ball.dragTo( ballPosition );
+          }
+        } );
+      }
     }
 
     /**
