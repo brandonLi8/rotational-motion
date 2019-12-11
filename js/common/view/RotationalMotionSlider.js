@@ -54,16 +54,16 @@ define( require => {
         // specific to this class
 
         padding: 10, // eye-balled
-        sliderLabelMargin: 20, // margin between the slider and the content above
+        sliderLabelMargin: 40, // margin between the slider and the content above
 
         sliderOptions: null, // passed to the slider
         sliderTickIncrement: 0.1,
 
         // label
-        labelFontSize: 14,
+        labelFontSize: 15,
         labelText: '',
 
-        fontWeight: 100,
+        fontWeight: '100',
 
         // number display
         numberDisplaySize: new Vector( 90, 27 ),
@@ -82,8 +82,8 @@ define( require => {
 
       let playAtDragStart;
       const startDrag = () => {
-        playAtDragStart = options.dragPauseProperty.value;
-        options.dragPauseProperty.value = false;
+        playAtDragStart = isPlayingProperty.value;
+        isPlayingProperty.value = false;
       };
       const endDrag = () => {
         playAtDragStart && isPlayingProperty.toggle();
@@ -101,7 +101,7 @@ define( require => {
         x: options.width - options.padding - options.numberDisplaySize.x
       } );
       const numberDisplayText = new Text( {
-        fontSize: options.numberDisplaySize,
+        fontSize: options.numberDisplayFontSize,
         fontWeight: options.fontWeight,
         x: numberDisplay.x + numberDisplay.width / 2,
         y: numberDisplay.height / 2,
@@ -116,7 +116,7 @@ define( require => {
       const label = new Text( {
         text: options.labelText,
         fontSize: options.labelFontSize,
-        fontWeight: options.labelFontWeight,
+        fontWeight: options.fontWeight,
         attributes: {
           'text-anchor': 'start',
           'alignment-baseline': 'baseline'
@@ -135,8 +135,8 @@ define( require => {
           endDrag,
           ...options.sliderOptions
       } );
-      slider.left = options.width / 2 - slider.width / 2;
-      slider.top = numberDisplay.height + options.sliderLabelMargin;
+      slider.x = options.width / 2 - slider.width / 2;
+      slider.y = numberDisplay.height + options.sliderLabelMargin;
 
       //----------------------------------------------------------------------------------------
       // Update the number display text when the Slider value changes

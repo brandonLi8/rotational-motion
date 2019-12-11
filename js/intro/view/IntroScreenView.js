@@ -89,20 +89,13 @@ define( require => {
         introModel.isPlayingProperty,
         introModel.linearVelocityVisibleProperty
       );
-      // Relocate the Control Panel
+
       controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
       controlPanel.top = SCREEN_VIEW_Y_MARGIN;
 
-      // Create a SVG container to render the control panel.
-      const controlPanelSVGContainer = new SVGNode( {
-        width: this.width,
-        height: this.height,
-        children: [ controlPanel ]
-      } );
-
       // Render the contents in the correct z-layering.
       this.setChildren( [
-        controlPanelSVGContainer,
+        controlPanel,
         timeControlBox,
         spinnerNode
       ] );
