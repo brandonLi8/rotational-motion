@@ -136,7 +136,7 @@ define( require => {
         .multiply( ball.acceleration * ACCELERATION_SCALAR );
 
       // Same Tail Location at the center of the Ball Node
-      const tail = this.center;
+      const tail = modelViewTransform.modelToViewPoint( ball.center );
 
       this._linearVelocityVector.set( tail, tail.copy().add( modelViewTransform.modelToViewDelta( velocityVector ) ) );
       this._linearAccelerationVector.set(
