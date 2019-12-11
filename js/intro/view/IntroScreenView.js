@@ -26,14 +26,15 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
+  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const TimeControlBox = require( 'SIM_CORE/scenery/buttons/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
-  const MODEL_TO_VIEW_SCALE = 250; // meter to view coordinates (1 m = 200 coordinates)
+  const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
-  const TIME_CONTROL_BOX_MARGIN = 40; // margin between the time control box and the play area (view)
+  const TIME_CONTROL_BOX_MARGIN = 10; // margin between the time control box and the play area (view)
 
   class IntroScreenView extends ScreenView {
 
@@ -76,10 +77,11 @@ define( require => {
         forwardsListener: () => {
           introModel.stepForwards();
         },
-        center: new Vector( playAreaViewBounds.centerX, playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN )
+        top: playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN
       } );
+      timeControlBox.left = playAreaViewBounds.centerX - timeControlBox.width / 2;
 
-      // //----------------------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------
 
       // Create the Control Panel
       const controlPanel = new ControlPanel(
@@ -91,9 +93,16 @@ define( require => {
       controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
       controlPanel.top = SCREEN_VIEW_Y_MARGIN;
 
+      // Create a SVG container to render the control panel.
+      const controlPanelSVGContainer = new SVGNode( {
+        width: this.width,
+        height: this.height,
+        children: [ controlPanel ]
+      } );
+
       // Render the contents in the correct z-layering.
       this.setChildren( [
-        controlPanel,
+        controlPanelSVGContainer,
         timeControlBox,
         spinnerNode
       ] );

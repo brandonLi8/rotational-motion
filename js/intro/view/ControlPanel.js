@@ -1,7 +1,9 @@
 // Copyright © 2019 Brandon Li. All rights reserved.
 
 /**
- * View for the spinning circle.
+ * View for the Control Panel at the top right of the screen.
+ *
+ * TODO: we should probably make a panel class in sim-core.
  *
  * @author Brandon Li
  */
@@ -10,74 +12,83 @@ define( require => {
   'use strict';
 
   // modules
-  const Node = require( 'SIM_CORE/scenery/Node' );
-  const SliderNode = require( 'SIM_CORE/scenery/SliderNode' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
   const assert = require( 'SIM_CORE/util/assert' );
-  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
-  const Util = require( 'SIM_CORE/util/Util' );
-  const Property = require( 'SIM_CORE/util/Property' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
-  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
-  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
+  const Property = require( 'SIM_CORE/util/Property' );
+  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const SliderNode = require( 'SIM_CORE/scenery/SliderNode' );
+  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
+  const Text = require( 'SIM_CORE/scenery/Text' );
+  const Util = require( 'SIM_CORE/util/Util' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
+  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
-  const STYLES = {
-    border: 'rgb( 100, 100, 100 )',
-    borderRadius: 5,
-    stroke: 1
-  };
-
-  class ControlPanel extends Node {
+  class ControlPanel extends Rectangle {
 
     /**
      * @param {Spinner} spinner
-     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. Subclasses
-     *                             may have different options for their API. See the code where the options are set in
-     *                             the early portion of the constructor for details.
+     * @param {Property.<boolean>} isPlayingProperty
+     * @param {Property.<boolean>} velocityVisibleProperty
+     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.
      */
     constructor( spinner, isPlayingProperty, velocityVisibleProperty, options ) {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
+      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
+      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
+      assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
-      // Defaults for options.
-      const defaults = {
-        width: 240,
-        height: 340,
-        style: {
-          background: 'rgb( 240, 240, 240 )',
-          boxSizing: 'content-box'
-        },
-        padding: 10
+      //----------------------------------------------------------------------------------------
+
+      options = {
+
+        //----------------------------------------------------------------------------------------
+        // passed to the super class
+        width: 240,       // eye-balled
+        height: 340,      // eye-balled
+        cornerRadius: 5,  // eye-balled
+        stroke: 'rgb( 100, 100, 100 )',  // eye-balled
+        fill: 'rgb( 240, 240, 240 )',    // eye-balled
+        strokeWidht: 1.   // eye-balled
+
+        //----------------------------------------------------------------------------------------
+        // specific to this class
+        padding: 10,      // eye-balled
+
+
+        // rewrite options such that it overrides the defaults above if provided.
+        ...options
       };
-
-      // Rewrite options so that it overrides the defaults.
-      options = { ...defaults, ...options };
 
       super( options );
       this.borderRadius = options.borderRadius;
 
+      //----------------------------------------------------------------------------------------
+      // Create The Drag listeners for when sliders are dragged to correctly pause and play the sim.
+
+      let playAtDragStart;
+      const startDrag = () => {
+        playAtDragStart = options.dragPauseProperty.value;
+        options.dragPauseProperty.value = false;
+      };
+      const endDrag = () => {
+        playAtDragStart && isPlayingProperty.toggle();
+        playAtDragStart = null;
+      }
 
       //----------------------------------------------------------------------------------------
-      // Radius Slider
-      let wasPlayingWhenDragged = null;
-      const startDrag = () => {
-        wasPlayingWhenDragged = isPlayingProperty.value;
-        isPlayingProperty.value = false;
-      };
-      const lineDragClose = () => {
-        if ( wasPlayingWhenDragged ) isPlayingProperty.value = true;
-        wasPlayingWhenDragged = null;
-      }
+      // Create a slider to change the Radius of the Spinner
+
       const radiusSlider = new SliderNode(
         spinner.radiusRange,
         spinner.radiusProperty, {
-          minorTickIncrement: ( spinner.radiusRange.y - spinner.radiusRange.x ) / 6,
+          minorTickIncrement: 0.1,
           center: new Vector( this.width / 2, 86 ),
-          startDrag: startDrag,
-          endDrag: lineDragClose
+          startDrag,
+          endDrag
       } );
 
       const radiusLabel = new Text( {
@@ -129,8 +140,8 @@ define( require => {
           minorTickIncrement: ( spinner.angularVelocityRange.y - spinner.angularVelocityRange.x ) / 10,
           center: new Vector( this.width / 2, 195 ),
           rightLabel: RotationalMotionConstants.INTRO_MAX_VELOCITY_SYMBOL,
-          startDrag: startDrag,
-          endDrag: lineDragClose
+          startDrag,
+          endDrag
       } );
 
       const angularVelocityLabel = new Text( {
@@ -215,8 +226,8 @@ define( require => {
     layout( scale ) {
       super.layout( scale );
       this.addStyle( {
-        border: `${ Math.max( STYLES.stroke * scale, 1 ) }px solid ${ STYLES.border }`,
-        borderRadius: `${ STYLES.borderRadius * scale }px`
+        border: `${ Math.max( PANEL_STYLES.stroke * scale, 1 ) }px solid ${ PANEL_STYLES.border }`,
+        borderRadius: `${ PANEL_STYLES.borderRadius * scale }px`
       } );
     }
   }
