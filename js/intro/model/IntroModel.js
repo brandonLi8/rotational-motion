@@ -19,9 +19,10 @@ define( require => {
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   // constants
-  const SPINNER_BOUNDS_SIZE = 2; // in meters
+  const SPINNER_BOUNDS_SIZE = 2 + 2 * RotationalMotionConstants.INTRO_BALL_RADIUS; // in meters
   const STEP_TIME = 0.03;
   const DEFAULT_IS_PLAYING = false;
   const DEFAULT_VECTOR_IS_VISIBLE = false;

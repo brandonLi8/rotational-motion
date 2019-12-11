@@ -9,13 +9,21 @@
 define( require => {
   'use strict';
 
+  // modules
+  const Symbols = require( 'SIM_CORE/util/Symbols' );
+
   const RotationalMotionConstants = {
 
     SCREEN_VIEW_X_MARGIN: 60,
     SCREEN_VIEW_Y_MARGIN: 25,
 
-    // intro
-    INTRO_BALL_RADIUS: 0.05 // in meters
+    // intro-screen
+    INTRO_BALL_RADIUS: 0.05, // in meters
+    VELOCITY_SCALAR: 0.5, // eye-balled
+    ACCELERATION_SCALAR: 0.5, // eye-balled
+    INTRO_MAX_VELOCITY: Math.PI / 2,
+    INTRO_MAX_VELOCITY_SYMBOL: `${ Symbols.PI } / 2`
+
 
   };
 

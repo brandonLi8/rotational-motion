@@ -33,7 +33,7 @@ define( require => {
   const MODEL_TO_VIEW_SCALE = 250; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
-  const TIME_CONTROL_BOX_MARGIN = 60; // margin between the time control box and the play area (view)
+  const TIME_CONTROL_BOX_MARGIN = 40; // margin between the time control box and the play area (view)
 
   class IntroScreenView extends ScreenView {
 

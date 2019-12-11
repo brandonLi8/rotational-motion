@@ -37,9 +37,10 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   // constants
-  const ANGULAR_VELOCITY_RANGE = new Vector( 0, Math.PI );
+  const ANGULAR_VELOCITY_RANGE = new Vector( 0, RotationalMotionConstants.INTRO_MAX_VELOCITY );
 
   class Spinner {
 
@@ -86,7 +87,10 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @public (read-only) {Vector} radiusRange - the range (x as min, y as max) of the circular motion radius, in m.
-      this.radiusRange = new Vector( options.minRadius, spinnerAreaBounds.width / 2 - 0.05 );
+      this.radiusRange = new Vector(
+        options.minRadius,
+        spinnerAreaBounds.width / 2 - RotationalMotionConstants.INTRO_BALL_RADIUS
+      );
 
       // @public (read-only) radiusProperty - Property of the radius of the ciruclar motion, in meters
       this.radiusProperty = new Property( options.initialRadius, {

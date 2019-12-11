@@ -24,10 +24,11 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
   const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   // constants
-  const VELOCITY_SCALAR = 0.5; // eye-balled
-  const ACCELERATION_SCALAR = 0.5; // eye-balled
+  const VELOCITY_SCALAR = RotationalMotionConstants.VELOCITY_SCALAR; // scalar of velocity Vectors
+  const ACCELERATION_SCALAR = RotationalMotionConstants.ACCELERATION_SCALAR; // scalar of acceleration Vectors
 
   class IntroBallNode extends BallNode {
 

@@ -22,6 +22,7 @@ define( require => {
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   const STYLES = {
     border: 'rgb( 100, 100, 100 )',
@@ -127,7 +128,7 @@ define( require => {
         spinner.angularVelocityProperty, {
           minorTickIncrement: ( spinner.angularVelocityRange.y - spinner.angularVelocityRange.x ) / 10,
           center: new Vector( this.width / 2, 195 ),
-          rightLabel: '\u03C0',
+          rightLabel: RotationalMotionConstants.INTRO_MAX_VELOCITY_SYMBOL,
           startDrag: startDrag,
           endDrag: lineDragClose
       } );

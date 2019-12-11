@@ -61,12 +61,7 @@ define( require => {
 
         center: modelViewTransform.modelToViewPoint( Vector.ZERO ),
         width: modelViewTransform.modelToViewDeltaX( spinner.spinnerAreaBounds.width ),
-        height: -modelViewTransform.modelToViewDeltaY( spinner.spinnerAreaBounds.height ),
-
-        style: {
-          border: '2px solid red',
-          boxSizing: 'content-box'
-        }
+        height: -modelViewTransform.modelToViewDeltaY( spinner.spinnerAreaBounds.height )
       };
 
       // Rewrite options so that it overrides the defaults.

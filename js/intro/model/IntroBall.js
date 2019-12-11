@@ -23,6 +23,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Ball = require( 'ROTATIONAL_MOTION/common/model/Ball' );
   const DerivedProperty = require( 'SIM_CORE/util/DerivedProperty' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   class IntroBall extends Ball {
 
@@ -39,6 +40,8 @@ define( require => {
 
         isDraggable: true,           // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
                                      //             override the dragTo() abstract method.
+
+        startingRadius: RotationalMotionConstants.INTRO_BALL_RADIUS,
 
 
         // rewrite options such that it overrides the defaults above if provided.
