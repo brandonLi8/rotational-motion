@@ -85,6 +85,11 @@ define( require => {
       this.addChild( this._linearVelocityVector );
       this.addChild( this._linearAccelerationVector );
 
+      //----------------------------------------------------------------------------------------
+      // Observe when the Vector Visibility Properties change and update the opacity of the Vectors.
+      // Links don't have to be unlinked since Intro Ball's are never disposed.
+      velocityVisibleProperty.linkAttribute( this._linearVelocityVector, 'visible' );
+      accelerationVisibleProperty.linkAttribute( this._linearAccelerationVector, 'visible' );
 
       //----------------------------------------------------------------------------------------
       // Create a multilink to update the Vectors appearance. Observe:
