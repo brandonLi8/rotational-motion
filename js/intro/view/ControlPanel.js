@@ -71,9 +71,9 @@ define( require => {
         wasPlayingWhenDragged = null;
       }
       const radiusSlider = new SliderNode(
-        new Vector( spinner.minSpinnerRadius, spinner.maxSpinnerRadius ),
-        spinner.stringRadiusProperty, {
-          minorTickIncrement: ( spinner.maxSpinnerRadius - spinner.minSpinnerRadius ) / 6,
+        spinner.radiusRange,
+        spinner.radiusProperty, {
+          minorTickIncrement: ( spinner.radiusRange.y - spinner.radiusRange.x ) / 6,
           center: new Vector( this.width / 2, 86 ),
           startDrag: startDrag,
           endDrag: lineDragClose
@@ -107,13 +107,13 @@ define( require => {
           'alignment-baseline': 'middle'
         }
       } );
-      spinner.stringRadiusProperty.link( radius => {
+      spinner.radiusProperty.link( radius => {
         radiusNumberDisplayText.setText( `${ Util.toFixed( radius, 2 ) } m` );
       } );
       const radiusSVGContent = new SVGNode( {
         children: [ radiusLabel, radiusNumberDisplay, radiusNumberDisplayText ],
         left: options.padding,
-        top: radiusSlider._center.y - radiusSlider._height - 30,
+        top: radiusSlider.center.y - radiusSlider.height - 30,
         width: options.width,
         height: 13
       } );
@@ -123,17 +123,18 @@ define( require => {
       // Angular Velocity
 
       const angularVelocitySlider = new SliderNode(
-        spinner.ballVelocityRange,
-        spinner.ballVelocityProperty, {
-          minorTickIncrement: 10,
+        spinner.angularVelocityRange,
+        spinner.angularVelocityProperty, {
+          minorTickIncrement: ( spinner.angularVelocityRange.y - spinner.angularVelocityRange.x ) / 10,
           center: new Vector( this.width / 2, 195 ),
+          rightLabel: '\u03C0',
           startDrag: startDrag,
           endDrag: lineDragClose
       } );
 
       const angularVelocityLabel = new Text( {
-        text: '\u03c9',
-        fontSize: 15,
+        text: '\u03c9 (Angular velocity)',
+        fontSize: 14,
         fontWeight: 100,
         attributes: {
           'text-anchor': 'start',
@@ -159,13 +160,13 @@ define( require => {
           'alignment-baseline': 'middle'
         }
       } );
-      spinner.ballVelocityProperty.link( angularVelocity => {
-        angularVelocityNumberDisplayText.setText( `${ Util.toFixed( angularVelocity, 2 ) } deg/sec` );
+      spinner.angularVelocityProperty.link( angularVelocity => {
+        angularVelocityNumberDisplayText.setText( `${ Util.toFixed( angularVelocity, 2 ) } rad/sec` );
       } );
       const angularVelocitySVGContent = new SVGNode( {
         children: [ angularVelocityLabel, angularVelocityNumberDisplay, angularVelocityNumberDisplayText ],
         left: options.padding,
-        top: angularVelocitySlider._center.y - angularVelocitySlider._height - 20,
+        top: angularVelocitySlider.center.y - angularVelocitySlider.height - 20,
         width: options.width,
         height: 13
       } );
@@ -182,15 +183,15 @@ define( require => {
           'text-anchor': 'start',
           'alignment-baseline': 'middle'
         },
-        x: velocityCheckbox._width + 10,
-        y: velocityCheckbox._height / 2,
+        x: velocityCheckbox.width + 10,
+        y: velocityCheckbox.height / 2,
         width: 90,
         height: 20
       } );
 
       const velocityVector = new VectorNode(
-        new Vector( options.width - 2 * options.padding - 30 ,velocityCheckbox._height / 2 ),
-        new Vector( options.width - 2 * options.padding  , velocityCheckbox._height / 2 ), {
+        new Vector( options.width - 2 * options.padding - 30 ,velocityCheckbox.height / 2 ),
+        new Vector( options.width - 2 * options.padding  , velocityCheckbox.height / 2 ), {
           fill: 'rgb( 10, 170, 250 )'
         } );
       const velocitySVGContent = new SVGNode( {

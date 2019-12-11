@@ -77,8 +77,8 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Create a Node that represents the SVG content of the Spinner Node.
       const svgContent = new SVGNode( {
-        width: this._width,
-        height: this._height,
+        width: this.width,
+        height: this.height,
         left: -SCREEN_VIEW_X_MARGIN,
         top: -SCREEN_VIEW_Y_MARGIN
       } );

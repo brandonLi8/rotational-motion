@@ -38,6 +38,9 @@ define( require => {
   const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
+  // constants
+  const ANGULAR_VELOCITY_RANGE = new Vector( 0, Math.PI );
+
   class Spinner {
 
     /**
@@ -72,6 +75,9 @@ define( require => {
       // @public (read-only) angularVelocityProperty - Property of the angular velocity of the ciruclar motion
       //                                               in rad / sec
       this.angularVelocityProperty = new Property( options.initialAngularVelocity, { type: 'number' } );
+
+      // @public (read-only) vector - the range of the angular velocity
+      this.angularVelocityRange = ANGULAR_VELOCITY_RANGE;
 
       // @public (read-only) angularAccelerationProperty - Property of the angular acceleration of the ciruclar motion
       //                                                   in rad / sec / sec

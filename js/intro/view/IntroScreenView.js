@@ -81,19 +81,19 @@ define( require => {
 
       // //----------------------------------------------------------------------------------------
 
-      // // Create the Control Panel
-      // const controlPanel = new ControlPanel(
-      //   introModel.spinner,
-      //   introModel.isPlayingProperty,
-      //   introModel.linearVelocityVisibleProperty
-      // );
-      // // Relocate the Control Panel
-      // controlPanel._left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
-      // controlPanel._top = SCREEN_VIEW_Y_MARGIN;
+      // Create the Control Panel
+      const controlPanel = new ControlPanel(
+        introModel.spinner,
+        introModel.isPlayingProperty,
+        introModel.linearVelocityVisibleProperty
+      );
+      // Relocate the Control Panel
+      controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
+      controlPanel.top = SCREEN_VIEW_Y_MARGIN;
 
       // Render the contents in the correct z-layering.
       this.setChildren( [
-        // controlPanel,
+        controlPanel,
         timeControlBox,
         spinnerNode
       ] );
