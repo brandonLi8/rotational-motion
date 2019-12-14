@@ -51,9 +51,9 @@ define( require => {
 
       assert( ball instanceof IntroBall, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
-      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
-      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
-      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
+      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       //----------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ define( require => {
       //  - ball.accelerationProperty- update the acceleration vector's location to match the Ball's acceleration
       //
       // This is not needed to dispose as the Ball is never disposed and lasts for the entire sim.
-      const updateVectorMultilink = new Multilink( [ ball.velocityProperty, ball.accelerationProperty ], () => {
+      new Multilink( [ ball.velocityProperty, ball.accelerationProperty ], () => {
         this.updateBallNode( ball, modelViewTransform );
       } );
     }

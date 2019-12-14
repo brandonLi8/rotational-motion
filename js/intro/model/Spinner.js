@@ -112,7 +112,7 @@ define( require => {
 
       // Observe when the internal Properties of the Spinner changes and update the Ball's position.
       // Doesn't need to be disposed because the Spinner is never disposed and lasts for the entirety of the sim.
-      const updateBallMultilink = new Multilink( [ this.angleProperty, this.radiusProperty ], ( angle, radius ) => {
+      new Multilink( [ this.angleProperty, this.radiusProperty ], ( angle, radius ) => {
         // Update the ball's center location
         this.ball.center = new Vector( Math.cos( angle ) * radius, Math.sin( angle ) * radius );
       } );

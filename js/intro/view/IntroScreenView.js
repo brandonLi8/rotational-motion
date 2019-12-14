@@ -26,9 +26,7 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const TimeControlBox = require( 'SIM_CORE/scenery/buttons/TimeControlBox' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)

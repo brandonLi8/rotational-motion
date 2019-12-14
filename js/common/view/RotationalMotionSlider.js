@@ -16,18 +16,13 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const SliderNode = require( 'SIM_CORE/scenery/SliderNode' );
-  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
-  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
   class RotationalMotionSlider extends SVGNode {
 
@@ -88,7 +83,7 @@ define( require => {
       const endDrag = () => {
         playAtDragStart && isPlayingProperty.toggle();
         playAtDragStart = null;
-      }
+      };
 
       //----------------------------------------------------------------------------------------
       // Create the Number Display
@@ -142,7 +137,7 @@ define( require => {
       // Update the number display text when the Slider value changes
       sliderProperty.link( value => {
         numberDisplayText.setText(
-          `${ Util.toFixed( value, options.numberDisplayDecimalPlaces  ) } ${ options.numberDisplayUnit }` );
+          `${ Util.toFixed( value, options.numberDisplayDecimalPlaces ) } ${ options.numberDisplayUnit }` );
       } );
 
       this.setChildren( [

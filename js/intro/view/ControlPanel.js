@@ -14,16 +14,13 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const RotationalMotionSlider = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionSlider' );
-  const SliderNode = require( 'SIM_CORE/scenery/SliderNode' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
   const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
@@ -39,8 +36,8 @@ define( require => {
     constructor( spinner, isPlayingProperty, velocityVisibleProperty, options ) {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
-      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
-      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
+      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       //----------------------------------------------------------------------------------------
@@ -77,19 +74,6 @@ define( require => {
         fill: options.fill,
         strokeWidth: options.strokeWidth
       } );
-
-      //----------------------------------------------------------------------------------------
-      // Create The Drag listeners for when sliders are dragged to correctly pause and play the sim.
-
-      let playAtDragStart;
-      const startDrag = () => {
-        playAtDragStart = options.dragPauseProperty.value;
-        options.dragPauseProperty.value = false;
-      };
-      const endDrag = () => {
-        playAtDragStart && isPlayingProperty.toggle();
-        playAtDragStart = null;
-      }
 
       //----------------------------------------------------------------------------------------
       // Create a slider to change the Radius of the Spinner
@@ -134,7 +118,7 @@ define( require => {
       } );
 
       const velocityVector = new VectorNode(
-        new Vector( options.width - options.padding - 30 ,velocityCheckbox.height / 2 ),
+        new Vector( options.width - options.padding - 30, velocityCheckbox.height / 2 ),
         new Vector( options.width - options.padding, velocityCheckbox.height / 2 ), {
           fill: 'rgb( 10, 170, 250 )' // TODO color constants file
         } );

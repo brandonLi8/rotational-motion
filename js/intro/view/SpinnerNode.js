@@ -17,14 +17,10 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
-  const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
 
   // constants
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
@@ -51,9 +47,9 @@ define( require => {
 
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
-      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
-      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
-      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${isPlayingProperty}` );
+      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       // Defaults for options.
@@ -104,7 +100,7 @@ define( require => {
       const pin = new CircleNode( {
         radius: 2, // eye-balled
         fill: 'rgb( 100, 100, 100 )',
-        center: viewCenter,
+        center: viewCenter
       } );
 
       // Set the content of the svgContent node in the correct z-layering.
