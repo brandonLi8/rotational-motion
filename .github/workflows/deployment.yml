@@ -1,8 +1,8 @@
-name: Deploy
+name: deployment
 
 on:
   push:
-    branches:    
+    branches:
       - production
 
 jobs:
@@ -22,14 +22,14 @@ jobs:
     - run: npm install
 
     - name: Lint
-      run: grunt eslint --no-cache  
+      run: grunt eslint --no-cache
 
     - name: Deploy to Heroku
       env:
         HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
         HEROKU_APP_NAME: "your-app-name-here"
       if: github.ref == 'refs/heads/master' && job.status == 'success'
-      run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master       
+      run: git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master
 # Copyright © 2019 Brandon Li. All rights reserved.
 
 #====================================================================================================
