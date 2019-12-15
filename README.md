@@ -18,12 +18,14 @@
 #
 #===========================================================================-->
 
-# rotational-motion
+# Rotational Motion
+
+[![Actions Status](https://github.com/brandonLi8/rotational-motion/workflows/deployment/badge.svg)](https://github.com/brandonLi8/rotational-motion/actions)
 
 Rotational Motion is an HTML5 educational and interactive simulation that runs in the browser and explores the counterparts of linear motion in terms of rotational motion.
 
 ### Try it!
-<a href="" target="_blank">Visit the app.</a>
+<a href="https://rotational-motion.brandonwli.com" target="_blank">Visit the app.</a>
 
 <!-- Uncomment to add a screen shot:  -->
 <!-- <img src="" alt="Screenshot" style="width: 400px;"/></a> -->
@@ -31,14 +33,14 @@ Rotational Motion is an HTML5 educational and interactive simulation that runs i
 ### Quick Start
 (1) Clone the repository in a desired spot
 ```
-https://github.com/brandonLi8/rotational-motion.git
+git clone https://github.com/brandonLi8/rotational-motion.git
 ```
-(2) Start an http-server
+(2) Start the Express server
 ```
-http-server
+npm start
 ```
 
-(3) Open `http://localhost:path` (You will need to modify this URL based on your HTTP port and relative path.)
+(3) Open `http://localhost:300` (You might need to modify this URL based on your HTTP port and relative path.)
 
 ### Get Involved
 
