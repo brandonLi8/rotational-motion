@@ -37,7 +37,7 @@ jobs:
         node-version: '12.x'
 
     - name: npm stability             # ensure the stability of npm
-      - run: |
+      run: |
         npm prune -production=true    # prune - ensure a fresh copy of node_modules
         npm cache clean --f           # clear the cache to ensure validity of node_modules
         npm install                   # install dependencies
