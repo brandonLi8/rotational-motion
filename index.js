@@ -11,28 +11,34 @@ module.exports = ( () => {
 
   // modules
   const express = require( 'express' );
+  const path = require( 'path' );
+  const sslRedirect = require( 'heroku-ssl-redirect' );
 
   // constants
   const PORT = process.env.PORT || 3000;
+  const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+  const BUILD_DIRECTORY = '';
 
   //----------------------------------------------------------------------------------------
   // Create the website with express.
   const website = express();
 
   // Serve all files of the website with a __dirname reference.
-  website.use( express.static( __dirname ) );
+  website.use( express.static( path.join( __dirname, IS_PRODUCTION ? `${ BUILD_DIRECTORY }` : '' ) ) );
+  website.use( sslRedirect() );
 
   // Listen to the requests and log the results.
   website.listen( PORT, () => {
 
     print( 'Starting up server, serving', 33 );
-    println( ' ./', 34 );
+    println( IS_PRODUCTION ? ` ./${ BUILD_DIRECTORY }` : ' ./', 34 );
     println( 'Available on:', 33 );
     print( '  http://localhost:' );
     println( `${ PORT }`, 32 );
     println( '\nHit CTRL-C to stop the server' );
 
   } );
+
 
   //----------------------------------------------------------------------------------------
   // Helpers

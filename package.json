@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "heroku-ssl-redirect": "0.0.4",
     "requirejs": "^2.3.6",
     "sim-core": "0.0.0-dev.23"
   },
