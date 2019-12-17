@@ -25,7 +25,7 @@ module.exports = ( () => {
 
   // Serve all files of the website with a __dirname reference.
   website.use( express.static( path.join( __dirname, IS_PRODUCTION ? `${ BUILD_DIRECTORY }` : '' ) ) );
-  website.use( sslRedirect( [ 'production' ] ) );
+  website.use( sslRedirect( [ 'production' ], 301 ) );
 
   // Listen to the requests and log the results.
   website.listen( PORT, () => {
