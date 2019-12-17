@@ -12,7 +12,7 @@ module.exports = ( () => {
   // modules
   const express = require( 'express' );
   const path = require( 'path' );
-  const sslRedirect = require( 'heroku-ssl-redirect' );
+  const sslRedirect = require( 'heroku-ssl-redirect' ); // eslint-disable-line require-statement-match
 
   // constants
   const PORT = process.env.PORT || 3000;
