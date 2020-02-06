@@ -11,7 +11,7 @@ define( require => {
 
   // modules
   const IntroScreenView = require( 'ROTATIONAL_MOTION/intro/view/IntroScreenView' );
-  const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
+  // const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const Screen = require( 'SIM_CORE/Screen' );
 
   // constants
@@ -19,10 +19,7 @@ define( require => {
 
   class IntroScreen extends Screen {
 
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
+    constructor() {
 
       const options = {
         name: INTRO_SCREEN_NAME,
@@ -32,7 +29,7 @@ define( require => {
         }
       };
 
-      super( () => new IntroModel(), model => new IntroScreenView( model ), options );
+      super( () => new IntroScreenView(), options );
     }
   }
 
