@@ -16,13 +16,13 @@
     "start": "node index.js"
   },
   "devDependencies": {
-    "@brandonli8/grunt-config": "0.0.0-dev.14"
+    "@brandonli8/grunt-config": "0.0.0-dev.17"
   },
   "dependencies": {
     "express": "^4.17.1",
     "heroku-ssl-redirect": "0.0.4",
     "requirejs": "^2.3.6",
-    "sim-core": "0.0.0-dev.23"
+    "sim-core": "0.0.0-dev.40"
   },
   "bugs": {
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
