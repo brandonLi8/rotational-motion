@@ -15,7 +15,7 @@
 # Rotational Motion
 
 <!-- Badges go here. -->
-[![Actions Status](https:/hub.com/brandonLi8/rotational-motion.git/workflows/CI/badge.svg)](https:/hub.com/brandonLi8/rotational-motion.git/actions?query=workflow%3ACI)
+[![Actions Status](https://github.com/brandonLi8/rotational-motion.git/workflows/CI/badge.svg)](https://github.com/brandonLi8/rotational-motion.git/actions?query=workflow%3ACI)
 
 <!-- Description -->
 <blockquote align="left">
@@ -52,4 +52,4 @@ Contact me via <a href="mailto:brandon.li820@gmail.com" target="_blank"> email</
 Help improve **rotational-motion** by creating a <a href="https://github.com/brandonLi8/rotational-motion/issues" target="_blank">New Issue</a>.
 
 <!-- Copyright -->
-<sub>Copyright © Brandon Li. All Rights Reserved.&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;See the <a href="https:/hub.com/brandonLi8/rotational-motion.git/blob/master/LICENSE" target="_blank">LICENSE</a>.</sub>
+<sub>Copyright © Brandon Li. All Rights Reserved.&nbsp;&nbsp;<b>|</b>&nbsp;&nbsp;See the <a href="https://github.com/brandonLi8/rotational-motion.git/blob/master/LICENSE" target="_blank">LICENSE</a>.</sub>
