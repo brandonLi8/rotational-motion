@@ -52,26 +52,33 @@ define( require => {
       // @private {Spinner} - reference the spinner that was passed-in.
       this._spinner = spinner;
 
+      // Create vectors for the linear and acceleration Vector. Used to limit the number of new Vector instances of
+      // animations.
+      const velocity = Vector.ZERO.copy();
+      const acceleration = Vector.ZERO.copy();
+
       // @public (read-only) velocityProperty - Property of the linear (tangential) velocity of the center of mass of
       //                                        the Ball. Link lasts for the entire sim and is never disposed.
-      this.velocityProperty = new DerivedProperty( [
+      this.velocityVectorProperty = new DerivedProperty( [
         spinner.angularVelocityProperty,  // in radians per second
         spinner.radiusProperty            // in meters
       ], ( angularVelocity, radius ) => {
           // To calculate the velocity (in meters per second), multiply radius * omega.
           // For more details on this calculation, see https://en.wikipedia.org/wiki/Angular_velocity.
-          return angularVelocity * radius;
-        } );
+          const velocity = angularVelocity * radius;
+          return velocity.set( velocity, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
+      } );
 
       // @public (read-only) accelerationProperty - Property of the linear (tangential) acceleration of the center of
       //                                            mass of the Ball. Link lasts for the entire sim and never disposed.
-      this.accelerationProperty = new DerivedProperty( [
+      this.accelerationVectorProperty = new DerivedProperty( [
         spinner.angularAccelerationProperty,  // in radians per second per second
         spinner.radiusProperty                // in meters
       ], ( angularAcceleration, radius ) => {
           // To calculate the acceleration (in meters per second per second), multiply radius * alpha.
           // For more details on this calculation, see https://en.wikipedia.org/wiki/Angular_acceleration
-          return angularAcceleration * radius;
+          const acceleration = angularAcceleration * radius;
+          return acceleration.set( acceleration, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
       } );
     }
 
@@ -87,22 +94,6 @@ define( require => {
      * @param {Vector} position - the position of the Center of the Ball
      */
     dragTo( position ) { this._spinner.dragBallTo( position ); }
-
-    /**
-     * Gets the Ball's center of mass linear velocity, in meters per second.
-     * @public
-     *
-     * @returns {number} - in meters per second.
-     */
-    get velocity() { return this.velocityProperty.value; }
-
-    /**
-     * Gets the Ball's center of mass linear acceleration, in meters per second per second.
-     * @public
-     *
-     * @returns {number} - in meters per second per second.
-     */
-    get acceleration() { return this.accelerationProperty.value; }
   }
 
   return IntroBall;
