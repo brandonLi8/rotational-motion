@@ -1,4 +1,4 @@
-// Copyright © 2019 Brandon Li. All rights reserved.
+// Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
  * The 'Intro' screen. Conforms to the contract specified in sim-core/Screen.

@@ -1,4 +1,4 @@
-// Copyright © 2019 Brandon Li. All rights reserved.
+// Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
  * Spinner is the model that spins a Ball model object in circular motion. This is specific

@@ -1,4 +1,4 @@
-// Copyright © 2019 Brandon Li. All rights reserved.
+// Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
  * IntroBall is the Ball model specialization for a Ball in the 'intro' screen.
