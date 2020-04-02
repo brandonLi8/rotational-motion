@@ -1,14 +1,13 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * View for a Ball for the 'intro' screen.
+ * IntroBallNode is the Ball view specialization for a Ball in the 'intro' screen.
  *
  * Extends BallNode but adds the following functionality:
- *  1. Add a Linear Velocity Vector Node
- *  2. Add a Linear Acceleration Vector Node
+ *  1. Add a Linear tangential Velocity Arrow Node to represent the Vector.
+ *  2. Add a Linear tangential Acceleration Arrow Node to represent the Vector.
  *
- * IntroBalls are created at the start of the sim and are never disposed, so no dispose method is necessary.
- *
+ * IntroBallNodes are created at the start of the sim and are never disposed, so no dispose method is necessary.
  * @author Brandon Li <brandon.li820@gmail.com>
  */
 
@@ -22,18 +21,20 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Vector = require( 'SIM_CORE/util/Vector' );
   const VectorNode = require( 'SIM_CORE/scenery/VectorNode' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
 
   // constants
   const VELOCITY_SCALAR = RotationalMotionConstants.VELOCITY_SCALAR; // scalar of velocity Vectors
   const ACCELERATION_SCALAR = RotationalMotionConstants.ACCELERATION_SCALAR; // scalar of acceleration Vectors
+  // TODO, Right now there are the same Scalar. Can we just combine this to one constant VECTOR_SCALAR?
 
   class IntroBallNode extends BallNode {
 
     /**
      * @param {IntroBall} ball - the Ball model
+     * @param {Spinner} spinner - the spinner model
      * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
      * @param {Property.<boolean>} isPlayingProperty
      * @param {Property.<boolean>} velocityVisibleProperty
@@ -59,6 +60,9 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       options = {
+
+        // super-class options
+        fill: RotationalMotionColors.INTRO_BALL_FILL
         // TODO colors should be moved to a color constants file
         fill: 'green', // {string} - color of the ball. // TODO: In the future, we will need gradients!
 
