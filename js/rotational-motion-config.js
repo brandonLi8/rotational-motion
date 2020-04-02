@@ -13,11 +13,11 @@ require.config( {
 
   paths: {
 
-    // Sim Core plugins
+    // sim-core plugins
     image: '../node_modules/sim-core/src/core-internal/image-plugin',
     text: '../node_modules/sim-core/src/core-internal/text-plugin',
 
-    //----------------------------------------------------------------------------------------
+    // absolute paths
     SIM_CORE: '../node_modules/sim-core/src',
     REPOSITORY: '..',
     ROTATIONAL_MOTION: '.',
