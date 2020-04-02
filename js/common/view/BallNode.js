@@ -5,7 +5,7 @@
  * It is intended to be subclassed as its functionality differs for different screens.
  *
  * Primary responsibilities are:
- *  1. Create a Circle Node that represents the Ball
+ *  1. Create a Circle that represents the visual aspect of a Ball
  *  2. Update the Circle's center location when the Ball's position changes.
  *  3. Update the Circle's radius when the Ball's radius changes.
  *  4. If the model Ball is draggable, create a Drag listener for the Node.
@@ -20,12 +20,13 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Ball = require( 'ROTATIONAL_MOTION/common/model/Ball' );
-  const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
+  const Circle = require( 'SIM_CORE/scenery/Circle' );
+  const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
 
-  class BallNode extends SVGNode {
+  class BallNode extends Node {
 
     /**
      * @param {Ball} ball - the Ball model
@@ -35,16 +36,15 @@ define( require => {
      *                             the early portion of the constructor for details.
      */
     constructor( ball, modelViewTransform, options ) {
-
       assert( ball instanceof Ball, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
-      //----------------------------------------------------------------------------------------
-
       options = {
 
-        fill: 'white',            // {string} - color of the ball. // TODO: In the future, we will need gradients!
+        fill: 'white',            // {string|Gradient} - fill color of the ball.
+        stroke: 'black',          // {string} - border color of the ball.
+        strokeWidth: 1,           // {string} - stroke width of the ball.
         cursor: 'pointer',        // {string} - cursor of the ball.
 
         dragPauseProperty: null,  // {Property.<boolean>} - if provided AND the ball is draggable, this will set the
@@ -59,80 +59,62 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @protected {CircleNode} ballCircle - Circle Node that represents the Ball
-      this.ballCircle = new CircleNode( {
+      // @protected {Circle} Circle Node that represents the visual aspect of a Ball
+      this._ballCircle = new Circle( {
         fill: options.fill,
-        style: {
-          cursor: options.cursor
+        stroke: options.stroke,
+        strokeWidth: options.strokeWidth,
+        cursor: options.cursor
+      } );
+
+      // @private {function} Listener that updates the radius of the Ball Circle when the Ball's radius changes.
+      this._updateRadiusListener = radius => {
+        this._ballCircle.radius = modelViewTransform.modelToViewDeltaX( ball.radius );
+      };
+
+      // @private {function} Listener that updates the location of the Ball when the Ball's position changes.
+      this._updateCenterListener = center => {
+        this._ballCircle.center = modelViewTransform.modelToViewPoint( ball.center );
+      };
+
+      // Link the listeners of the BallNode to the BallModel. Unlinked in the dispose method.
+      this._ballCircle.radiusProperty.link( this._updateRadiusListener );
+      this._ballCircle.centerPositionProperty.link( this._updateCenterListener );
+
+      //----------------------------------------------------------------------------------------
+      let playingWhenDragStarted; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+
+      // @private {DragListener|null} - if the ball is draggable, create a Drag listener to allow the Ball
+      //                                to be dragged. The Ball's dragTo method will be invoked, passing the
+      //                                position to where the Ball would be dragged.
+      //                                Disposed in the dispose method
+      this._ballDragListener = !ball.isDraggable ? null : new DragListener( this, {
+        start: () => {
+          if ( options.dragPauseProperty ) {
+            playingWhenDragStarted = options.dragPauseProperty.value; // set the playingWhenDragStarted flag
+            options.dragPauseProperty.value = false; // pause when dragging
+          }
+        },
+        end: () => {
+          if ( options.dragPauseProperty ) {
+            playingWhenDragStarted && options.dragPauseProperty.set( true ); // play if it was playing before dragging
+            playingWhenDragStarted = null; // reset the playingWhenDragStarted flag
+          }
+        },
+        drag: displacement => {
+          ball.dragTo( ball.center.add( modelViewTransform.viewToModelDelta( displacement ) ) );
         }
       } );
-      this.addChild( this.ballCircle );
-
-      //----------------------------------------------------------------------------------------
-      // Create a multilink to update the Ball's appearance. Observe:
-      //  - ball.centerPositionProperty - update the circle's location to match the Ball's position.
-      //  - ball.radiusProperty - update the circle's radius to match the Ball's radius
-      //
-      // This should be disposed when the Ball Node is disposed.
-      // @private {Multilink} updateBallNodeMultilink
-      this.updateBallNodeMultilink = new Multilink( [ ball.centerPositionProperty, ball.radiusProperty ], () => {
-        this.updateBallNode( ball, modelViewTransform );
-      } );
-
-      //----------------------------------------------------------------------------------------
-      // Add a Drag listener if the Ball is draggable
-      // TODO: sim-core should refactored out a Drag listener that does this!
-      // Also, the drag listener should be referenced and unlinked in the dispose method.
-      if ( ball.isDraggable ) {
-        let playAtDragStart;
-        this.ballCircle.drag( {
-          start: () => {
-            if ( options.dragPauseProperty ) {
-              playAtDragStart = options.dragPauseProperty.value;
-              options.dragPauseProperty.value = false;
-            }
-          },
-          end: () => {
-            if ( options.dragPauseProperty ) {
-              playAtDragStart && options.dragPauseProperty.toggle();
-              playAtDragStart = null;
-            }
-          },
-          listener: ( displacement ) => {
-            const ballPosition = ball.center.copy().add( modelViewTransform.viewToModelDelta( displacement ) );
-            ball.dragTo( ballPosition );
-          }
-        } );
-      }
     }
 
     /**
-     * Updates the Ball node:
-     *  - Moves the Ball nodes center location to the correct location.
-     *  - Updates the circle's radius to match the Ball's radius
-     * @protected
-     *
-     * @param {Ball} ball - the Ball model
-     * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
-     */
-    updateBallNode( ball, modelViewTransform ) {
-      assert( ball instanceof Ball, `invalid ball: ${ ball }` );
-      assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
-
-      // 1. Update the Ball's radius
-      this.ballCircle.radius = modelViewTransform.modelToViewDeltaX( ball.radius );
-
-      // 2. Move the Ball Node's center location
-      this.center = modelViewTransform.modelToViewPoint( ball.center );
-      this.ballCircle.center = this.center;
-    }
-
-    /**
-     * Disposes the Ball node.
+     * Disposes the BallNode and its internal links.
      * @public
      */
     dispose() {
-      this.updateBallNodeMultilink.dispose();
+      this._ballCircle.radiusProperty.unlink( this._updateRadiusListener );
+      this._ballCircle.centerPositionProperty.unlink( this._updateCenterListener );
+      this._ballDragListener && this._ballDragListener.dispose();
     }
   }
 
