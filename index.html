@@ -1,22 +1,22 @@
-<!--—————————————————————————————————————————————————————————————————————————————*!
- * Copyright © 2019 Brandon Li. All rights reserved.
- * Rotational Motion {{VERSION}}
+<!-- Copyright © 2019-2020 Brandon Li. All rights reserved. -->
+
+<!--—————————————————————————————————————————————————————————————————————————*!
+ * Rotational Motion development.
  *
- * This simulation is licensed under the GNU General Public License Version 3.
- * The full text of the GPLv3 is available here:
- * https://www.gnu.org/licenses/gpl.html. Alternatively, see
- * https://github.com/brandonLi8/rotational-motion/blob/master/LICENSE.
+ * This application is licensed under the GPL-3.0. See the full text
+ * here: https://github.com/brandonLi8/rotational-motion/blob/master/LICENSE.
+ * Contact brandon.li820@gmail.com for questions regarding licensing.
  *
- * The simulation-specific source code can be accessed at
- * https://github.com/brandonLi8/rotational-motion. It is available for use and/or
- * modifications. However, if a user makes any changes whatsoever to the source code
- * of the software, then the changes must be made publicly available by the party
- * that makes the changes.
+ * The application-specific source code can be accessed at
+ * https://github.com/brandonLi8/rotational-motion.git. Help improve
+ * rotational-motion by creating a new issue:
+ * https://github.com/brandonLi8/rotational-motion/issues
  *
- * Thank you for visiting the simulation!
+ * Thank you for visiting!
  *
  * @author Brandon Li <brandon.li820@gmail.com>
-!*——————————————————————————————————————————————————————————————————————————————-->
+!*——————————————————————————————————————————————————————————————————————————-->
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -32,7 +32,6 @@
     gtag( 'js', new Date() );
     gtag( 'config', 'UA-152885910-1' );
   </script>
-
   <!--—————————————————————————————————————————————————————————————————————————————*!
    * Meta Data
   !*——————————————————————————————————————————————————————————————————————————————-->
@@ -43,7 +42,7 @@
   <meta name="keywords" content="Rotation, rotational-motion, Rotational Motion"/>
   <meta name="author" content="Brandon Li, brandon.li820@gmail.com"/>
   <meta name="subject" content="Rotational Motion">
-  <meta name="copyright" content="Copyright © 2019 Brandon Li. All rights reserved.">
+  <meta name="copyright" content="Copyright © Brandon Li. All rights reserved.">
   <meta name="description" content="Rotational Motion is an HTML5 educational and interactive simulation that runs in the browser and explores the counterparts of linear motion in terms of rotational motion."/>
 
   <!-- Open Graph Protocol Meta Tags -->
@@ -72,10 +71,10 @@
 <script type="text/javascript">
 
   // Loads a synchronously-executed asynchronously-downloaded script tag, with
-  // optional data-main parameter.
-  // See http://www.html5rocks.com/en/tutorials/speed/script-loading/ for more about
-  // script loading. It helps to load all of the scripts with this method, so they
-  // are treated the same (and placed in the correct execution order)
+  // optional data-main parameter. See
+  // http://www.html5rocks.com/en/tutorials/speed/script-loading/ for more about
+  // script loading. It helps to load all of the scripts with this method, so
+  // they are treated the same (and placed in the correct execution order).
   const loadURL = ( preloadURL, main ) => {
     const script = document.createElement( 'script' );
     if ( typeof main === 'string' ) {
@@ -87,6 +86,7 @@
     document.head.appendChild( script );
   };
 
+  // Load the requirejs config file.
   loadURL( './node_modules/requirejs/require.js', 'js/rotational-motion-config.js' );
 </script>
 </body>
