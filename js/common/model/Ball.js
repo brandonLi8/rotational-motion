@@ -7,9 +7,7 @@
  * Primary responsibilities are:
  *  1. position Property to track the position of the Ball's center.
  *  2. radius Property to track the inner radius of the Ball.
- *  3. Abstract step method. This is done because the step functionality differs for different screens (rotates about
- *     its center in the Rolling screen but rotates around a point outside the ball in the Intro screen).
- *  4. Abstract dragTo method (called when the Ball is dragged). This is done because
+ *  3. Abstract dragTo method (called when the Ball is dragged). This is done for performance benefits and because
  *     dragging and its bounds differs for different screens. See sub-classes for more documentation.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
@@ -62,18 +60,10 @@ define( require => {
 
     /**
      * @abstract
-     * Steps the Ball by one time step. This functionality differs for different screens and is, thus, abstract.
-     * See sub-classes for specific documentation..
-     * @public
-     *
-     * @param {number} dt - time in seconds
-     */
-    step( dt ) { assert( false, 'abstract step class must be overridden' ); }
-
-    /**
-     * @abstract
-     * Called when the Ball is dragged ONLY if this.isDraggable is true. This is done because
-     * dragging bounds differs for different screens.
+     * Called when the Ball is dragged ONLY if this.isDraggable is true. This is done because:
+     *  1. A single dragTo method that changes the location of the Ball when dragged is faster than changing
+     *     the location twice to account for bounds restraints.
+     *  2. Dragging bounds differs for different screens.
      * @public
      *
      * @param {Vector} position - the position of the Center of the Ball to move the Ball to.

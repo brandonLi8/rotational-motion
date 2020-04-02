@@ -87,7 +87,7 @@ define( require => {
       // @private {DragListener|null} - if the ball is draggable, create a Drag listener to allow the Ball
       //                                to be dragged. The Ball's dragTo method will be invoked, passing the
       //                                position to where the Ball would be dragged.
-      //                                Disposed in the dispose method
+      //                                Disposed in the dispose method.
       this._ballDragListener = !ball.isDraggable ? null : new DragListener( this, {
         start: () => {
           if ( options.dragPauseProperty ) {

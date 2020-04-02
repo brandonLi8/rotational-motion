@@ -5,11 +5,10 @@
  *
  * Extends Ball but adds the following functionality:
  *    - Velocity Derived Property to track the LINEAR velocity of the center of mass.
- *    - Acceleration Derived Property to track the LINEAR acceleration of the center of mass, only if
- *      the given spinner is NOT uniform circular motion.
+ *    - Acceleration Derived Property to track the LINEAR acceleration of the center of mass.
  *    - Implements a Stepper such that the Ball spins around the model origin. Communicates
  *      back to the Spinner the change in radians at each step.
- *    - Drag method and implements a Drag method to move the Ball and communicates with the Spinner.
+ *    - Drag method to move the Ball in any position in the Spinner's range and communicates with the Spinner.
  *
  * IntroBalls are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
@@ -28,27 +27,25 @@ define( require => {
   class IntroBall extends Ball {
 
     /**
-     * @param {Vector} initialCenterPosition - starting center position for the Ball
      * @param {Spinner} spinner - the spinner model
+     * @param {Vector} initialCenterPosition - starting center position for the Ball
      * @param {Object} [options] - key-value pairs that control simple ball properties. Some options are specific
      *                             to this class while others are specific to the super class. See the early portion of
      *                             the constructor for details.
      */
-    constructor( initialCenterPosition, spinner, options ) {
+    constructor( spinner, initialCenterPosition, options ) {
 
       options = {
 
-        isDraggable: true,           // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
-                                     //             override the dragTo() abstract method.
-
-        startingRadius: RotationalMotionConstants.INTRO_BALL_RADIUS,
+        isDraggable: true,  // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
+                            //             override the dragTo() abstract method.
 
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
       };
 
-      super( initialCenterPosition, options );
+      super( initialCenterPosition, RotationalMotionConstants.INTRO_BALL_RADIUS, options );
 
       //----------------------------------------------------------------------------------------
 
