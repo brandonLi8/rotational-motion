@@ -83,27 +83,23 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Updates the velocity arrow's tip when the Ball's velocity changes.
-      // Doesn't need to be unlinked since IntroBalls are never disposed.
-      ball.velocityVectorProperty.link( velocityVector => {
-        const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
-        this._velocityArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledVelocity ) );
-      } );
+      // Updates the velocity arrow when the Ball's velocity changes or when the Ball's center position changes.
+      // Doesn't need to be disposed since IntroBalls are never disposed.
+      new Multilink( [ ball.velocityVectorProperty, ball.centerPositionProperty ],
+        ( velocityVector, center ) => {
+          const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
+          this._velocityArrow.tail = modelViewTransform.modelToViewPoint( center );
+          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledVelocity ) );
+        } );
 
-      // Updates the acceleration arrow's tip when the Ball's acceleration changes.
-      // Doesn't need to be unlinked since IntroBalls are never disposed.
-      ball.accelerationVectorProperty.link( accelerationVector => {
-        const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
-        this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledAcceleration ) );
-      } );
-
-      // Updates the tail of both the acceleration and velocity arrow's when the Ball's center position changes.
-      // Doesn't need to be unlinked since IntroBalls are never disposed.
-      ball.centerPositionProperty.link( center => {
-        const ballCenterLocation = modelViewTransform.modelToViewPoint( center );
-        this._accelerationArrow.tail = ballCenterLocation;
-        this._velocityArrow.tail = ballCenterLocation;
-      } );
+      // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
+      // Doesn't need to be disposed since IntroBalls are never disposed.
+      new Multilink( [ ball.accelerationVectorProperty, ball.centerPositionProperty ],
+        ( accelerationVector, center ) => {
+          const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
+          this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( center );
+          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledAcceleration ) );
+        } );
 
       // Observe when the Vector Visibility Properties change and update the visibility of the Arrows.
       // Links don't have to be unlinked since Intro Ball's are never disposed.
