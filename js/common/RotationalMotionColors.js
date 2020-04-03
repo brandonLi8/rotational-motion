@@ -11,6 +11,18 @@ define( require => {
 
   const RotationalMotionColors = {
 
+    // Colors for the pin circle in the center of the Spinner in the intro screen.
+    SPINNER_PIN_COLORS: {
+      fill: 'rgb( 100, 100, 100 )',
+      stroke: 'black',
+      strokeWidth: 0.2
+    },
+
+    // Colors for the string that provides the tension of the Spinner in the intro screen.
+    SPINNER_STRING_COLORS: {
+      stroke: 'black',
+      strokeWidth: 2
+    },
 
     // Colors for tangential velocity vectors of Ball's in the intro screen.
     LINEAR_VELOCITY_VECTOR_COLORS: {
