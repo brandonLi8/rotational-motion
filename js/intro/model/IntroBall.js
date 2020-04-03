@@ -23,6 +23,7 @@ define( require => {
   const Ball = require( 'ROTATIONAL_MOTION/common/model/Ball' );
   const DerivedProperty = require( 'SIM_CORE/util/DerivedProperty' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class IntroBall extends Ball {
 

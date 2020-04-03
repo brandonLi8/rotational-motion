@@ -69,12 +69,12 @@ define( require => {
 
       // @private {function} Listener that updates the radius of the Ball Circle when the Ball's radius changes.
       this._updateRadiusListener = radius => {
-        this._ballCircle.radius = modelViewTransform.modelToViewDeltaX( ball.radius );
+        this._ballCircle.radius = modelViewTransform.modelToViewDeltaX( radius );
       };
 
       // @private {function} Listener that updates the location of the Ball when the Ball's position changes.
       this._updateCenterListener = center => {
-        this._ballCircle.center = modelViewTransform.modelToViewPoint( ball.center );
+        this._ballCircle.center = modelViewTransform.modelToViewPoint( center );
       };
 
       // Link the listeners of the BallNode to the BallModel. Unlinked in the dispose method.
