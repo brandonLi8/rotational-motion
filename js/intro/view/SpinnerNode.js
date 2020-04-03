@@ -29,7 +29,7 @@ define( require => {
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
-  const PIN_RADIUS = 2;
+  const PIN_RADIUS = 2; // eye-balled
 
   class SpinnerNode extends Node {
 
@@ -59,24 +59,8 @@ define( require => {
       // Get the origin in terms of view coordinates
       const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
 
-      // The string Line, to be set later.
-      const string = new Line( viewOrigin, Vector.ZERO, {
-        stroke: 'black',
-        strokeWidth: 2
-      } );
-
-      // The pin at the center, which is the center of the circular motion (and the origin of the Spinner)
-      const pin = new Circle( {
-        radius: 2, // eye-balled
-        center: viewOrigin,
-        ...RotationalMotionColors.SPINNER_PIN_COLORS
-      } );
-
-      // Get the origin in terms of view coordinates
-      const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
-
       // Create the string Line, to be set later.
-      const string = new Line( 0, 0, 0, 0 { ...RotationalMotionColors.SPINNER_STRING_COLORS } );
+      const string = Line.withPoints( viewOrigin, viewOrigin, { ...RotationalMotionColors.SPINNER_STRING_COLORS } );
 
       // Create the pin at the center of the Spinner. It's location never changes.
       const pin = new Circle( PIN_RADIUS, { center: viewOrigin, ...ROTATIONAL_MOTION.SPINNER_PIN_COLORS } );
