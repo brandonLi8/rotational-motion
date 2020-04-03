@@ -53,11 +53,6 @@ define( require => {
       // @private {Spinner} - reference the spinner that was passed-in.
       this._spinner = spinner;
 
-      // Create vectors for the linear and acceleration Vector. Used to limit the number of new Vector instances of
-      // animations.
-      const velocity = Vector.ZERO.copy();
-      const acceleration = Vector.ZERO.copy();
-
       // @public (read-only) velocityProperty - Property of the linear (tangential) velocity of the center of mass of
       //                                        the Ball. Link lasts for the entire sim and is never disposed.
       this.velocityVectorProperty = new DerivedProperty( [
@@ -67,7 +62,7 @@ define( require => {
           // To calculate the velocity (in meters per second), multiply radius * omega.
           // For more details on this calculation, see https://en.wikipedia.org/wiki/Angular_velocity.
           const velocity = angularVelocity * radius;
-          return velocity.set( velocity, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
+          return new Vector( velocity, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
       } );
 
       // @public (read-only) accelerationProperty - Property of the linear (tangential) acceleration of the center of
@@ -79,7 +74,7 @@ define( require => {
           // To calculate the acceleration (in meters per second per second), multiply radius * alpha.
           // For more details on this calculation, see https://en.wikipedia.org/wiki/Angular_acceleration
           const acceleration = angularAcceleration * radius;
-          return acceleration.set( acceleration, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
+          return new Vector( acceleration, 0 ).rotate( spinner.angle + Math.PI / 2 ); // Rotate 90 for tangential.
       } );
     }
 
