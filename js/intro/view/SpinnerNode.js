@@ -1,7 +1,14 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * View for the spinning circle that Spins the Ball view in a ciruclar motion path.
+ * SpinnerNode is the corresponding view for the Spinner model, in the 'intro' screen.
+ *
+ * SpinnerNode is responsible for displaying:
+ *  - A pin circle, which is the center of the circular motion (and the origin of the Spinner)
+ *  - A string line, which is responsible for the tension of the circular motion.
+ *  - The IntroBallNode, which is rotated around the in circle.
+ *
+ * SpinnerNodes are created at the start of the Sim and are never disposed, so all links are left as is.
  *
  * @author Brandon Li
  */
@@ -11,20 +18,18 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const CircleNode = require( 'SIM_CORE/scenery/CircleNode' );
+  const Circle = require( 'SIM_CORE/scenery/Circle' );
   const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
-  const LineNode = require( 'SIM_CORE/scenery/LineNode' );
+  const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
-  const SVGNode = require( 'SIM_CORE/scenery/SVGNode' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
-  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
-  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
+  const PIN_RADIUS = 2;
 
   class SpinnerNode extends Node {
 
@@ -34,17 +39,14 @@ define( require => {
      * @param {Property.<boolean>} isPlayingProperty
      * @param {Property.<boolean>} velocityVisibleProperty
      * @param {Property.<boolean>} accelerationVisibleProperty
-     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.
      */
     constructor(
       spinner,
       modelViewTransform,
       isPlayingProperty,
       velocityVisibleProperty,
-      accelerationVisibleProperty,
-      options
+      accelerationVisibleProperty
     ) {
-
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
@@ -52,63 +54,46 @@ define( require => {
       assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
-      // Defaults for options.
-      const defaults = {
-
-        center: modelViewTransform.modelToViewPoint( Vector.ZERO ),
-        width: modelViewTransform.modelToViewDeltaX( spinner.spinnerAreaBounds.width ),
-        height: -modelViewTransform.modelToViewDeltaY( spinner.spinnerAreaBounds.height )
-      };
-
-      // Rewrite options so that it overrides the defaults.
-      options = { ...defaults, ...options };
-
-      super( options );
-
       //----------------------------------------------------------------------------------------
-      // Create a Node that represents the SVG content of the Spinner Node.
-      const svgContent = new SVGNode( {
-        width: this.width,
-        height: this.height,
-        left: -SCREEN_VIEW_X_MARGIN,
-        top: -SCREEN_VIEW_Y_MARGIN
+
+      // Get the origin in terms of view coordinates
+      const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
+
+      // The string Line, to be set later.
+      const string = new Line( viewOrigin, Vector.ZERO, {
+        stroke: 'black',
+        strokeWidth: 2
       } );
 
-      this.addChild( svgContent );
+      // The pin at the center, which is the center of the circular motion (and the origin of the Spinner)
+      const pin = new Circle( {
+        radius: 2, // eye-balled
+        center: viewOrigin,
+        ...RotationalMotionColors.SPINNER_PIN_COLORS
+      } );
 
-      //----------------------------------------------------------------------------------------
-      // Create the Ball Node for the Intro screen
+      // Get the origin in terms of view coordinates
+      const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
+
+      // Create the string Line, to be set later.
+      const string = new Line( 0, 0, 0, 0 { ...RotationalMotionColors.SPINNER_STRING_COLORS } );
+
+      // Create the pin at the center of the Spinner. It's location never changes.
+      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, ...ROTATIONAL_MOTION.SPINNER_PIN_COLORS } );
+
+      // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
         modelViewTransform,
         isPlayingProperty,
         velocityVisibleProperty,
         accelerationVisibleProperty );
 
-      //----------------------------------------------------------------------------------------
-      // Create the Line and the Dot at the Center of the Play Area
-
-      // Get the origin in terms of view coordinates
-      const viewCenter = modelViewTransform.modelToViewPoint( Vector.ZERO );
-
-      // The string Line, to be set later.
-      const string = new LineNode( viewCenter, Vector.ZERO, {
-        stroke: 'black',
-        strokeWidth: 2
-      } );
-
-      // The pin at the center
-      const pin = new CircleNode( {
-        radius: 2, // eye-balled
-        fill: 'rgb( 100, 100, 100 )',
-        center: viewCenter
-      } );
-
-      // Set the content of the svgContent node in the correct z-layering.
-      svgContent.setChildren( [ string, pin, ballNode ] );
+      super( { children: [ string, pin, ballNode ] } );
 
       //----------------------------------------------------------------------------------------
-      // Observe when the Ball's center changes and update the string to match.
-      // Doesn't need to be unlinked as the Spinner is never disposed.
+
+      // Observe when the Ball's center changes and update the string to match. Doesn't need to be unlinked as the
+      // Spinner is never disposed.
       spinner.ball.centerPositionProperty.link( centerPosition => {
         string.end = modelViewTransform.modelToViewPoint( centerPosition );
       } );
