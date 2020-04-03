@@ -1,4 +1,4 @@
-// Copyright 2019, University of Colorado Boulder
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * Enumeration of the different 'types' of circular motion in the 'Intro' screen.
