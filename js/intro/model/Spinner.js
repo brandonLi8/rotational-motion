@@ -5,6 +5,7 @@
  * to only the 'intro' screen.
  *
  * Primary responsibilities are:
+ *    - Keep track of a play-pause Property
  *    - Keep track of the Angular Velocity (in rad/sec) in a Property
  *    - Keep track of the Angular Acceleration (in rad/sec/sec) in a Property
  *    - Keep track of the Circular Motion radius in a Property
@@ -43,6 +44,8 @@ define( require => {
   // constants
   const ANGULAR_VELOCITY_RANGE = new Ragne( 0, RotationalMotionConstants.INTRO_MAX_VELOCITY );
   const ANGULAR_ACCELERATION_RANGE = new Ragne( 0, Math.PI / 4 );
+  const DEFAULT_IS_PLAYING = false;
+  const STEP_TIME = 0.03; // Time passed when the step forward or backward button is pressed.
 
   class Spinner {
 
@@ -70,6 +73,9 @@ define( require => {
       };
 
       //----------------------------------------------------------------------------------------
+
+      // @public (read-only) - indicates if the spinner is playing or paused
+      this.isPlayingProperty = new Property( DEFAULT_IS_PLAYING, { type: 'boolean' } );
 
       // @public {Enum.Member.<CircularMotionTypes>} (read-only) - reference the type of circular motion passed-in
       this.type = circularMotionType;
@@ -120,17 +126,36 @@ define( require => {
      * This method changes the Ball's position such that it matches the correct angular acceleration,
      * angular velocity, and radius.
      *
-     * NOTE: this assumes that this is only called when the sim is playing.
      * @public
      *
      * @param {number} dt - time in seconds
      */
     step( dt ) {
+      if ( !this.isPlayingProperty.value ) return; // if paused, do nothing.
+
       // Calculate the change in angle (in radians) based on the average angular velocity (rad/sec)
       // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
       // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
       // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
       this.angle += this.angularVelocity * dt + 0.5 * this.angularAcceleration * dt * dt;
+    }
+
+    /**
+     * Moves this Spinner back one time step.
+     * @public
+     */
+    stepBackwards() {
+      this.isPlayingProperty.value = false;
+      this.spinner.step( -STEP_TIME );
+    }
+
+    /**
+     * Moves this Spinner forward one time step.
+     * @public
+     */
+    stepForwards() {
+      this.isPlayingProperty.value = false;
+      this.spinner.step( STEP_TIME );
     }
 
     /**
