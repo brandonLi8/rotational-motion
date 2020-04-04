@@ -6,7 +6,7 @@
  * SpinnerNode is responsible for displaying:
  *  - A pin circle, which is the center of the circular motion (and the origin of the Spinner)
  *  - A string line, which is responsible for the tension of the circular motion.
- *  - The IntroBallNode, which is rotated around the in circle.
+ *  - The IntroBallNode, which is rotated around the circle.
  *
  * SpinnerNodes are created at the start of the Sim and are never disposed, so all links are left as is.
  *
@@ -36,22 +36,19 @@ define( require => {
     /**
      * @param {Spinner} spinner
      * @param {ModelViewTransform} modelViewTransform
-     * @param {Property.<boolean>} isPlayingProperty
      * @param {Property.<boolean>} velocityVisibleProperty
      * @param {Property.<boolean>} accelerationVisibleProperty
      */
     constructor(
       spinner,
       modelViewTransform,
-      isPlayingProperty,
       velocityVisibleProperty,
       accelerationVisibleProperty
     ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
-      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
-      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
-      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
+      assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       //----------------------------------------------------------------------------------------
@@ -68,7 +65,7 @@ define( require => {
       // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
         modelViewTransform,
-        isPlayingProperty,
+        spinner.isPlayingProperty,
         velocityVisibleProperty,
         accelerationVisibleProperty );
 

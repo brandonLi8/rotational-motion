@@ -4,12 +4,11 @@
  * Top Level view for the 'Intro' screen.
  *
  * Responsible for:
- *   - Creating a ModelViewTransform
- *   - Displaying a Spinner Node
- *   - Displaying a Time Control Box
- *   - Displaying the Control Panel
- *
- * TODO: the bottom 2 should be refactored to Scene Node when scenes are implemented.
+ *   - Creating a common ModelViewTransform
+ *   - Displaying both Spinner Nodes
+ *   - Displaying TimeControlBoxes for both Spinners
+ *   - Displaying the Control Panels for both Spinners
+ *   - Displaying a common reset-all button
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -20,19 +19,20 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const ControlPanel = require( 'ROTATIONAL_MOTION/intro/view/ControlPanel' );
+  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
+  const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
-  const TimeControlBox = require( 'SIM_CORE/scenery/buttons/TimeControlBox' );
 
   // constants
   const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
-  const TIME_CONTROL_BOX_MARGIN = 10; // margin between the time control box and the play area (view)
+  const DEFAULT_VECTOR_IS_VISIBLE = false;
+  const DEFAULT_CIRCULAR_MOTION_TYPE = CircularMotionTypes.UNIFORM;
 
   class IntroScreenView extends ScreenView {
 
@@ -40,7 +40,6 @@ define( require => {
      * @param {IntroModel} introModel
      */
     constructor( introModel ) {
-
       assert( introModel instanceof IntroModel, `invalid introModel: ${ introModel }` );
 
       super();
@@ -57,46 +56,64 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Create a Spinner Node
-      const spinnerNode = new SpinnerNode(
-        introModel.spinner,
-        modelViewTransform,
-        introModel.isPlayingProperty,
-        introModel.linearVelocityVisibleProperty,
-        introModel.linearAccelerationVisibleProperty
-      );
+      // @public (read-only) - indicates if the linear velocity Vectors are visible or not for both Spinners.
+      this.linearVelocityVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
 
-      // Create a Time Control Box
-      const timeControlBox = new TimeControlBox( {
-        playProperty: introModel.isPlayingProperty,
-        backwardsListener: () => {
-          introModel.stepBackwards();
-        },
-        forwardsListener: () => {
-          introModel.stepForwards();
-        },
-        top: playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN
+      // @public (read-only) - indicates if the linear acceleration Vectors are visible or not for both Spinners.
+      this.linearAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
+
+      // @public (read-only) - indicates the current circular motion type.
+      this.circularMotionTypeProperty = new Property( DEFAULT_CIRCULAR_MOTION_TYPE, {
+        validValues: CircularMotionTypes.MEMBERS
       } );
-      timeControlBox.left = playAreaViewBounds.centerX - timeControlBox.width / 2;
 
       //----------------------------------------------------------------------------------------
 
-      // Create the Control Panel
-      const controlPanel = new ControlPanel(
-        introModel.spinner,
-        introModel.isPlayingProperty,
-        introModel.linearVelocityVisibleProperty
-      );
+      // Create a 'scene' for each circular motion type and render it in a single Node.
+      CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
+        const spinnerNode = new SpinnerNode(
+          introModel.spinner,
+          modelViewTransform,
+          this.linearVelocityVisibleProperty,
+          this.linearAccelerationVisibleProperty
+        );
 
-      controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
-      controlPanel.top = SCREEN_VIEW_Y_MARGIN;
+        // // Create a Time Control Box
+        // const timeControlBox = new TimeControlBox( {
+        //   playProperty: introModel.isPlayingProperty,
+        //   backwardsListener: () => {
+        //     introModel.stepBackwards();
+        //   },
+        //   forwardsListener: () => {
+        //     introModel.stepForwards();
+        //   },
+        //   top: playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN
+        // } );
+        // timeControlBox.left = playAreaViewBounds.centerX - timeControlBox.width / 2;
 
-      // Render the contents in the correct z-layering.
-      this.setChildren( [
-        controlPanel,
-        timeControlBox,
-        spinnerNode
-      ] );
+        //----------------------------------------------------------------------------------------
+
+        // Create the Control Panel
+        // const controlPanel = new ControlPanel(
+        //   introModel.spinner,
+        //   introModel.isPlayingProperty,
+        //   introModel.linearVelocityVisibleProperty
+        // );
+
+        // controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
+        // controlPanel.top = SCREEN_VIEW_Y_MARGIN;
+
+        // Create a wrapper scene Node.
+        const scene = new Node().setChildren( [ spinnerNode ] );
+
+        // Adjust visibility based on the circularMotionTypeProperty
+        this.circularMotionTypeProperty.link( () => {
+          scene.visible = this.circularMotionTypeProperty.value === circularMotionType;
+        } );
+
+        // Add the scene to the screen view.
+        this.addChild( scene );
+      } );
     }
   }
 

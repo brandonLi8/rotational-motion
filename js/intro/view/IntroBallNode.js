@@ -51,8 +51,8 @@ define( require => {
       assert( ball instanceof IntroBall, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
-      assert( velocityVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
-      assert( accelerationVisibleProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
+      assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
+      assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
