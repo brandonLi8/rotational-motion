@@ -3,11 +3,7 @@
 /**
  * Top Level model for the 'Intro' screen.
  *
- * Responsible for:
- *   - Keeping track of the Simulation's state.
- *   - Creating Visibility Properties for:
- *        - Linear Velocity Vectors
- * TODO: this functionality should be split into a scene model, and this class should just make 2 scenes.
+ * Instantiates a 'uniform' and a 'non-uniform' Spinner. See intro/model/CircularMotionTypes for more documentation.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -17,69 +13,50 @@ define( require => {
 
   // modules
   const Bounds = require( 'SIM_CORE/util/Bounds' );
+  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
 
   // constants
   const SPINNER_BOUNDS_SIZE = 2 + 2 * RotationalMotionConstants.INTRO_BALL_RADIUS; // in meters
-  const STEP_TIME = 0.03;
-  const DEFAULT_IS_PLAYING = false;
-  const DEFAULT_VECTOR_IS_VISIBLE = false;
 
   class IntroModel {
 
     constructor() {
 
-      // @public (read-only) - the spinner play area bounds
+      // @public (read-only) - the spinner play area bounds, in model coordinates (meters)
       this.spinnerAreaBounds = new Bounds(
         -SPINNER_BOUNDS_SIZE / 2,
         -SPINNER_BOUNDS_SIZE / 2,
         SPINNER_BOUNDS_SIZE / 2,
         SPINNER_BOUNDS_SIZE / 2 );
 
-      // @public (read-only) - indicates if the sim is playing or paused
-      this.isPlayingProperty = new Property( DEFAULT_IS_PLAYING, { type: 'boolean' } );
+      // @public (read-only) {Spinner} - the uniform Spinner
+      this.uniformSpinner = new Spinner( CircularMotionTypes.UNIFORM, this.spinnerAreaBounds );
 
-      // @public (read-only) - indicates if the linear velocity Vector is visible or not.
-      this.linearVelocityVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, {
-        type: 'boolean'
-      } );
-
-      // @public (read-only) - indicates if the linear acceleration Vector is visible or not.
-      this.linearAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, {
-        type: 'boolean'
-      } );
-
-      // @public (read-only)
-      this.spinner = new Spinner( this.spinnerAreaBounds );
+      // @public (read-only) {Spinner} - the non-uniform Spinner
+      this.nonUniformSpinner = new Spinner( CircularMotionTypes.NON_UNIFORM, this.spinnerAreaBounds );
     }
 
     /**
-     * Moves this model by one time step.
-     * @param {number} dt - time in seconds
+     * Moves the intro screen by one time step.
      * @public
+     *
+     * @param {number} dt - time in seconds
      */
     step( dt ) {
-      this.isPlayingProperty.value && this.spinner.step( dt );
+      this.uniformSpinner.step( dt );
+      this.nonUniformSpinner.step( dt );
     }
 
     /**
-     * Moves this model back one time step.
+     * Resets the intro screen.
      * @public
      */
-    stepBackwards() {
-      this.isPlayingProperty.value = false;
-      this.spinner.step( -STEP_TIME );
-    }
-
-    /**
-     * Moves this model forward one time step.
-     * @public
-     */
-    stepForwards() {
-      this.isPlayingProperty.value = false;
-      this.spinner.step( STEP_TIME );
+    reset() {
+      this.uniformSpinner.reset();
+      this.nonUniformSpinner.reset();
     }
   }
 
