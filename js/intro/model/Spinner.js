@@ -122,6 +122,19 @@ define( require => {
     }
 
     /**
+     * Resets the Spinner and its properties to what it was when initialized. Called when the reset button of the
+     * scene is pressed.
+     * @public
+     */
+    reset() {
+      this.angularVelocityProperty.reset();
+      this.angularAccelerationProperty.reset();
+      this.radiusProperty.reset();
+      this._angleProperty.reset();
+      this.ball.reset();
+    }
+
+    /**
      * Steps the Spinner by one time step. For this screen, the Ball spins around the origin (circular motion).
      * This method changes the Ball's position such that it matches the correct angular acceleration,
      * angular velocity, and radius.
@@ -137,7 +150,7 @@ define( require => {
       // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
       // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
       // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
-      this.angle += this.angularVelocity * dt + 0.5 * this.angularAcceleration * dt * dt;
+      this.angle += this.angularVelocityProperty.value * dt + 0.5 * this.angularAccelerationProperty.value * dt * dt;
     }
 
     /**
@@ -159,19 +172,6 @@ define( require => {
     }
 
     /**
-     * Resets the Spinner and its properties to what it was when initialized. Called when the reset button of the
-     * scene is pressed.
-     * @public
-     */
-    reset() {
-      this.angularVelocityProperty.reset();
-      this.angularAccelerationProperty.reset();
-      this.radiusProperty.reset();
-      this._angleProperty.reset();
-      this.ball.reset();
-    }
-
-    /**
      * Called when the Ball is dragged. Attempts to position the Ball at the new Radius but constrains its bounds to
      * remain in the radius range. Angles and radii are updated.
      * @public
@@ -186,24 +186,6 @@ define( require => {
       // Update the radius, restraining it in the radius range.
       this.radius = Util.clamp( position.magnitude, this.radiusRange.x, this.radiusRange.y );
     }
-
-    //----------------------------------------------------------------------------------------
-    // Convenience Methods
-    //----------------------------------------------------------------------------------------
-
-    /**
-     * Gets the Spinner's angularVelocity, in radians per second.
-     * @public
-     * @returns {number} - in radians per second.
-     */
-    get angularVelocity() { return this.angularVelocityProperty.value; }
-
-    /**
-     * Gets the Spinner's angularAcceleration, in radians per second.
-     * @public
-     * @returns {number} - in radians per second.
-     */
-    get angularAcceleration() { return this.angularAccelerationProperty.value; }
 
     /**
      * Gets the Spinner's radius, in meters.
