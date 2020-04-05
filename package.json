@@ -15,9 +15,10 @@
   "scripts": {
     "start": "npx http-server -a localhost"
   },
-  "devDependencies": {},
-  "dependencies": {
+  "devDependencies": {
     "@brandonli8/grunt-config": "0.0.0-dev.19",
+  },
+  "dependencies": {
     "requirejs": "^2.3.6",
     "sim-core": "0.0.0-dev.40"
   },
@@ -25,9 +26,5 @@
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
     "email": "brandon.li820@gmail.com"
   },
-  "homepage": "",
-  "grunt-config": "./node_modules/@brandonli8/grunt-config",
-  "eslintConfig": {
-    "extends": "./node_modules/@brandonli8/grunt-config/eslint/.eslintrc.js"
-  }
+  "homepage": "https://rotational-motion.brandonwli.com/"
 }
