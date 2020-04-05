@@ -7,8 +7,6 @@
  * Primary responsibilities are:
  *  1. position Property to track the position of the Ball's center.
  *  2. radius Property to track the inner radius of the Ball.
- *  3. Abstract dragTo method (called when the Ball is dragged). This is done for performance benefits and because
- *     dragging and its bounds differs for different screens. See sub-classes for more documentation.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -21,7 +19,6 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
-  // @abstract
   class Ball {
 
     /**
@@ -32,21 +29,6 @@ define( require => {
     constructor( initialCenterPosition, initialRadius, options ) {
       assert( initialCenterPosition instanceof Vector, `invalid initialCenterPosition: ${ initialCenterPosition }` );
       assert( typeof initialRadius === 'number', `invalid initialRadius: ${ initialRadius }` );
-      assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
-
-      options = {
-
-        isDraggable: false, // {boolean} - indicates if the user can drag this Ball. If true, sub classes must
-                            //             override the dragTo() abstract method.
-
-        // rewrite options such that it overrides the defaults above if provided.
-        ...options
-      };
-
-      //----------------------------------------------------------------------------------------
-
-      // @public (read-only) isDraggable - indicates if the user can drag this Ball. See `dragTo()` abstract method.
-      this.isDraggable = options.isDraggable;
 
       // @public (read-only) centerPositionProperty - Property of the position of the Ball's center
       this.centerPositionProperty = new Property( initialCenterPosition, { type: Vector } );
@@ -59,18 +41,6 @@ define( require => {
     }
 
     /**
-     * @abstract
-     * Called when the Ball is dragged ONLY if this.isDraggable is true. This is done because:
-     *  1. A single dragTo method that changes the location of the Ball when dragged is faster than changing
-     *     the location twice to account for bounds restraints.
-     *  2. Dragging bounds differs for different screens.
-     * @public
-     *
-     * @param {Vector} position - the position of the Center of the Ball to move the Ball to.
-     */
-    dragTo( position ) { assert( false, 'abstract dragTo class must be overridden' ); }
-
-    /**
      * Resets the Ball and its Properties.
      * @public
      */
@@ -78,10 +48,6 @@ define( require => {
       this.centerPositionProperty.reset();
       this.radiusProperty.reset();
     }
-
-    //----------------------------------------------------------------------------------------
-    // Convenience Methods
-    //----------------------------------------------------------------------------------------
 
     /**
      * Gets the position of the Ball's center, in meter coordinates.
