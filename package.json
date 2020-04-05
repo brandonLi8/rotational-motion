@@ -16,7 +16,7 @@
     "start": "npx http-server -a localhost"
   },
   "devDependencies": {
-    "@brandonli8/grunt-config": "0.0.0-dev.19",
+    "@brandonli8/grunt-config": "0.0.0-dev.19"
   },
   "dependencies": {
     "requirejs": "^2.3.6",

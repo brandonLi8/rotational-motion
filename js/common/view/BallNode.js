@@ -24,7 +24,6 @@ define( require => {
   const Ball = require( 'ROTATIONAL_MOTION/common/model/Ball' );
   const Circle = require( 'SIM_CORE/scenery/Circle' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
-  const Multilink = require( 'SIM_CORE/util/Multilink' );
   const Node = require( 'SIM_CORE/scenery/Node' );
 
   class BallNode extends Node {
