@@ -48,7 +48,7 @@ define( require => {
 
       // Ensure that the angular velocity is set correctly
       assert.enabled && this.angularVelocityProperty.link( angularVelocity => {
-        assert( this.angularVelocityRange.includes( angularVelocity ) );
+        assert( this.angularVelocityRange.contains( angularVelocity ) );
       } );
     }
   }

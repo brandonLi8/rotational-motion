@@ -89,7 +89,7 @@ define( require => {
 
       // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
       // Doesn't need to be disposed since IntroBalls are never disposed.
-      new Multilink( [ ball.tangentialVccelerationVectorProperty, ball.centerPositionProperty ],
+      new Multilink( [ ball.tangentialAccelerationVectorProperty, ball.centerPositionProperty ],
         ( accelerationVector, center ) => {
           const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
           this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( center );

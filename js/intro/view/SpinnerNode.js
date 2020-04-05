@@ -19,6 +19,7 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
+  const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Circle = require( 'SIM_CORE/scenery/Circle' );
   const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
@@ -27,6 +28,7 @@ define( require => {
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
@@ -48,7 +50,7 @@ define( require => {
       velocityVisibleProperty,
       accelerationVisibleProperty
     ) {
-      assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
+      assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
 

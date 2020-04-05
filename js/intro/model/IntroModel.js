@@ -16,27 +16,18 @@ define( require => {
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
-  const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
-
-  // constants
-  const SPINNER_BOUNDS_SIZE = 2 + 2 * RotationalMotionConstants.INTRO_BALL_RADIUS; // in meters
+  const UniformSpinner = require( 'ROTATIONAL_MOTION/intro/model/UniformSpinner' );
+  const nonUniformSpinner = require( 'ROTATIONAL_MOTION/intro/model/nonUniformSpinner' );
 
   class IntroModel {
 
     constructor() {
 
-      // @public (read-only) - the spinner play area bounds, in model coordinates (meters)
-      this.spinnerAreaBounds = new Bounds(
-        -SPINNER_BOUNDS_SIZE / 2,
-        -SPINNER_BOUNDS_SIZE / 2,
-        SPINNER_BOUNDS_SIZE / 2,
-        SPINNER_BOUNDS_SIZE / 2 );
-
       // @public (read-only) {Spinner} - the uniform Spinner
-      this.uniformSpinner = new Spinner( CircularMotionTypes.UNIFORM, this.spinnerAreaBounds );
+      this.uniformSpinner = new UniformSpinner();
 
       // @public (read-only) {Spinner} - the non-uniform Spinner
-      this.nonUniformSpinner = new Spinner( CircularMotionTypes.NON_UNIFORM, this.spinnerAreaBounds );
+      this.nonUniformSpinner = new nonUniformSpinner();
     }
 
     /**

@@ -72,9 +72,6 @@ define( require => {
       // @public {Enum.Member.<CircularMotionTypes>} (read-only) - reference the type of circular motion passed-in
       this.type = circularMotionType;
 
-      // @public (read-only) spinnerAreaBounds - reference to the spinnerAreaBounds that was passed-in
-      this.spinnerAreaBounds = spinnerAreaBounds;
-
       // @public (read-only) angularVelocityProperty - angular velocity of the circular motion in rad / sec
       this.angularVelocityProperty = new Property( initialAngularVelocity, { type: 'number' } );
 

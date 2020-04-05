@@ -60,12 +60,12 @@ define( require => {
       // @public {Property} (read-only) - the initial angular velocity of the accelerating circular motion
       this.initialAngularVelocityProperty = new Property( options.initialAngularVelocity, {
         type: 'number',
-        isValidValue: value => this.initialAngularVelocityRange.includes( value )
+        isValidValue: value => this.initialAngularVelocityRange.contains( value )
       } );
 
       // Ensure that the angular acceleration is set correctly
       assert.enabled && this.angularAccelerationProperty.link( angularAcceleration => {
-        assert( this.angularAccelerationRange.includes( angularAcceleration ) );
+        assert( this.angularAccelerationRange.contains( angularAcceleration ) );
       } );
     }
   }
