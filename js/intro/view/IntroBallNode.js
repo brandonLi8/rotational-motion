@@ -36,7 +36,6 @@ define( require => {
     /**
      * @param {IntroBall} ball - the Ball model
      * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
-     * @param {Property.<boolean>} isPlayingProperty
      * @param {Property.<boolean>} velocityVisibleProperty
      * @param {Property.<boolean>} accelerationVisibleProperty
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.
@@ -44,14 +43,12 @@ define( require => {
     constructor(
       ball,
       modelViewTransform,
-      isPlayingProperty,
       velocityVisibleProperty,
       accelerationVisibleProperty,
       options
     ) {
       assert( ball instanceof IntroBall, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
-      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
@@ -60,7 +57,6 @@ define( require => {
 
         // super-class options
         fill: RotationalMotionColors.INTRO_BALL_FILL,
-        dragPauseProperty: isPlayingProperty,
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options

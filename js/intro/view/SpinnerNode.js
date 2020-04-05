@@ -7,6 +7,7 @@
  *  - A pin circle, which is the center of the circular motion (and the origin of the Spinner)
  *  - A string line, which is responsible for the tension of the circular motion.
  *  - The IntroBallNode, which is rotated around the circle.
+ *  - Handling drag requests of the Ball and communicating that to the Spinner.
  *
  * SpinnerNodes are created at the start of the Sim and are never disposed, so all links are left as is.
  *
@@ -19,6 +20,7 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Circle = require( 'SIM_CORE/scenery/Circle' );
+  const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
@@ -64,7 +66,6 @@ define( require => {
       // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
         modelViewTransform,
-        spinner.isPlayingProperty,
         velocityVisibleProperty,
         accelerationVisibleProperty );
 
@@ -77,6 +78,26 @@ define( require => {
       spinner.ball.centerPositionProperty.link( centerPosition => {
         string.start = pin.center;
         string.end = modelViewTransform.modelToViewPoint( centerPosition );
+      } );
+
+
+      //----------------------------------------------------------------------------------------
+
+      let playingWhenDragStarted; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+
+      // Create a Drag listener to allow the Ball to be dragged. Never disposed as SpinnerNodes are never disposed.
+      new DragListener( this, {
+        start: () => {
+          playingWhenDragStarted = spinner.isPlayingProperty.value; // set the playingWhenDragStarted flag
+          spinner.isPlayingProperty.value = false; // pause when dragging
+        },
+        end: () => {
+          playingWhenDragStarted && spinner.isPlayingProperty.set( true ); // play if it was playing before dragging
+          playingWhenDragStarted = null; // reset the playingWhenDragStarted flag
+        },
+        drag: displacement => {
+          spinner.dragBallTo( spinner.ball.center.add( modelViewTransform.viewToModelDelta( displacement ) ) );
+        }
       } );
     }
   }
