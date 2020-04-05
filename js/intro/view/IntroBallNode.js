@@ -8,6 +8,7 @@
  *  2. Add a Linear tangential Acceleration Arrow Node to represent the Vector.
  *
  * IntroBallNodes are created at the start of the sim and are never disposed, so no dispose method is necessary.
+ *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
 
@@ -83,7 +84,7 @@ define( require => {
 
       // Updates the velocity arrow when the Ball's velocity changes or when the Ball's center position changes.
       // Doesn't need to be disposed since IntroBalls are never disposed.
-      new Multilink( [ ball.velocityVectorProperty, ball.centerPositionProperty ],
+      new Multilink( [ ball.tangentialVelocityVectorProperty, ball.centerPositionProperty ],
         ( velocityVector, center ) => {
           const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
           this._velocityArrow.tail = modelViewTransform.modelToViewPoint( center );
@@ -92,7 +93,7 @@ define( require => {
 
       // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
       // Doesn't need to be disposed since IntroBalls are never disposed.
-      new Multilink( [ ball.accelerationVectorProperty, ball.centerPositionProperty ],
+      new Multilink( [ ball.tangentialVccelerationVectorProperty, ball.centerPositionProperty ],
         ( accelerationVector, center ) => {
           const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
           this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( center );
