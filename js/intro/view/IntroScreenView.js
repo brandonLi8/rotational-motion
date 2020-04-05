@@ -22,6 +22,7 @@ define( require => {
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
@@ -72,7 +73,7 @@ define( require => {
       // Create a 'scene' for each circular motion type and render it in a single Node.
       CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
         const spinnerNode = new SpinnerNode(
-          introModel.spinner,
+          circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
           modelViewTransform,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty

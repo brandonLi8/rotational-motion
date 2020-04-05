@@ -49,7 +49,6 @@ define( require => {
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
-      assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       //----------------------------------------------------------------------------------------
 
@@ -60,7 +59,7 @@ define( require => {
       const string = Line.withPoints( viewOrigin, viewOrigin, { ...RotationalMotionColors.SPINNER_STRING_COLORS } );
 
       // Create the pin at the center of the Spinner. It's location never changes.
-      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, ...ROTATIONAL_MOTION.SPINNER_PIN_COLORS } );
+      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, ...RotationalMotionColors.SPINNER_PIN_COLORS } );
 
       // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
@@ -76,6 +75,7 @@ define( require => {
       // Observe when the Ball's center changes and update the string to match. Doesn't need to be unlinked as the
       // Spinner is never disposed.
       spinner.ball.centerPositionProperty.link( centerPosition => {
+        string.start = pin.center;
         string.end = modelViewTransform.modelToViewPoint( centerPosition );
       } );
     }

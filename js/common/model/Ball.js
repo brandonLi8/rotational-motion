@@ -52,7 +52,7 @@ define( require => {
       this.centerPositionProperty = new Property( initialCenterPosition, { type: Vector } );
 
       // @public (read-only) radiusProperty - Property of the radius of the Ball.
-      this.radiusProperty = new Property( options.startingRadius, {
+      this.radiusProperty = new Property( initialRadius, {
         type: 'number',
         isValidValue: value => value >= 0 // radius must be greater than 0
       } );

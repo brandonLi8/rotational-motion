@@ -42,8 +42,8 @@ define( require => {
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
-  const ANGULAR_VELOCITY_RANGE = new Ragne( 0, RotationalMotionConstants.INTRO_MAX_VELOCITY );
-  const ANGULAR_ACCELERATION_RANGE = new Ragne( 0, Math.PI / 4 );
+  const ANGULAR_VELOCITY_RANGE = new Range( 0, RotationalMotionConstants.INTRO_MAX_VELOCITY );
+  const ANGULAR_ACCELERATION_RANGE = new Range( 0, Math.PI / 4 );
   const DEFAULT_IS_PLAYING = false;
   const STEP_TIME = 0.03; // Time passed when the step forward or backward button is pressed.
 
@@ -83,6 +83,8 @@ define( require => {
       // @public (read-only) spinnerAreaBounds - reference to the spinnerAreaBounds that was passed-in
       this.spinnerAreaBounds = spinnerAreaBounds;
 
+      //----------------------------------------------------------------------------------------
+
       // @public (read-only) angularVelocityProperty - angular velocity of the ciruclar motion in rad / sec
       this.angularVelocityProperty = new Property( options.initialAngularVelocity, { type: 'number' } );
 
@@ -95,13 +97,9 @@ define( require => {
       // @public (read-only) {Range} - the range of the angular acceleration.
       this.angularAccelerationRange = ANGULAR_ACCELERATION_RANGE;
 
-      // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
-      this.ball = new IntroBall( this, Vector.ZERO );
-
-      //----------------------------------------------------------------------------------------
-
       // @public (read-only) {Range} radiusRange - the range of the circular motion radius, in meters.
-      this.radiusRange = new Range( options.minRadius, spinnerAreaBounds.width / 2 - ball.radius );
+      this.radiusRange = new Range( options.minRadius,
+        spinnerAreaBounds.width / 2 - RotationalMotionConstants.INTRO_BALL_RADIUS );
 
       // @public (read-only) radiusProperty - Property of the radius of the ciruclar motion, in meters.
       this.radiusProperty = new Property( options.initialRadius, {
@@ -109,10 +107,13 @@ define( require => {
         isValidValue: value => this.radiusRange.contains( value )
       } );
 
-      //----------------------------------------------------------------------------------------
-
       // @private {Property} - Property of the current angle the Circular motion is in, in radians.
       this._angleProperty = new Property( options.initialAngle, { type: 'number' } );
+
+      //----------------------------------------------------------------------------------------
+
+      // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
+      this.ball = new IntroBall( this, Vector.ZERO );
 
       // Observe when the internal Properties of the Spinner changes and update the Ball's position.
       // Doesn't need to be disposed because the Spinner is never disposed and lasts for the entirety of the sim.

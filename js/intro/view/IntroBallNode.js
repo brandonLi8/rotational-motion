@@ -69,9 +69,6 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Spinner} - reference the spinner that was passed-in.
-      this._spinner = spinner;
-
       // @private {Arrow} - represents the Ball's LINEAR velocity, initialized at 0 for now.
       this._velocityArrow = new Arrow( 0, 0, 0, 0, { ...RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS } );
 

@@ -59,13 +59,17 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
+      // @private {Ball} reference the ball that was passed in
+      this._ball = ball;
+
       // @protected {Circle} Circle Node that represents the visual aspect of a Ball
-      this._ballCircle = new Circle( {
+      this._ballCircle = new Circle( 0, {
         fill: options.fill,
         stroke: options.stroke,
         strokeWidth: options.strokeWidth,
         cursor: options.cursor
       } );
+      this.addChild( this._ballCircle );
 
       // @private {function} Listener that updates the radius of the Ball Circle when the Ball's radius changes.
       this._updateRadiusListener = radius => {
@@ -78,8 +82,8 @@ define( require => {
       };
 
       // Link the listeners of the BallNode to the BallModel. Unlinked in the dispose method.
-      this._ballCircle.radiusProperty.link( this._updateRadiusListener );
-      this._ballCircle.centerPositionProperty.link( this._updateCenterListener );
+      ball.radiusProperty.link( this._updateRadiusListener );
+      ball.centerPositionProperty.link( this._updateCenterListener );
 
       //----------------------------------------------------------------------------------------
       let playingWhenDragStarted; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
@@ -112,8 +116,8 @@ define( require => {
      * @public
      */
     dispose() {
-      this._ballCircle.radiusProperty.unlink( this._updateRadiusListener );
-      this._ballCircle.centerPositionProperty.unlink( this._updateCenterListener );
+      this._ball.radiusProperty.unlink( this._updateRadiusListener );
+      this._ball.centerPositionProperty.unlink( this._updateCenterListener );
       this._ballDragListener && this._ballDragListener.dispose();
     }
   }
