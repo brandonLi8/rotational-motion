@@ -29,7 +29,6 @@ define( require => {
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
 
   // constants
-  const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
   const DEFAULT_VECTOR_IS_VISIBLE = false;
@@ -44,18 +43,6 @@ define( require => {
       assert( introModel instanceof IntroModel, `invalid introModel: ${ introModel }` );
 
       super();
-
-      //----------------------------------------------------------------------------------------
-
-      // Create the modelViewTransform by building the play area view bounds
-      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
-        SCREEN_VIEW_Y_MARGIN,
-        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.width,
-        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * introModel.spinnerAreaBounds.height );
-
-      const modelViewTransform = new ModelViewTransform( introModel.spinnerAreaBounds, playAreaViewBounds );
-
-      //----------------------------------------------------------------------------------------
 
       // @public (read-only) - indicates if the linear velocity Vectors are visible or not for both Spinners.
       this.linearVelocityVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
@@ -74,7 +61,6 @@ define( require => {
       CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
         const spinnerNode = new SpinnerNode(
           circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
-          modelViewTransform,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty
         );
