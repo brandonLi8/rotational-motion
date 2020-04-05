@@ -1,17 +1,17 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * Spinner is the model that spins a Ball model object in circular motion. This is specific
- * to only the 'intro' screen.
+ * Spinner is the super-type model that spins a IntroBall model object in circular motion. This is specific to only the
+ * 'intro' screen.
  *
  * Primary responsibilities are:
  *    - Keep track of a play-pause Property
  *    - Keep track of the Angular Velocity (in rad/sec) in a Property
  *    - Keep track of the Angular Acceleration (in rad/sec/sec) in a Property
  *    - Keep track of the Circular Motion radius in a Property
- *    - Move the circle in a circular motion based on the Properties above and handle a drag request.
+ *    - Move the circle in a circular motion based on the Properties above and handle a drag request of Balls.
  *
- * Generally, there are two types of Spinners:
+ * Generally, there are two sub-types of Spinners:
  *   (1) Uniform: Uniform Circular Motion is defined such that the angular acceleration (alpha)
  *                is always 0. The Angular Velocity and the ball's linear velocity can change, however.
  *
@@ -41,32 +41,27 @@ define( require => {
   const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
-  // constants
-  const ANGULAR_VELOCITY_RANGE = new Range( 0, RotationalMotionConstants.INTRO_MAX_VELOCITY );
-  const ANGULAR_ACCELERATION_RANGE = new Range( 0, Math.PI / 4 );
-  const DEFAULT_IS_PLAYING = false;
-  const STEP_TIME = 0.03; // Time passed when the step forward or backward button is pressed.
-
   class Spinner {
 
     /**
      * @param {Enum.Member.<CircularMotionTypes>} circularMotionType - See CircularMotionTypes for more documentation.
-     * @param {Bounds} spinnerAreaBounds - the 'play' bounds of the spinner
+     * @param {number} initialAngularVelocity - the starting omega value, in rad / sec
+     * @param {number} initialAngularAcceleration - the starting alpha value, in rad / sec / sec
      * @param {Object} [options] - key-value pairs that control the spinner's behavior.
      */
-    constructor( circularMotionType, spinnerAreaBounds, options ) {
-      assert( spinnerAreaBounds instanceof Bounds, `invalid spinnerAreaBounds: ${ spinnerAreaBounds }` );
+    constructor( circularMotionType, initialAngularVelocity, initialAngularAcceleration, options ) {
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
       assert( CircularMotionTypes.includes( circularMotionType ),
         `invalid circularMotionType: ${ circularMotionType }` );
 
       options = {
 
-        initialAngularVelocity: Math.PI / 4,         // {number} - the starting omega value, in rad / sec
-        initialAngularAcceleration: 0,               // {number} - the starting alpha value, in rad / sec / sec
-        initialRadius: spinnerAreaBounds.width / 4,  // {number} - the initial radius of the circular motion, in meters
-        minRadius: 0.1,                              // {number} - the min radius of the circular motion, in meters
-        initialAngle: 0,                             // {number} - the starting angle of the ciruclar motion, in radians
+        isPlayingInitially: false,          // {boolean} - if the Spinner is initially spinning the Ball
+        stepTime: 0.03,                     // {number} - the time elapsed on each forward or backward step
+        initialAngle: 0,                    // {number} - the initial angle of the circular motion, in radians
+        initialRadius: 0.5,                 // {number} - the initial radius of the circular motion, in meters
+        ballRadius: 0.05,                   // {number} - the radius of the ball, in meters
+        radiusRange: new Range( 0.1, 1 ),   // {Range} - the range of the radius of the circular motion, in meters
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -74,50 +69,51 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @public (read-only) - indicates if the spinner is playing or paused
-      this.isPlayingProperty = new Property( DEFAULT_IS_PLAYING, { type: 'boolean' } );
-
       // @public {Enum.Member.<CircularMotionTypes>} (read-only) - reference the type of circular motion passed-in
       this.type = circularMotionType;
 
       // @public (read-only) spinnerAreaBounds - reference to the spinnerAreaBounds that was passed-in
       this.spinnerAreaBounds = spinnerAreaBounds;
 
+      // @public (read-only) angularVelocityProperty - angular velocity of the circular motion in rad / sec
+      this.angularVelocityProperty = new Property( initialAngularVelocity, { type: 'number' } );
+
+      // @public (read-only) angularAccelerationProperty - angular acceleration of the circular motion in rad / sec^2
+      this.angularAccelerationProperty = new Property( initialAngularAcceleration, { type: 'number' } );
+
       //----------------------------------------------------------------------------------------
 
-      // @public (read-only) angularVelocityProperty - angular velocity of the ciruclar motion in rad / sec
-      this.angularVelocityProperty = new Property( options.initialAngularVelocity, { type: 'number' } );
+      // @public (read-only) - indicates if the spinner is playing or paused
+      this.isPlayingProperty = new Property( options.isPlayingInitially, { type: 'boolean' } );
 
-      // @public (read-only) {Range} - the range of the angular velocity.
-      this.angularVelocityRange = ANGULAR_VELOCITY_RANGE;
-
-      // @public (read-only) angularAccelerationProperty - angular acceleration of the ciruclar motion in rad / sec^2
-      this.angularAccelerationProperty = new Property( options.initialAngularAcceleration, { type: 'number' } );
-
-      // @public (read-only) {Range} - the range of the angular acceleration.
-      this.angularAccelerationRange = ANGULAR_ACCELERATION_RANGE;
-
-      // @public (read-only) {Range} radiusRange - the range of the circular motion radius, in meters.
-      this.radiusRange = new Range( options.minRadius,
-        spinnerAreaBounds.width / 2 - RotationalMotionConstants.INTRO_BALL_RADIUS );
-
-      // @public (read-only) radiusProperty - Property of the radius of the ciruclar motion, in meters.
+      // @public (read-only) radiusProperty - Property of the radius of the circular motion, in meters.
       this.radiusProperty = new Property( options.initialRadius, {
         type: 'number',
-        isValidValue: value => this.radiusRange.contains( value )
+        isValidValue: value => options.radiusRange.contains( value )
       } );
 
-      // @private {Property} - Property of the current angle the Circular motion is in, in radians.
-      this._angleProperty = new Property( options.initialAngle, { type: 'number' } );
+      // @private {Property} - Property of the current angle the circular motion is in, in radians.
+      this.angleProperty = new Property( options.initialAngle, { type: 'number' } );
+
+      // @public (read-only) {*} - reference options that were passed-in. See options declaration for type documentation
+      this.radiusRange = options.radiusRange;
+      this.stepTime = options.stepTime;
+
+      // @public (read-only) {Bounds} - the bounds of the entire spinner-play area.
+      this.playBounds = new Bounds( -this.radiusRange.length - options.ballRadius / 2,
+        -this.radiusRange.length - options.ballRadius / 2,
+        this.radiusRange.length + options.ballRadius / 2,
+        this.radiusRange.length + options.ballRadius / 2, );
 
       //----------------------------------------------------------------------------------------
 
       // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
-      this.ball = new IntroBall( this, Vector.ZERO );
+      this.ball = new IntroBall( Vector.ZERO, options.ballRadius, this.angularVelocityProperty,
+                                 this.angularAccelerationProperty, this.radiusProperty, this.angleProperty );
 
       // Observe when the internal Properties of the Spinner changes and update the Ball's position.
       // Doesn't need to be disposed because the Spinner is never disposed and lasts for the entirety of the sim.
-      new Multilink( [ this._angleProperty, this.radiusProperty ], ( angle, radius ) => {
+      new Multilink( [ this.angleProperty, this.radiusProperty ], ( angle, radius ) => {
         this.ball.center = new Vector( radius, 0 ).setAngle( angle );
       } );
     }
@@ -131,7 +127,8 @@ define( require => {
       this.angularVelocityProperty.reset();
       this.angularAccelerationProperty.reset();
       this.radiusProperty.reset();
-      this._angleProperty.reset();
+      this.angleProperty.reset();
+      this.isPlayingProperty.reset();
       this.ball.reset();
     }
 
@@ -160,7 +157,7 @@ define( require => {
      */
     stepBackwards() {
       this.isPlayingProperty.value = false;
-      this.spinner.step( -STEP_TIME );
+      this.spinner.step( -this.stepTime );
     }
 
     /**
@@ -169,7 +166,7 @@ define( require => {
      */
     stepForwards() {
       this.isPlayingProperty.value = false;
-      this.spinner.step( STEP_TIME );
+      this.spinner.step( this.stepTime );
     }
 
     /**
@@ -207,14 +204,14 @@ define( require => {
      * @public
      * @returns {number} - in radians.
      */
-    get angle() { return this._angleProperty.value; }
+    get angle() { return this.angleProperty.value; }
 
     /**
      * Sets the Spinner's angle, in radians.
      * @public
      * @param {number} angle - in radians.
      */
-    set angle( angle ) { this._angleProperty.value = angle; }
+    set angle( angle ) { this.angleProperty.value = angle; }
   }
 
   return Spinner;
