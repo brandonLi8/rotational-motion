@@ -32,27 +32,35 @@ define( require => {
 
   // constants
   const PIN_RADIUS = 2; // eye-balled
+  const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)
+  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
+  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
   class SpinnerNode extends Node {
 
     /**
      * @param {Spinner} spinner
-     * @param {ModelViewTransform} modelViewTransform
      * @param {Property.<boolean>} velocityVisibleProperty
      * @param {Property.<boolean>} accelerationVisibleProperty
      */
     constructor(
       spinner,
-      modelViewTransform,
       velocityVisibleProperty,
       accelerationVisibleProperty
     ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ modelViewTransform }` );
-      assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
 
       //----------------------------------------------------------------------------------------
+
+      // Create the modelViewTransform by building the play area view bounds
+      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
+        SCREEN_VIEW_Y_MARGIN,
+        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * spinner.playBounds.width,
+        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * spinner.playBounds.height );
+
+      const modelViewTransform = new ModelViewTransform( spinner.playBounds, playAreaViewBounds );
 
       // Get the origin in terms of view coordinates
       const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
@@ -79,7 +87,6 @@ define( require => {
         string.start = pin.center;
         string.end = modelViewTransform.modelToViewPoint( centerPosition );
       } );
-
 
       //----------------------------------------------------------------------------------------
 
