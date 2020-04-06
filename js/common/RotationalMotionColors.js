@@ -24,6 +24,13 @@ define( require => {
       strokeWidth: 2
     },
 
+    // Colors for the ball of the Spinner in the intro screen.
+    SPINNER_BALL_COLORS: {
+      fill: 'green',
+      stroke: 'black',
+      strokeWidth: 0.5
+    },
+
     // Colors for tangential velocity vectors of Ball's in the intro screen.
     LINEAR_VELOCITY_VECTOR_COLORS: {
       fill: 'rgb( 10, 170, 250 )',

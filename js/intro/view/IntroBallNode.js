@@ -53,15 +53,6 @@ define( require => {
       assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
-      options = {
-
-        // super-class options
-        fill: RotationalMotionColors.INTRO_BALL_FILL,
-
-        // rewrite options such that it overrides the defaults above if provided.
-        ...options
-      };
-
       super( ball, modelViewTransform, options );
 
       //----------------------------------------------------------------------------------------

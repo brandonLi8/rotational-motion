@@ -77,7 +77,8 @@ define( require => {
       const ballNode = new IntroBallNode( spinner.ball,
         modelViewTransform,
         velocityVisibleProperty,
-        accelerationVisibleProperty );
+        accelerationVisibleProperty,
+        { ...RotationalMotionColors.SPINNER_BALL_COLORS } );
 
       super( { children: [ string, pin, ballNode ] } );
 
