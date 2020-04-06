@@ -84,7 +84,7 @@ define( require => {
         ( velocityVector, center ) => {
           const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
           this._velocityArrow.tail = modelViewTransform.modelToViewPoint( center );
-          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledVelocity ) );
+          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( scaledVelocity.add( center ) );
         } );
 
       // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
@@ -93,7 +93,7 @@ define( require => {
         ( accelerationVector, center ) => {
           const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
           this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( center );
-          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( ball.center.add( scaledAcceleration ) );
+          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAcceleration.add( center ) );
         } );
 
       // Observe when the Vector Visibility Properties change and update the visibility of the Arrows.

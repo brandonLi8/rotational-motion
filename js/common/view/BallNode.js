@@ -66,16 +66,16 @@ define( require => {
       // Add the ball-circle as a child of this Node.
       this.addChild( ballCircle );
 
-      // Listen to when the when the Ball's radius changes and update the radius of the ballCircle. Links are left
-      // as-is since BallNode subtypes are not meant to be disposed.
-      ball.radiusProperty.link( radius => {
-        ballCircle.radius = modelViewTransform.modelToViewDeltaX( radius );
-      } );
-
       // Listen to when the when the Ball's position changes and update the position of the ballCircle. Links are left
       // as-is since BallNode subtypes are not meant to be disposed.
       ball.centerPositionProperty.link( center => {
         ballCircle.center = modelViewTransform.modelToViewPoint( center );
+      } );
+
+      // Listen to when the when the Ball's radius changes and update the radius of the ballCircle. Links are left
+      // as-is since BallNode subtypes are not meant to be disposed.
+      ball.radiusProperty.link( radius => {
+        ballCircle.radius = modelViewTransform.modelToViewDeltaX( radius );
       } );
     }
   }
