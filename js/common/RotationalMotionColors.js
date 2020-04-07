@@ -49,7 +49,7 @@ define( require => {
     PANEL_COLORS: {
       stroke: 'rgb( 100, 100, 100 )',
       fill: 'rgb( 240, 240, 240 )',
-      strokeWidth: 1
+      strokeWidth: 0.5
     }
   };
 

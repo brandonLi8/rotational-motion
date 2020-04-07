@@ -20,6 +20,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
+  const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const LabeledCheckbox = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckbox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
@@ -29,6 +30,12 @@ define( require => {
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Vector = require( 'SIM_CORE/util/Vector' );
+  const Util = require( 'SIM_CORE/util/Util' );
+  const Symbols = require( 'SIM_CORE/util/Symbols' );
+
+  // constants
+  const RADIUS_TICK_INCREMENT = 0.1;
+  const RADIUS_TIC_LABEL_INCREMENT = 3;
 
   class IntroControlPanel extends Panel {
 
@@ -40,13 +47,13 @@ define( require => {
      */
     constructor( spinner, linearVelocityVisibleProperty, linearAccelerationVisibleProperty, options ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
-      assert( isPlayingProperty instanceof Property, 'invalid linearVelocityVisibleProperty' );
-      assert( linearVelocityVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
+      assert( linearVelocityVisibleProperty instanceof Property, 'invalid linearVelocityVisibleProperty' );
+      assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
         // Import the declared panel colors.
-        ...RotationalMotionColors.PANEL_COLORS
+        ...RotationalMotionColors.PANEL_COLORS,
 
         // {number} - spacing between the content of the Panel.
         spacing: 6,
@@ -55,7 +62,7 @@ define( require => {
         ...options
       };
 
-      super( new FlexBox( 'vertical', { spacing: options.spacing } ), options );
+      super( new FlexBox( 'vertical', { align: 'left', spacing: options.spacing } ), options );
 
       //----------------------------------------------------------------------------------------
 
@@ -76,34 +83,51 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
+      const numberControls = new FlexBox( 'vertical', { align: 'right', spacing: options.spacing } );
+      this.content.addChild( numberControls );
+
       // IntroControlPanel's always have a NumberControlSet for the radius
-      const radiusNumberControlSet = new NumberControlSet( 'radius', spinner.radiusProperty, spinner.radiusRange, {
-        sliderOptions: sliderOptions
-      } ).addSliderMajorTick( spinner.radiusRange.min, new Text( spinner.radiusRange.min ) )
-         .addSliderMajorTick( spinner.radiusRange.max, new Text( spinner.radiusRange.max ) );
+      const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
+        sliderOptions: sliderOptions,
+        numberDisplayOptions: { decimalPlaces: 2, unit: 'm' },
+      } ).addSliderMajorTick( spinner.radiusRange.min, new Text( spinner.radiusRange.min + ' m' ) )
+         .addSliderMajorTick( spinner.radiusRange.max, new Text( spinner.radiusRange.max + ' m' ) );
+
+      // Add the minor ticks
+      for ( let i = 1; i < spinner.radiusRange.max / RADIUS_TICK_INCREMENT - 1; i++ ) {
+        const value = Util.toFixed( i * RADIUS_TICK_INCREMENT + spinner.radiusRange.min, 2 );
+        radiusNumberControlSet.addSliderMinorTick( value, i % RADIUS_TIC_LABEL_INCREMENT ? null : new Text( value ) );
+      }
 
       // Add the radius NumberControlSet as a child.
-      this.content.addChild( radiusNumberControlSet );
+      numberControls.addChild( radiusNumberControlSet );
+
+      //----------------------------------------------------------------------------------------
+
+      if ( spinner.type === CircularMotionTypes.UNIFORM ) {
+
+        // Add a angular velocity NumberControlSet for uniform spinners.
+        const angularVelocityNumberControlSet = new NumberControlSet( Symbols.OMEGA,
+          spinner.angularVelocityProperty,
+          spinner.angularVelocityRange, {
+            sliderOptions: sliderOptions,
+            numberDisplayOptions: { decimalPlaces: 2, unit: 'rad/sec' },
+          } ).addSliderMajorTick( spinner.angularVelocityRange.min, new Text( spinner.angularVelocityRange.min ) )
+             .addSliderMajorTick( spinner.angularVelocityRange.max, new Text( spinner.angularVelocityRange.max.toFixed( 1 ) ) );
+
+        // Add the angular velocity NumberControlSet as a child.
+        numberControls.addChild( angularVelocityNumberControlSet );
+
+
+      }
+
+
+      // Apply any additionally Bounds setters
+      this.mutate( options );
 
 
 
 
-      // //----------------------------------------------------------------------------------------
-      // // Create a slider to change the Angular Velocity of the Spinner
-      // const angularVelocitySlider = new RotationalMotionSlider(
-      //   spinner.angularVelocityProperty,
-      //   spinner.angularVelocityRange,
-      //   isPlayingProperty, {
-      //     padding: options.padding,
-      //     width: options.width,
-      //     labelText: '\u03c9',
-      //     sliderTickIncrement: ( spinner.angularVelocityRange.y - spinner.angularVelocityRange.x ) / 6,
-      //     numberDisplayUnit: 'rad/sec',
-      //     top: 140,
-      //     sliderOptions: {
-      //       rightLabel: RotationalMotionConstants.INTRO_MAX_VELOCITY_SYMBOL
-      //     }
-      //   } );
 
       // //----------------------------------------------------------------------------------------
       // // Velocity checkbox

@@ -46,7 +46,7 @@ define( require => {
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
-        sliderTopMargin: 10, // {number} margin between the slider and the content above
+        sliderTopMargin: 4, // {number} margin between the slider and the content above
 
         // {Object} - if provided, these options will be passed to the Slider instance
         sliderOptions: null,

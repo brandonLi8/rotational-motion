@@ -20,6 +20,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
+  const IntroControlPanel = require( 'ROTATIONAL_MOTION/intro/view/IntroControlPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
@@ -81,17 +82,15 @@ define( require => {
         //----------------------------------------------------------------------------------------
 
         // Create the Control Panel
-        // const controlPanel = new ControlPanel(
-        //   introModel.spinner,
-        //   introModel.isPlayingProperty,
-        //   introModel.linearVelocityVisibleProperty
-        // );
-
-        // controlPanel.left = this.viewBounds.maxX - controlPanel.width - SCREEN_VIEW_X_MARGIN;
-        // controlPanel.top = SCREEN_VIEW_Y_MARGIN;
+        const controlPanel = new IntroControlPanel( CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
+          this.linearVelocityVisibleProperty,
+          this.linearAccelerationVisibleProperty, {
+            right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
+            top: SCREEN_VIEW_Y_MARGIN
+          } );
 
         // Create a wrapper scene Node.
-        const scene = new Node().setChildren( [ spinnerNode ] );
+        const scene = new Node().setChildren( [ spinnerNode, controlPanel ] );
 
         // Adjust visibility based on the circularMotionTypeProperty
         this.circularMotionTypeProperty.link( () => {
