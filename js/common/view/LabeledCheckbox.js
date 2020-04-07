@@ -22,8 +22,7 @@ define( require => {
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberDisplay = require( 'ROTATIONAL_MOTION/common/view/NumberDisplay' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const Range = require( 'SIM_CORE/util/Range' );
-  const Slider = require( 'SIM_CORE/scenery/Slider' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class LabeledCheckbox extends Node {
 
@@ -39,7 +38,7 @@ define( require => {
 
       options = {
 
-        spacing: 5, // {number} spacing between the box an the label
+        spacing: 12, // {number} spacing between the box an the label
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -50,7 +49,10 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @private {Checkbox} - create the checkbox with options
-      this._checkbox = new Checkbox( toggleProperty, { ...options, left: 0 } );
+      this._checkbox = new Checkbox( toggleProperty, options );
+
+      // Reset the location of Checkbox
+      this._checkbox.topLeft = Vector.ZERO;
 
       // Set the location of the label relative to the checkbox.
       label.centerLeft = this._checkbox.background.centerRight.addXY( options.spacing, 0 );
