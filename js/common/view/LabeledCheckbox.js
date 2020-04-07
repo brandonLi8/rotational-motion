@@ -30,7 +30,8 @@ define( require => {
      * @param {Node} label - the label Node of the LabeledCheckbox
      * @param {Property.<boolean>} toggleProperty - the Property to toggle when the Checkbox is pressed. The initial
      *                                              visibility of the check will be determined by the current value.
-     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See Checkbox.js
+     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
+     *                             the options are set in the early portion of the constructor for details.
      */
     constructor( label, toggleProperty, options ) {
       assert( label instanceof Node, `invalid label: ${ label }` );

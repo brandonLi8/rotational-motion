@@ -28,10 +28,10 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
-  const Util = require( 'SIM_CORE/util/Util' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
+  const Text = require( 'SIM_CORE/scenery/Text' );
+  const Util = require( 'SIM_CORE/util/Util' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const RADIUS_TICK_INCREMENT = 0.1;
@@ -90,8 +90,8 @@ define( require => {
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions: sliderOptions,
         numberDisplayOptions: { decimalPlaces: 2, unit: 'm' },
-      } ).addSliderMajorTick( spinner.radiusRange.min, new Text( spinner.radiusRange.min + ' m' ) )
-         .addSliderMajorTick( spinner.radiusRange.max, new Text( spinner.radiusRange.max + ' m' ) );
+      } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min + ' m' ) ) )
+         .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max + ' m' ) ) );
 
       // Add the minor ticks
       for ( let i = 1; i < spinner.radiusRange.max / RADIUS_TICK_INCREMENT - 1; i++ ) {
@@ -112,20 +112,15 @@ define( require => {
           spinner.angularVelocityRange, {
             sliderOptions: sliderOptions,
             numberDisplayOptions: { decimalPlaces: 2, unit: 'rad/sec' },
-          } ).addSliderMajorTick( spinner.angularVelocityRange.min, new Text( spinner.angularVelocityRange.min ) )
-             .addSliderMajorTick( spinner.angularVelocityRange.max, new Text( spinner.angularVelocityRange.max.toFixed( 1 ) ) );
+          } ).addSliderMajorTick( spinner.angularVelocityRange.min, fixWidth( new Text( spinner.angularVelocityRange.min ) ) )
+             .addSliderMajorTick( spinner.angularVelocityRange.max, fixWidth( new Text( spinner.angularVelocityRange.max.toFixed( 5 ) ) ) );
 
         // Add the angular velocity NumberControlSet as a child.
         numberControls.addChild( angularVelocityNumberControlSet );
-
-
       }
-
 
       // Apply any additionally Bounds setters
       this.mutate( options );
-
-
 
 
 
@@ -165,6 +160,32 @@ define( require => {
       //   velocityContent
       // ] );
     }
+  }
+
+  //----------------------------------------------------------------------------------------
+  // Helpers
+  //----------------------------------------------------------------------------------------
+
+  /**
+   * Wraps a Node around another Node so that its a fixed width and height.
+   * @public
+   *
+   * @param {Node} node
+   */
+  function fixWidth( node ) {
+    // reset the location of node
+    node.left = 0;
+    node.top = 0;
+
+    const fixedWidthNode = new Node();
+    fixedWidthNode.width = 50; // eye-balled
+
+    // center the node
+    node.centerX = fixedWidthNode.centerX;
+
+    const wrapper = new Node().setChildren( [ fixedWidthNode, node ] );
+    wrapper.width = fixedWidthNode.width;
+    return wrapper;
   }
 
   return IntroControlPanel;
