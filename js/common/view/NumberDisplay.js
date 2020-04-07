@@ -32,7 +32,7 @@ define( require => {
 
     /**
      * @param {Property.<number|null>} numberProperty
-     * @param {Range} range - this range of the numberProperty, used to determine the display width & height.
+     * @param {Range} range - this range of the numberProperty, used to determine the background width & height.
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.See the code where
      *                             the options are set in the early portion of the constructor for details.
      */
