@@ -38,7 +38,7 @@ define( require => {
       options = {
         fill: 'white',    // {string|Gradient} - the fill of the background rectangle
         stroke: 'black',  // {string|Gradient} - the stroke of the background rectangle
-        cornerRadius: 10, // {number} - the corner radius of the background rectangle
+        cornerRadius: 5,  // {number} - the corner radius of the background rectangle
         strokeWidth: 1,   // {number} - the stroke-width of the background rectangle
         xMargin: 9,       // {number} - the x-margin between the background rectangle and the content
         yMargin: 10,      // {number} - the y-margin between the background rectangle and the content
@@ -51,7 +51,9 @@ define( require => {
       // @private {*} - see options declaration for documentation.
       this._xMargin = options.xMargin;
       this._yMargin = options.yMargin;
-      this._content = content;
+
+      // @public {Node} (read-only) - reference the passed-in content Node
+      this.content = content;
 
       // @private {Rectangle} - create the background rectangle. Width and height to be updated later.
       this._background = new Rectangle( 0, 0, {
@@ -66,7 +68,7 @@ define( require => {
       this._isUpdatingLayout = false;
 
       // Set the children of the panel.
-      this.children = [ this._background, this._content ];
+      this.children = [ this._background, this.content ];
 
       // At this point, call mutate to ensure that any location setters provided are correctly mutated and our
       // properties are correctly set. in Node.mutate()
@@ -86,11 +88,11 @@ define( require => {
       this._background.topLeft = Vector.ZERO;
 
       // Update the width and height of the background.
-      this._background.width = this._content.width + this._xMargin;
-      this._background.height = this._content.height + this._yMargin;
+      this._background.width = this.content.width + this._xMargin;
+      this._background.height = this.content.height + this._yMargin;
 
       // Align the content to the center of the background.
-      this._content.center = this._background.center;
+      this.content.center = this._background.center;
 
       this._isUpdatingLayout = false; // Indicate that we are now done updating our layout of our children.
       super._recomputeAncestorBounds();

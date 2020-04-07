@@ -43,6 +43,13 @@ define( require => {
       fill: 'red',
       stroke: 'black',
       strokeWidth: 0.5
+    },
+
+    // Colors for all Panel instances
+    PANEL_COLORS: {
+      stroke: 'rgb( 100, 100, 100 )',
+      fill: 'rgb( 240, 240, 240 )',
+      strokeWidth: 1
     }
   };
 
