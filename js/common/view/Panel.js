@@ -19,6 +19,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class Panel extends Node {
 
@@ -39,8 +40,8 @@ define( require => {
         stroke: 'black',  // {string|Gradient} - the stroke of the background rectangle
         cornerRadius: 10, // {number} - the corner radius of the background rectangle
         strokeWidth: 1,   // {number} - the stroke-width of the background rectangle
-        xMargin: 5,       // {number} - the x-margin between the background rectangle and the content
-        yMargin: 5,       // {number} - the y-margin between the background rectangle and the content
+        xMargin: 9,       // {number} - the x-margin between the background rectangle and the content
+        yMargin: 10,      // {number} - the y-margin between the background rectangle and the content
 
         // Rewrite options so that the passed-in options overrides the defaults.
         ...options
@@ -63,6 +64,9 @@ define( require => {
       // @private {boolean} - Indicates if we are in the process of updating the layout of the Panel. Used
       //                      to reduce the number of _recomputeAncestorBounds calls while layouting.
       this._isUpdatingLayout = false;
+
+      // Set the children of the panel.
+      this.children = [ this._background, this._content ];
 
       // At this point, call mutate to ensure that any location setters provided are correctly mutated and our
       // properties are correctly set. in Node.mutate()
@@ -90,22 +94,6 @@ define( require => {
 
       this._isUpdatingLayout = false; // Indicate that we are now done updating our layout of our children.
       super._recomputeAncestorBounds();
-    }
-
-    /**
-     * @override
-     * Ensures that the Panel is formatted when children are added.
-     * @public
-     *
-     * @param {Node} child
-     * @returns {Node} - Returns 'this' reference, for chaining
-     */
-    addChild( child ) {
-      assert( child instanceof Node, `invalid child: ${ child }` );
-      super.addChild( child );
-
-      this._updateLayout();
-      return this;
     }
 
     /**
