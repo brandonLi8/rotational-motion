@@ -61,7 +61,7 @@ define( require => {
         stroke: options.stroke,
         strokeWidth: options.strokeWidth,
         cornerRadius: options.cornerRadius
-      } ) ;
+      } );
 
       // @private {boolean} - Indicates if we are in the process of updating the layout of the Panel. Used
       //                      to reduce the number of _recomputeAncestorBounds calls while layouting.
