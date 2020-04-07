@@ -1,4 +1,4 @@
-// Copyright © 2020 Brandon Li. All rights reserved.
+// Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
  * Control Set for changing and displaying the value of a number Property.
@@ -23,16 +23,12 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberDisplay = require( 'ROTATIONAL_MOTION/common/view/NumberDisplay' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Range = require( 'SIM_CORE/util/Range' );
-  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
   const Slider = require( 'SIM_CORE/scenery/Slider' );
   const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class NumberControlSet extends Node {
 
