@@ -112,6 +112,7 @@ define( require => {
     addSliderMajorTick( value, label ) {
       this._slider.addMajorTick( value, label );
       this._updateLayout();
+      return this;
     }
 
     /**
@@ -125,6 +126,7 @@ define( require => {
     addSliderMinorTick( value, label ) {
       this._slider.addMinorTick( value, label );
       this._updateLayout();
+      return this;
     }
 
     /**
