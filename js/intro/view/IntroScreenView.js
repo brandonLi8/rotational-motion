@@ -61,29 +61,16 @@ define( require => {
       // Create a 'scene' for each circular motion type and render it in a single Node.
       CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
         circularMotionType = CircularMotionTypes.UNIFORM;
+        const spinner = circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner;
+
         const spinnerNode = new SpinnerNode(
-          circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
+          spinner,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty
         );
 
-        // // Create a Time Control Box
-        // const timeControlBox = new TimeControlBox( {
-        //   playProperty: introModel.isPlayingProperty,
-        //   backwardsListener: () => {
-        //     introModel.stepBackwards();
-        //   },
-        //   forwardsListener: () => {
-        //     introModel.stepForwards();
-        //   },
-        //   top: playAreaViewBounds.maxY + TIME_CONTROL_BOX_MARGIN
-        // } );
-        // timeControlBox.left = playAreaViewBounds.centerX - timeControlBox.width / 2;
-
-        //----------------------------------------------------------------------------------------
-
         // Create the Control Panel
-        const controlPanel = new IntroControlPanel( CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
+        const controlPanel = new IntroControlPanel( spinner,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty, {
             right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,

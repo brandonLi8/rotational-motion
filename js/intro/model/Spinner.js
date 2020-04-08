@@ -139,7 +139,6 @@ define( require => {
      * @param {number} dt - time in seconds
      */
     step( dt ) {
-      if ( !this.isPlayingProperty.value ) return; // if paused, do nothing.
 
       // Calculate the change in angle (in radians) based on the average angular velocity (rad/sec)
       // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
@@ -154,7 +153,7 @@ define( require => {
      */
     stepBackwards() {
       this.isPlayingProperty.value = false;
-      this.spinner.step( -this.stepTime );
+      this.step( -this.stepTime );
     }
 
     /**
@@ -163,7 +162,7 @@ define( require => {
      */
     stepForwards() {
       this.isPlayingProperty.value = false;
-      this.spinner.step( this.stepTime );
+      this.step( this.stepTime );
     }
 
     /**

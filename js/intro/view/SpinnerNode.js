@@ -7,6 +7,7 @@
  *  - A pin circle, which is the center of the circular motion (and the origin of the Spinner)
  *  - A string line, which is responsible for the tension of the circular motion.
  *  - The IntroBallNode, which is rotated around the circle.
+ *  - A TimeControlBox to control the timing of the Spinner.
  *  - Handling drag requests of the Ball and communicating that to the Spinner.
  *
  * SpinnerNodes are created at the start of the Sim and are never disposed, so all links are left as is.
@@ -30,11 +31,12 @@ define( require => {
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const TimeControlBox = require( 'ROTATIONAL_MOTION/common/view/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const PIN_RADIUS = 2; // eye-balled
-  const MODEL_TO_VIEW_SCALE = 240; // meter to view coordinates (1 m = 200 coordinates)
+  const MODEL_TO_VIEW_SCALE = 230; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
@@ -80,7 +82,15 @@ define( require => {
         accelerationVisibleProperty,
         { ...RotationalMotionColors.SPINNER_BALL_COLORS } );
 
-      super( { children: [ string, pin, ballNode ] } );
+
+      // Create a Time Control Box
+      const timeControlBox = new TimeControlBox( spinner.isPlayingProperty, {
+        stepBackwardOptions: { listener() { spinner.stepBackwards(); }, },
+        stepForwardOptions: { listener() { spinner.stepForwards(); }, },
+        topCenter: playAreaViewBounds.topCenter.addXY( 0, 15 ) // eye-balled margin
+      } );
+
+      super( { children: [ timeControlBox, string, pin, ballNode ] } );
 
       //----------------------------------------------------------------------------------------
 

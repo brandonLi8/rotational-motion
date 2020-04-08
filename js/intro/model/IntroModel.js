@@ -37,8 +37,8 @@ define( require => {
      * @param {number} dt - time in seconds
      */
     step( dt ) {
-      this.uniformSpinner.step( dt );
-      this.nonUniformSpinner.step( dt );
+      this.uniformSpinner.isPlayingProperty.value && this.uniformSpinner.step( dt );
+      this.nonUniformSpinner.isPlayingProperty.value && this.nonUniformSpinner.step( dt );
     }
 
     /**

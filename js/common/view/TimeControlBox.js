@@ -14,9 +14,9 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const PlayPauseButton = require( 'SIM_CORE/scenery/button/PlayPauseButton' );
+  const PlayPauseButton = require( 'SIM_CORE/scenery/buttons/PlayPauseButton' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const StepButton = require( 'SIM_CORE/scenery/button/StepButton' );
+  const StepButton = require( 'SIM_CORE/scenery/buttons/StepButton' );
 
   class TimeControlBox extends FlexBox {
 
@@ -40,6 +40,9 @@ define( require => {
 
         // {Object} - if provided, these options will be passed to the forwards StepButton instance.
         stepForwardOptions: null,
+
+        // {number} - spacing between each Button.
+        spacing: 5,
 
         // Rewrite options so that it overrides the defaults.
         ...options
