@@ -1,0 +1,6 @@
+{
+  "requirejs": {
+    "generateBuildHtml": true
+  },
+  "postBuild": "echo \"Done Building\""
+}
