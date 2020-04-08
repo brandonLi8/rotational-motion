@@ -59,17 +59,17 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Create a 'scene' for each circular motion type and render it in a single Node.
-      CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
-        circularMotionType = CircularMotionTypes.UNIFORM;
-        const spinner = circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner;
+      // Create a container for the scenes.
+      const sceneContainer = new Node();
+      this.addChild( sceneContainer );
 
+      // Create a 'scene' for each circular motion type and render it in a single Node.
+      [ introModel.uniformSpinner, introModel.nonUniformSpinner ].forEach( spinner => {
         const spinnerNode = new SpinnerNode(
           spinner,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty
         );
-
         // Create the Control Panel
         const controlPanel = new IntroControlPanel( spinner,
           this.linearVelocityVisibleProperty,
@@ -83,11 +83,10 @@ define( require => {
 
         // Adjust visibility based on the circularMotionTypeProperty
         this.circularMotionTypeProperty.link( () => {
-          scene.visible = this.circularMotionTypeProperty.value === circularMotionType;
+          if ( this.circularMotionTypeProperty.value === spinner.type ) sceneContainer.children = [ scene ];
         } );
 
         // Add the scene to the screen view.
-        this.addChild( scene );
         return;
       } );
 
