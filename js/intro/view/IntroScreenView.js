@@ -20,6 +20,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
+  const CircularMotionTypesRadioButtonGroup = require( 'ROTATIONAL_MOTION/intro/view/CircularMotionTypesRadioButtonGroup' ); // eslint-disable-line max-len
   const IntroControlPanel = require( 'ROTATIONAL_MOTION/intro/view/IntroControlPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
@@ -100,6 +101,14 @@ define( require => {
         bottom: this.layoutBounds.maxY - SCREEN_VIEW_Y_MARGIN
       } );
       this.addChild( resetAllButton );
+
+      // Add the CircularMotionTypes RadioButtonGroup
+      const circularMotionTypesRadioButtonGroup = new CircularMotionTypesRadioButtonGroup(
+        this.circularMotionTypeProperty, {
+          top: 2 * SCREEN_VIEW_Y_MARGIN,
+          right: this.layoutBounds.maxX - 300 // eye-balled
+        } );
+      this.addChild( circularMotionTypesRadioButtonGroup );
     }
 
     /**
