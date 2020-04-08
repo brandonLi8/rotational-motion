@@ -36,7 +36,7 @@ define( require => {
   const RADIUS_TIC_LABEL_INCREMENT = 3;
   const FRACTION_OPTIONS = {
     textOptions: {
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: 500
     }
   };
@@ -92,7 +92,7 @@ define( require => {
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: -2 }
+        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: 0 }
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
          .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max ) ) );
 
@@ -108,7 +108,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
         const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
-        const maxNode = fixWidth( new Text( spinner.angularVelocityRange.min ) );
+        const maxNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.min ) );
         const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
@@ -116,7 +116,7 @@ define( require => {
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode, yMargin: -5 }
+            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode, yMargin: -2 }
           } )
         .addSliderMajorTick( spinner.angularVelocityRange.min, maxNode )
         .addSliderMajorTick( spinner.angularVelocityRange.max, minNode );
@@ -222,7 +222,7 @@ define( require => {
     denominator = denominator / divisor;
 
     return Util.equalsEpsilon( numerator, 0 ) ?
-      new Text( 0 ) :
+      new Text( 0, FRACTION_OPTIONS ) :
       new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, FRACTION_OPTIONS );
   }
 

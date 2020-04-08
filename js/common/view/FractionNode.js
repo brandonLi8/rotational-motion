@@ -19,6 +19,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Line = require( 'SIM_CORE/scenery/Line' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
   const Text = require( 'SIM_CORE/scenery/Text' );
 
   class FractionNode extends FlexBox {
@@ -39,9 +40,9 @@ define( require => {
         // {Object} - if provided, these options will be passed to the Text instances
         textOptions: null,
 
-        fractionBarFill: 'black',   // {string} the fill color of the fraction bar
-        fractionBarStroke: 'black', // {string} the stroke color of the fraction bar
-        fractionBarStrokeWidth: 1,  // {number} the stroke width of the fraction bar
+        fractionBarFill: 'black',    // {string} the fill color of the fraction bar
+        fractionBarStroke: 'black',  // {string} the stroke color of the fraction bar
+        fractionBarStrokeWidth: 0.5, // {number} the stroke width of the fraction bar
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -56,14 +57,17 @@ define( require => {
       const denominatorText = new Text( denominator, options.textOptions );
 
       // Create the fraction-bar.
-      const fractionBar = new Line( 0, 0, Math.max( numeratorText.width, denominatorText.width ) + 2, 0, {
+      const fractionBar = new Line( 0, 0, Math.max( numeratorText.width, denominatorText.width ) + 3, 0, {
         fill: options.fractionBarFill,
         stroke: options.fractionBarStroke,
         strokeWidth: options.fractionBarStrokeWidth
       } );
 
+      // Add a Node that takes up Space for un-even spacing
+      const spacer = new Node( { height: 3 } ); // eye-balled
+
       // Set the children of the FractionNode
-      this.children = [ numeratorText, fractionBar, denominatorText ];
+      this.children = [ numeratorText, fractionBar, spacer, denominatorText ];
     }
   }
 

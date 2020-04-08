@@ -54,7 +54,7 @@ define( require => {
       this._checkbox.topLeft = Vector.ZERO;
 
       // Set the location of the label relative to the checkbox.
-      label.centerLeft = this._checkbox.background.centerRight.addXY( options.spacing, 0 );
+      label.centerLeft = this._checkbox.background.centerRight.addXY( options.spacing, 0.9 );
 
       // Set the children of the LabeledCheckbox
       this.children = [ this._checkbox, label ];

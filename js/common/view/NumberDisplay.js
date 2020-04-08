@@ -148,7 +148,7 @@ define( require => {
       const yAlignKey = this._yAlign === 'center' ? 'centerY' : this._yAlign;
 
       this._content[ xAlignKey ] = this._background[ xAlignKey ];
-      this._content[ yAlignKey ] = this._background[ yAlignKey ];
+      this._content[ yAlignKey ] = this._background[ yAlignKey ] + 1.5; // eye-balled
     }
   }
 
