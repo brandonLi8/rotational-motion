@@ -21,6 +21,7 @@ define( require => {
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
+  const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const LabeledCheckbox = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckbox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
@@ -89,7 +90,7 @@ define( require => {
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions: sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: 'm' },
+        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ) },
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min + ' m' ) ) )
          .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max + ' m' ) ) );
 
@@ -104,6 +105,13 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
+      const fractionOptions = {
+        textOptions: {
+          fontSize: 8,
+          fontWeight: 100
+        }
+      };
+
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
 
         // Add a angular velocity NumberControlSet for uniform spinners.
@@ -111,7 +119,7 @@ define( require => {
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions: sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: 'rad/sec' },
+            numberDisplayOptions: { decimalPlaces: 2, unit: new FractionNode( 'rad', 'sec', fractionOptions ) },
           } ).addSliderMajorTick( spinner.angularVelocityRange.min, fixWidth( new Text( spinner.angularVelocityRange.min ) ) )
              .addSliderMajorTick( spinner.angularVelocityRange.max, fixWidth( new Text( spinner.angularVelocityRange.max.toFixed( 5 ) ) ) );
 
@@ -167,7 +175,7 @@ define( require => {
   //----------------------------------------------------------------------------------------
 
   /**
-   * Wraps a Node around another Node so that its a fixed width and height.
+   * Wraps a Node around another Node so that its a fixed width.
    * @public
    *
    * @param {Node} node

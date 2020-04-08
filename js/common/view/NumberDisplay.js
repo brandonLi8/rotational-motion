@@ -19,6 +19,7 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
+  const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Range = require( 'SIM_CORE/util/Range' );
@@ -45,10 +46,11 @@ define( require => {
 
         xAlign: 'center',  // {string} - the alignment of the Text: 'left', 'center', or 'right'.
         yAlign: 'center',  // {string} - the alignment of the Text: 'top', 'center', or 'bottom'.
-        unit: null,        // {string} - if provided, this will be appended to the end of the Text as a unit.
+        unit: null,        // {Node} - if provided, this will be appended to the end of the Text as a unit.
+        unitSpacing: 4,    // {number} - spacing between a potential Unit node and the text.
         decimalPlaces: 0,  // {number|null} the number of decimal places to show. If null, the full value is displayed.
         xMargin: 11,       // {number} - the x-margin between the longest/tallest Text and the background.
-        yMargin: 5,        // {number} - the x-margin between the longest/tallest Text and the background.
+        yMargin: 1,        // {number} - the x-margin between the longest/tallest Text and the background.
         cornerRadius: 0,   // {number} - the corner radius of the background
 
         backgroundFill: 'white',        // {string|Gradient} the fill of the background
@@ -75,24 +77,29 @@ define( require => {
       this._decminalPlaces = options.decimalPlaces;
 
       // Determine the widest value first.
-      const minValueString = `${ range.min.toFixed( this._decminalPlaces ) } ${ this._unit || '' }`;
-      const maxValueString = `${ range.min.toFixed( this._decminalPlaces ) } ${ this._unit || '' }`;
+      const minValueString = `${ range.min.toFixed( this._decminalPlaces ) } `;
+      const maxValueString = `${ range.min.toFixed( this._decminalPlaces ) } `;
       const longestValueString = minValueString.length > maxValueString.length ? minValueString : maxValueString;
 
       // @private {Text} - create the value Node which displays the Text of the number Property.
       this._valueNode = new Text( longestValueString, options.textOptions );
 
       // @private {Rectangle} - create the Rectangle background Node
-      this._background = new Rectangle( this._valueNode.width + 2 * options.xMargin,
-                                        this._valueNode.height + 2 * options.yMargin, {
-        cornerRadius: options.cornerRadius,
-        fill: options.backgroundFill,
-        stroke: options.backgroundStroke,
-        strokeWidth: options.backgroundStrokeWidth
-      } );
+      this._background = new Rectangle(
+        this._valueNode.width + 2 * options.xMargin + ( this._unit ? this._unit.width : 0 ),
+        this._valueNode.height + 2 * options.yMargin + ( this._unit ? this._unit.height : 0 ), {
+          cornerRadius: options.cornerRadius,
+          fill: options.backgroundFill,
+          stroke: options.backgroundStroke,
+          strokeWidth: options.backgroundStrokeWidth
+        } );
+
+      // @private {FlexBox} - create the content Node of the number display
+      this._content = new FlexBox( 'horizontal', { spacing: options.unitSpacing } ).addChild( this._valueNode );
+      if ( this._unit instanceof Node ) this._content.addChild( this._unit );
 
       // Add the content of the Number Display as children
-      this.children = [ this._background, this._valueNode ];
+      this.children = [ this._background, this._content  ];
 
       // @private {function} - observer of the numberProperty. To be unlinked in the dispose method.
       this._numberPropertyObserver = this._updateNumberDisplay.bind( this );
@@ -123,9 +130,15 @@ define( require => {
         `numberProperty outside of range of NumberDisplay range: ${ this._numberProperty.value }` );
       const value = this._numberProperty.value; // convenience reference
 
-      // Update the text of the value Node.
-      this._valueNode.text = value === null ? Symbols.NO_VALUE : // use em-dash if null value
-        `${ this._decminalPlaces ? Util.toFixed( value, this._decminalPlaces ) : value } ${ this._unit || '' }`;
+      if ( this._unit && !this._content.hasChild( this._unit ) ) this._content.addChild( this._unit );
+
+      if ( value === null ) {
+        this._valueNode.text = Symbols.NO_VALUE; // use em-dash if null value
+        this._unit && this._content.removeChild( this._unit );
+      }
+      else {
+        this._valueNode.text = `${ this._decminalPlaces ? Util.toFixed( value, this._decminalPlaces ) : value }`;
+      }
 
       // Ensure that the content fits inside the background
       this._background.topLeft = Vector.ZERO;
@@ -134,8 +147,8 @@ define( require => {
       const xAlignKey = this._xAlign === 'center' ? 'centerX' : this._xAlign;
       const yAlignKey = this._yAlign === 'center' ? 'centerY' : this._yAlign;
 
-      this._valueNode[ xAlignKey ] = this._background[ xAlignKey ];
-      this._valueNode[ yAlignKey ] = this._background[ yAlignKey ];
+      this._content[ xAlignKey ] = this._background[ xAlignKey ];
+      this._content[ yAlignKey ] = this._background[ yAlignKey ];
     }
   }
 
