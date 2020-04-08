@@ -99,7 +99,7 @@ define( require => {
       if ( this._unit instanceof Node ) this._content.addChild( this._unit );
 
       // Add the content of the Number Display as children
-      this.children = [ this._background, this._content  ];
+      this.children = [ this._background, this._content ];
 
       // @private {function} - observer of the numberProperty. To be unlinked in the dispose method.
       this._numberPropertyObserver = this._updateNumberDisplay.bind( this );

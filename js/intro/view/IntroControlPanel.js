@@ -16,14 +16,11 @@ define( require => {
   'use strict';
 
   // modules
-  const Arrow = require( 'SIM_CORE/scenery/Arrow' );
   const assert = require( 'SIM_CORE/util/assert' );
-  const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const LabeledCheckbox = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckbox' );
-  const Line = require( 'SIM_CORE/scenery/Line' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
@@ -33,7 +30,6 @@ define( require => {
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Util = require( 'SIM_CORE/util/Util' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const RADIUS_TICK_INCREMENT = 0.1;
@@ -95,8 +91,8 @@ define( require => {
 
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
-        sliderOptions: sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: -2 },
+        sliderOptions,
+        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: -2 }
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
          .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max ) ) );
 
@@ -112,16 +108,18 @@ define( require => {
       //----------------------------------------------------------------------------------------
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
         const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
+        const maxNode = fixWidth( new Text( spinner.angularVelocityRange.min ) );
+        const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
         const angularVelocityNumberControlSet = new NumberControlSet( Symbols.OMEGA,
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
-            sliderOptions: sliderOptions,
+            sliderOptions,
             numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode, yMargin: -5 }
           } )
-        .addSliderMajorTick( spinner.angularVelocityRange.min, fixWidth( new Text( spinner.angularVelocityRange.min ) ) )
-        .addSliderMajorTick( spinner.angularVelocityRange.max, fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) ) );
+        .addSliderMajorTick( spinner.angularVelocityRange.min, maxNode )
+        .addSliderMajorTick( spinner.angularVelocityRange.max, minNode );
 
         // Add the minor ticks
         for ( let i = 1; i <= spinner.angularVelocityRange.max / OMEGA_TICK_INCREMENT - 1; i++ ) {

@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * A Custom Checkbox for this simulation with a label Node to the right-side of the box.
@@ -20,8 +20,6 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const NumberDisplay = require( 'ROTATIONAL_MOTION/common/view/NumberDisplay' );
-  const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   class LabeledCheckbox extends Node {

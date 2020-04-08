@@ -58,10 +58,10 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @private {Arrow} - represents the Ball's LINEAR velocity, initialized at 0 for now.
-      this._velocityArrow = new Arrow( 0, 0, 0, 0, { ...RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS } );
+      this._velocityArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS );
 
       // @private {Arrow} - represents the Ball's LINEAR acceleration, initialized at 0 for now.
-      this._accelerationArrow = new Arrow( 0, 0, 0, 0, { ...RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS } );
+      this._accelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS );
 
       // Add the Arrow's as children, which will allow it to be displayed above the Ball circle.
       this.addChild( this._velocityArrow );
