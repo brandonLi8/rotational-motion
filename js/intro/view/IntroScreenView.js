@@ -25,6 +25,7 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const ResetButton = require( 'SIM_CORE/scenery/buttons/ResetButton' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
@@ -89,6 +90,27 @@ define( require => {
         this.addChild( scene );
         return;
       } );
+
+      // Add the Reset All Button
+      const resetAllButton = new ResetButton( {
+        listener: () => {
+          introModel.reset();
+          this.reset();
+        },
+        right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
+        bottom: this.layoutBounds.maxY - SCREEN_VIEW_Y_MARGIN
+      } );
+      this.addChild( resetAllButton );
+    }
+
+    /**
+     * Resets the View Properties of the 'Intro' screen
+     * @public
+     */
+    reset() {
+      this.linearVelocityVisibleProperty.reset();
+      this.linearAccelerationVisibleProperty.reset();
+      this.circularMotionTypeProperty.reset();
     }
   }
 

@@ -104,13 +104,14 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @public {IntroBall} ball - the ball to spin in circular motion, initialized at the origin but to be updated.
-      this.ball = new IntroBall( Vector.ZERO, options.ballRadius, this.angularVelocityProperty,
-                                 this.angularAccelerationProperty, this.radiusProperty, this.angleProperty );
+      // @public {IntroBall} ball - the ball to spin in circular motion.
+      this.ball = new IntroBall( new Vector( options.initialRadius, 0 ).setAngle( options.initialAngle ),
+                                 options.ballRadius, this.angularVelocityProperty, this.angularAccelerationProperty,
+                                 this.radiusProperty, this.angleProperty );
 
       // Observe when the internal Properties of the Spinner changes and update the Ball's position.
       // Doesn't need to be disposed because the Spinner is never disposed and lasts for the entirety of the sim.
-      new Multilink( [ this.angleProperty, this.radiusProperty ], ( angle, radius ) => {
+      Multilink.lazy( [ this.angleProperty, this.radiusProperty ], ( angle, radius ) => {
         this.ball.center = new Vector( radius, 0 ).setAngle( angle );
       } );
     }
