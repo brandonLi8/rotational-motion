@@ -82,9 +82,17 @@ define( require => {
         // Create a wrapper scene Node.
         const scene = new Node().setChildren( [ spinnerNode, controlPanel ] );
 
+        let playingWhenSceneSwitches; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+
         // Adjust visibility based on the circularMotionTypeProperty
         this.circularMotionTypeProperty.link( () => {
-          if ( this.circularMotionTypeProperty.value === spinner.type ) sceneContainer.children = [ scene ];
+          if ( !playingWhenSceneSwitches ) playingWhenSceneSwitches = spinner.isPlayingProperty.value;
+          spinner.isPlayingProperty.value = false; // pause
+          if ( this.circularMotionTypeProperty.value === spinner.type ) {
+            sceneContainer.children = [ scene ];
+            if ( playingWhenSceneSwitches ) spinner.isPlayingProperty.value = true;
+            playingWhenSceneSwitches = null; // reset
+          }
         } );
 
         // Add the scene to the screen view.

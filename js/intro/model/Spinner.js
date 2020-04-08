@@ -146,6 +146,12 @@ define( require => {
       // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
       // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
       this.angle += this.angularVelocityProperty.value * dt + 0.5 * this.angularAccelerationProperty.value * dt * dt;
+
+      // Calculate the change in angular velocity if there is an angular acceleration
+      if ( this.angularAccelerationProperty.value ) {
+        this.angularVelocityProperty.value = this.angularVelocityProperty.value
+          + this.angularAccelerationProperty.value * dt;
+      }
     }
 
     /**

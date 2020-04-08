@@ -34,7 +34,7 @@ define( require => {
       assert( Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${options}` );
 
       options = {
-        spacing: 5,
+        spacing: 8,
         ...options
       };
 

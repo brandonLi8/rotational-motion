@@ -43,6 +43,8 @@ define( require => {
   };
   const OMEGA_TICK_INCREMENT = Math.PI / 16;
   const OMEGA_TIC_LABEL_INCREMENT = 2;
+  const ALPHA_TICK_INCREMENT = Math.PI / 16;
+  const ALPHA_TIC_LABEL_INCREMENT = 2;
 
   class IntroControlPanel extends Panel {
 
@@ -131,6 +133,32 @@ define( require => {
 
         // Add the angular velocity NumberControlSet as a child.
         this.content.addChild( angularVelocityNumberControlSet );
+      }
+      else {
+        const radPerSecSquaredNode = new FractionNode( 'rad', 'sec^2', FRACTION_OPTIONS );
+
+        const maxNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.min ) );
+        const minNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.max ) );
+
+        // Add a angular acceleration NumberControlSet for non-uniform spinners.
+        const angularAccelerationNumberControlSet = new NumberControlSet( Symbols.ALPHA,
+          spinner.angularAccelerationProperty,
+          spinner.angularAccelerationRange, {
+            sliderOptions,
+            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecSquaredNode, yMargin: -2 }
+          } )
+        .addSliderMajorTick( spinner.angularAccelerationRange.min, maxNode )
+        .addSliderMajorTick( spinner.angularAccelerationRange.max, minNode );
+
+        // Add the minor ticks
+        for ( let i = 1; i <= spinner.angularAccelerationRange.max / ALPHA_TICK_INCREMENT - 1; i++ ) {
+          const value = i * ALPHA_TICK_INCREMENT + spinner.angularAccelerationRange.min;
+          const label = i % ALPHA_TIC_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          angularAccelerationNumberControlSet.addSliderMinorTick( value, label );
+        }
+
+        // Add the angular velocity NumberControlSet as a child.
+        this.content.addChild( angularAccelerationNumberControlSet );
       }
 
       // Add a Node that takes up Space for un-even spacing
