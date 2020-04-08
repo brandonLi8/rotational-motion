@@ -37,7 +37,7 @@ define( require => {
 
       options = {
 
-        spacing: 12, // {number} spacing between the box an the label
+        spacing: 8, // {number} spacing between the box an the label
 
         // Rewrite options so that it overrides the defaults.
         ...options

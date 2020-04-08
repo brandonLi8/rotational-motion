@@ -128,7 +128,6 @@ define( require => {
       this.angleProperty.reset();
       this.isPlayingProperty.reset();
       this.ball.reset();
-      console.log( this.type )
     }
 
     /**

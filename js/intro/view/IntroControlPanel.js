@@ -109,7 +109,7 @@ define( require => {
       this.content.addChild( radiusNumberControlSet );
 
       //----------------------------------------------------------------------------------------
-      if ( spinner.type === CircularMotionTypes.UNIFORM ) {
+      if ( spinner.type === CircularMotionTypes.UNIFORM  ) {
         const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
         const maxNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.min ) );
         const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
@@ -169,13 +169,26 @@ define( require => {
 
       const linearVelocityVisibleCheckbox = new LabeledCheckbox(
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
-          new Text( 'Linear Velocity Vector' ),
+          new Text( 'Linear Velocity Vector', { fontSize: 12 } ),
           RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
         ] ),
-        linearVelocityVisibleProperty
+        linearVelocityVisibleProperty,
+        { boxSize: 16 }
       );
       this.content.addChild( linearVelocityVisibleCheckbox );
 
+      if ( spinner.type === CircularMotionTypes.NON_UNIFORM ) {
+        const linearAccelerationVisibleCheckbox = new LabeledCheckbox(
+          new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
+            new Text( 'Linear Acceleration Vector', { fontSize: 12 } ),
+            RotationalMotionIconFactory.createVectorArrowIcon(
+              RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS )
+          ] ),
+          linearAccelerationVisibleProperty,
+          { boxSize: 16 }
+        );
+        this.content.addChild( linearAccelerationVisibleCheckbox );
+      }
 
       // Add a Node that takes up Space for un-even spacing
       this.content.addChild( fixHeight( new Node(), 15 ) );

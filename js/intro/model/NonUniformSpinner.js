@@ -35,7 +35,6 @@ define( require => {
       options = {
 
         angularAccelerationRange: new Range( 0, Math.PI / 4 ),    // {range} - the range of the angular acceleration
-        initialAngularVelocityRange: new Range( 0, Math.PI / 4 ), // {range} - the range of the angular acceleration
         initialAngularVelocity: 0,                                // {number} - the starting angular velocity
         initialAngularAcceleration: Math.PI / 4,                  // {number} - the starting angular acceleration
 
@@ -54,14 +53,8 @@ define( require => {
       // @public {Range} (read-only) - the range of the angular acceleration
       this.angularAccelerationRange = options.angularAccelerationRange;
 
-      // @public {Range} (read-only) - the range of the initial angular velocity
-      this.initialAngularVelocityRange = options.initialAngularVelocityRange;
-
-      // @public {Property} (read-only) - the initial angular velocity of the accelerating circular motion
-      this.initialAngularVelocityProperty = new Property( options.initialAngularVelocity, {
-        type: 'number',
-        isValidValue: value => this.initialAngularVelocityRange.contains( value )
-      } );
+      // @public {Range} (read-only) - the initial angular velocity
+      this.initialAngularVelocity = options.initialAngularVelocity;
 
       // Ensure that the angular acceleration is set correctly
       assert.enabled && this.angularAccelerationProperty.link( angularAcceleration => {
