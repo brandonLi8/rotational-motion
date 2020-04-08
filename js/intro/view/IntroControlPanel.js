@@ -37,6 +37,14 @@ define( require => {
   // constants
   const RADIUS_TICK_INCREMENT = 0.1;
   const RADIUS_TIC_LABEL_INCREMENT = 3;
+  const FRACTION_OPTIONS = {
+    textOptions: {
+      fontSize: 10,
+      fontWeight: 500
+    }
+  };
+  const OMEGA_TICK_INCREMENT = Math.PI / 16;
+  const OMEGA_TIC_LABEL_INCREMENT = 2;
 
   class IntroControlPanel extends Panel {
 
@@ -90,7 +98,7 @@ define( require => {
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions: sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ) },
+        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: -2 },
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min + ' m' ) ) )
          .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max + ' m' ) ) );
 
@@ -104,24 +112,26 @@ define( require => {
       numberControls.addChild( radiusNumberControlSet );
 
       //----------------------------------------------------------------------------------------
-
-      const fractionOptions = {
-        textOptions: {
-          fontSize: 8,
-          fontWeight: 100
-        }
-      };
-
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
+        const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
         const angularVelocityNumberControlSet = new NumberControlSet( Symbols.OMEGA,
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions: sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: new FractionNode( 'rad', 'sec', fractionOptions ) },
-          } ).addSliderMajorTick( spinner.angularVelocityRange.min, fixWidth( new Text( spinner.angularVelocityRange.min ) ) )
-             .addSliderMajorTick( spinner.angularVelocityRange.max, fixWidth( new Text( spinner.angularVelocityRange.max.toFixed( 5 ) ) ) );
+            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode, yMargin: -5 }
+          } )
+        .addSliderMajorTick( spinner.angularVelocityRange.min, fixWidth( new Text( spinner.angularVelocityRange.min ) ) )
+        .addSliderMajorTick( spinner.angularVelocityRange.max, fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) ) );
+
+        // Add the minor ticks
+        for ( let i = 1; i <= spinner.angularVelocityRange.max / OMEGA_TICK_INCREMENT - 1; i++ ) {
+          const value = i * OMEGA_TICK_INCREMENT + spinner.angularVelocityRange.min;
+          const label = i % OMEGA_TIC_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          angularVelocityNumberControlSet.addSliderMinorTick( value, label );
+        }
+
 
         // Add the angular velocity NumberControlSet as a child.
         numberControls.addChild( angularVelocityNumberControlSet );
@@ -179,6 +189,7 @@ define( require => {
    * @public
    *
    * @param {Node} node
+   * @returns {Node} the fixed width Node
    */
   function fixWidth( node ) {
     // reset the location of node
@@ -186,7 +197,7 @@ define( require => {
     node.top = 0;
 
     const fixedWidthNode = new Node();
-    fixedWidthNode.width = 50; // eye-balled
+    fixedWidthNode.width = 20; // eye-balled
 
     // center the node
     node.centerX = fixedWidthNode.centerX;
@@ -194,6 +205,29 @@ define( require => {
     const wrapper = new Node().setChildren( [ fixedWidthNode, node ] );
     wrapper.width = fixedWidthNode.width;
     return wrapper;
+  }
+
+  /**
+   * Returns a Pi Fraction Node given a decimal. For instance, fractionalPiNode( 1.57 ) => new FractionNode( 'PI', '2' )
+   * @public
+   *
+   * @param {number} fraction
+   * @returns {FractionNode}
+   */
+  function fractionalPiNode( fraction ) {
+    fraction = fraction / Math.PI; // divide by PI first.
+
+    const length = fraction.toString().length - 2;
+    let denominator = Math.pow( 10, length );
+    let numerator = fraction * denominator;
+
+    const divisor = Util.gcd( numerator, denominator );
+    numerator = numerator / divisor;
+    denominator = denominator / divisor;
+
+    return Util.equalsEpsilon( numerator, 0 ) ?
+      new Text( 0 ) :
+      new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, FRACTION_OPTIONS );
   }
 
   return IntroControlPanel;

@@ -56,7 +56,7 @@ define( require => {
       const denominatorText = new Text( denominator, options.textOptions );
 
       // Create the fraction-bar.
-      const fractionBar = new Line( 0, 0, Math.max( numeratorText.width, denominatorText.width ), 0, {
+      const fractionBar = new Line( 0, 0, Math.max( numeratorText.width, denominatorText.width ) + 2, 0, {
         fill: options.fractionBarFill,
         stroke: options.fractionBarStroke,
         strokeWidth: options.fractionBarStrokeWidth
