@@ -60,6 +60,7 @@ define( require => {
 
       // Create a 'scene' for each circular motion type and render it in a single Node.
       CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
+        circularMotionType = CircularMotionTypes.UNIFORM;
         const spinnerNode = new SpinnerNode(
           circularMotionType === CircularMotionTypes.UNIFORM ? introModel.uniformSpinner : introModel.nonUniformSpinner,
           this.linearVelocityVisibleProperty,
@@ -99,6 +100,7 @@ define( require => {
 
         // Add the scene to the screen view.
         this.addChild( scene );
+        return;
       } );
     }
   }
