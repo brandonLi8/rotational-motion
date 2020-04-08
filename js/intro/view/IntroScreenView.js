@@ -63,6 +63,7 @@ define( require => {
       // Create a container for the scenes.
       const sceneContainer = new Node();
       this.addChild( sceneContainer );
+      const scenes = [];
 
       // Create a 'scene' for each circular motion type and render it in a single Node.
       [ introModel.uniformSpinner, introModel.nonUniformSpinner ].forEach( spinner => {
@@ -94,14 +95,13 @@ define( require => {
             playingWhenSceneSwitches = null; // reset
           }
         } );
-
-        // Add the scene to the screen view.
-        return;
+        scenes.push( scene );
       } );
 
       // Add the Reset All Button
       const resetAllButton = new ResetButton( {
         listener: () => {
+          sceneContainer.children = scenes;
           introModel.reset();
           this.reset();
         },
@@ -124,9 +124,9 @@ define( require => {
      * @public
      */
     reset() {
+      this.circularMotionTypeProperty.reset();
       this.linearVelocityVisibleProperty.reset();
       this.linearAccelerationVisibleProperty.reset();
-      this.circularMotionTypeProperty.reset();
     }
   }
 
