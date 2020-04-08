@@ -57,10 +57,10 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Create the modelViewTransform by building the play area view bounds
-      const playAreaViewBounds = new Bounds( SCREEN_VIEW_X_MARGIN,
+      const playAreaViewBounds = Bounds.rect( SCREEN_VIEW_X_MARGIN,
         SCREEN_VIEW_Y_MARGIN,
-        SCREEN_VIEW_X_MARGIN + MODEL_TO_VIEW_SCALE * spinner.playBounds.width,
-        SCREEN_VIEW_Y_MARGIN + MODEL_TO_VIEW_SCALE * spinner.playBounds.height );
+        MODEL_TO_VIEW_SCALE * spinner.playBounds.width,
+        MODEL_TO_VIEW_SCALE * spinner.playBounds.height );
 
       const modelViewTransform = new ModelViewTransform( spinner.playBounds, playAreaViewBounds );
 
@@ -87,17 +87,18 @@ define( require => {
       // Observe when the Ball's center changes and update the string to match. Doesn't need to be unlinked as the
       // Spinner is never disposed.
       spinner.ball.centerPositionProperty.link( centerPosition => {
-        string.start = pin.center;
         string.end = modelViewTransform.modelToViewPoint( centerPosition );
       } );
 
       //----------------------------------------------------------------------------------------
 
       let playingWhenDragStarted; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+      let ballDragStartPosition;
 
       // Create a Drag listener to allow the Ball to be dragged. Never disposed as SpinnerNodes are never disposed.
-      new DragListener( this, {
+      new DragListener( ballNode, {
         start: () => {
+          ballDragStartPosition = spinner.ball.center.copy();
           playingWhenDragStarted = spinner.isPlayingProperty.value; // set the playingWhenDragStarted flag
           spinner.isPlayingProperty.value = false; // pause when dragging
         },
@@ -106,9 +107,23 @@ define( require => {
           playingWhenDragStarted = null; // reset the playingWhenDragStarted flag
         },
         drag: displacement => {
-          spinner.dragBallTo( spinner.ball.center.add( modelViewTransform.viewToModelDelta( displacement ) ) );
+          spinner.dragBallTo( modelViewTransform.viewToModelDelta( displacement ).add( ballDragStartPosition ) );
         }
       } );
+    }
+
+    /**
+     * @override
+     * Called when this Node's Bounds changes due to a child's Bounds changing or when a child is added or removed.
+     * Also responsible for recursively calling the method for each parent up to either the ScreenView or to the
+     * point where a Node doesn't have a parent.
+     * @protected
+     *
+     * This is overridden to allow for negative Bounds with the arrows. The current implementation of Node shifts the
+     * Bounds of children if they are negative and offsets it.
+     */
+    _recomputeAncestorBounds() {
+      this.layout( this.screenViewScale );
     }
   }
 
