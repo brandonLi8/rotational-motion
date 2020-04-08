@@ -72,25 +72,39 @@ define( require => {
       // Updates the velocity arrow when the Ball's velocity changes or when the Ball's center position changes.
       // Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.tangentialVelocityVectorProperty, ball.centerPositionProperty ],
-        ( velocityVector, center ) => {
+        ( velocityVector ) => {
           const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
-          this._velocityArrow.tail = modelViewTransform.modelToViewPoint( center );
-          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( scaledVelocity.add( center ) );
+          this._velocityArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
+          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( scaledVelocity.add( ball.center ) );
         } );
 
       // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
       // Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.tangentialAccelerationVectorProperty, ball.centerPositionProperty ],
-        ( accelerationVector, center ) => {
+        ( accelerationVector ) => {
           const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
-          this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( center );
-          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAcceleration.add( center ) );
+          this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
+          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAcceleration.add( ball.center ) );
         } );
 
       // Observe when the Vector Visibility Properties change and update the visibility of the Arrows.
       // Links don't have to be unlinked since Intro Ball's are never disposed.
       velocityVisibleProperty.linkAttribute( this._velocityArrow, 'visible' );
       accelerationVisibleProperty.linkAttribute( this._accelerationArrow, 'visible' );
+    }
+
+    /**
+     * @override
+     * Called when this Node's Bounds changes due to a child's Bounds changing or when a child is added or removed.
+     * Also responsible for recursively calling the method for each parent up to either the ScreenView or to the
+     * point where a Node doesn't have a parent.
+     * @protected
+     *
+     * This is overridden to allow for negative Bounds with the arrows. The current implementation of Node shifts the
+     * Bounds of children if they are negative and offsets it.
+     */
+    _recomputeAncestorBounds() {
+      this.layout( this.screenViewScale );
     }
   }
 
