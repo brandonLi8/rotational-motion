@@ -23,6 +23,7 @@ define( require => {
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const LabeledCheckbox = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckbox' );
+  const Line = require( 'SIM_CORE/scenery/Line' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
@@ -65,7 +66,7 @@ define( require => {
         ...RotationalMotionColors.PANEL_COLORS,
 
         // {number} - spacing between the content of the Panel.
-        spacing: 6,
+        spacing: 10,
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -92,15 +93,12 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      const numberControls = new FlexBox( 'vertical', { align: 'right', spacing: options.spacing } );
-      this.content.addChild( numberControls );
-
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions: sliderOptions,
         numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: -2 },
-      } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min + ' m' ) ) )
-         .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max + ' m' ) ) );
+      } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
+         .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max ) ) );
 
       // Add the minor ticks
       for ( let i = 1; i < spinner.radiusRange.max / RADIUS_TICK_INCREMENT - 1; i++ ) {
@@ -109,7 +107,7 @@ define( require => {
       }
 
       // Add the radius NumberControlSet as a child.
-      numberControls.addChild( radiusNumberControlSet );
+      this.content.addChild( radiusNumberControlSet );
 
       //----------------------------------------------------------------------------------------
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
@@ -132,51 +130,28 @@ define( require => {
           angularVelocityNumberControlSet.addSliderMinorTick( value, label );
         }
 
-
         // Add the angular velocity NumberControlSet as a child.
-        numberControls.addChild( angularVelocityNumberControlSet );
+        this.content.addChild( angularVelocityNumberControlSet );
       }
+
+      // Add a Node that takes up Space for un-even spacing
+      this.content.addChild( fixHeight( new Node(), 10 ) );
+
+      //----------------------------------------------------------------------------------------
+      // Checkboxes
+
+      const linearVelocityVisibleCheckbox = new LabeledCheckbox(
+        new FlexBox( 'horizontal' ).setChildren( [ new Text( 'Linear Velocity Vector' ) ] ),
+        linearVelocityVisibleProperty
+      );
+      this.content.addChild( linearVelocityVisibleCheckbox );
+
+
+      // Add a Node that takes up Space for un-even spacing
+      this.content.addChild( fixHeight( new Node(), 15 ) );
 
       // Apply any additionally Bounds setters
       this.mutate( options );
-
-
-
-      // //----------------------------------------------------------------------------------------
-      // // Velocity checkbox
-      // const velocityCheckbox = new Checkbox( linearVelocityVisibleProperty
-      //   , { left: options.padding } );
-      // const velocityLabel = new Text( {
-      //   text: 'Linear Velocity Vector',
-      //   fontSize: 14,
-      //   fontWeight: 100,
-      //   attributes: {
-      //     'text-anchor': 'start',
-      //     'alignment-baseline': 'middle'
-      //   },
-      //   x: options.padding + velocityCheckbox.width + 10,
-      //   y: velocityCheckbox.height / 2
-      // } );
-
-      // const velocityVector = new VectorNode(
-      //   new Vector( options.width - options.padding - 30, velocityCheckbox.height / 2 ),
-      //   new Vector( options.width - options.padding, velocityCheckbox.height / 2 ), {
-      //     fill: 'rgb( 10, 170, 250 )' // TODO color constants file
-      //   } );
-      // const velocityContent = new SVGNode( {
-      //   top: 265,
-      //   width: options.width,
-      //   children: [ velocityCheckbox, velocityLabel, velocityVector ]
-      // } );
-
-      // //----------------------------------------------------------------------------------------
-      // // Render the children in the correct z-layering
-      // this.setChildren( [
-      //   background,
-      //   radiusSlider,
-      //   angularVelocitySlider,
-      //   velocityContent
-      // ] );
     }
   }
 
@@ -204,6 +179,29 @@ define( require => {
 
     const wrapper = new Node().setChildren( [ fixedWidthNode, node ] );
     wrapper.width = fixedWidthNode.width;
+    return wrapper;
+  }
+
+  /**
+   * Wraps a Node around another Node so that its a fixed height.
+   * @public
+   *
+   * @param {Node} node
+   * @returns {Node} the fixed height Node
+   */
+  function fixHeight( node, height ) {
+    // reset the location of node
+    node.left = 0;
+    node.top = 0;
+
+    const fixedHeightNode = new Node();
+    fixedHeightNode.height = height; // eye-balled
+
+    // center the node
+    node.centerY = fixedHeightNode.centerY;
+
+    const wrapper = new Node().setChildren( [ fixedHeightNode, node ] );
+    wrapper.height = fixedHeightNode.height;
     return wrapper;
   }
 
