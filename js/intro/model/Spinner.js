@@ -97,10 +97,10 @@ define( require => {
       this.stepTime = options.stepTime;
 
       // @public (read-only) {Bounds} - the bounds of the entire spinner-play area.
-      this.playBounds = new Bounds( -this.radiusRange.length - options.ballRadius / 2,
-        -this.radiusRange.length - options.ballRadius / 2,
-        this.radiusRange.length + options.ballRadius / 2,
-        this.radiusRange.length + options.ballRadius / 2, );
+      this.playBounds = new Bounds( -this.radiusRange.max - options.ballRadius,
+        -this.radiusRange.max - options.ballRadius,
+        this.radiusRange.max + options.ballRadius,
+        this.radiusRange.max + options.ballRadius );
 
       //----------------------------------------------------------------------------------------
 
@@ -176,10 +176,10 @@ define( require => {
     dragBallTo( position ) {
       // First shift the angle of the position vector. Correct the angle such that it outputs angles from [0, 2PI)
       const positionAngle = position.angle; // [-PI, PI] => [0, 2PI)
-      this.angle = positionAngle > 0 ? positionAngle : Math.PI * 2 + positionAngle;
+      this.angleProperty.value = positionAngle > 0 ? positionAngle : Math.PI * 2 + positionAngle;
 
       // Update the radius, restraining it in the radius range.
-      this.radius = Util.clamp( position.magnitude, this.radiusRange.x, this.radiusRange.y );
+      this.radius = Util.clamp( position.magnitude, this.radiusRange.min, this.radiusRange.max );
     }
 
     /**
