@@ -12,6 +12,7 @@ define( require => {
   'use strict';
 
   // modules
+  const Arrow = require( 'SIM_CORE/scenery/Arrow' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Node = require( 'SIM_CORE/scenery/Node' );
@@ -19,6 +20,24 @@ define( require => {
   const Util = require( 'SIM_CORE/util/Util' );
 
   const RotationalMotionIconFactory = {
+
+    /**
+     * Creates a arrow icon that points to the right, used with various checkboxes.
+     * @public
+     * @param {Object} [options]
+     * @returns {Node}
+     */
+    createVectorArrowIcon( options ) {
+      options = {
+        length: 20,
+        headHeight: 9,
+        headWidth: 11,
+        tailWidth: 3.5,
+
+        ...options
+      };
+      return new Arrow( 0, 0, options.length, 0, options );
+    },
 
     /**
      * Creates the icon on the CircularMotion types radio buttons in the 'intro' screen.

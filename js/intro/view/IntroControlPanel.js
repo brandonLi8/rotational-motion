@@ -26,6 +26,7 @@ define( require => {
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+  const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
@@ -139,7 +140,10 @@ define( require => {
       // Checkboxes
 
       const linearVelocityVisibleCheckbox = new LabeledCheckbox(
-        new FlexBox( 'horizontal' ).setChildren( [ new Text( 'Linear Velocity Vector' ) ] ),
+        new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
+          new Text( 'Linear Velocity Vector' ),
+          RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
+        ] ),
         linearVelocityVisibleProperty
       );
       this.content.addChild( linearVelocityVisibleCheckbox );
