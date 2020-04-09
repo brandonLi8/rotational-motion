@@ -123,7 +123,7 @@ define( require => {
         const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
-        const angularVelocityNumberControlSet = new NumberControlSet( Symbols.OMEGA,
+        const angularVelocityNumberControlSet = new NumberControlSet( `Angular Velocity (${ Symbols.OMEGA })`,
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions,

@@ -1,13 +1,14 @@
 // Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
- * A Custom Node for this simulation that displays a numerator on top of a denominator with a line in between.
+ * A custom Fraction Node, which displays a numerator, a horizontal line, and a denominator stacked vertically on top
+ * of each other.
  *
- * Note that the numerator and denominator can be any strings. This is used for other situations like with
- * units (e.g. rad/sec is a FractionNode).
+ * The numerator and denominator can be numbers or strings, to allow for fractional units (like rad/sec). FractionNode
+ * can be sub-typed to allow for multiple denominators (like 4/5/5) if desired.
  *
- * FractionNode uses FlexBox to align the numerator, fraction-line, and denominator. See scenery/FlexBox for more
- * documentation.
+ * FractionNode is a subtype of FlexBox, mainly to align the centerX of the numerator, fraction-line, and denominator.
+ * See sim-core/scenery/FlexBox for more documentation.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -37,12 +38,17 @@ define( require => {
 
       options = {
 
-        // {Object} - if provided, these options will be passed to the Text instances
-        textOptions: null,
-
+        // fraction-bar
         fractionBarFill: 'black',    // {string} the fill color of the fraction bar
         fractionBarStroke: 'black',  // {string} the stroke color of the fraction bar
         fractionBarStrokeWidth: 0.5, // {number} the stroke width of the fraction bar
+        fractionBarExtension: 3.5,   // {number} how far the fraction bar extends past the larger text
+
+        // {Object} - if provided, these options will be passed to the Text instances
+        textOptions: null,
+
+        // {number} - spacing between each component of the Fraction
+        spacing: 0.5,
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -53,21 +59,21 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Create the numerator and denominator Text Nodes.
-      const numeratorText = new Text( numerator, options.textOptions );
-      const denominatorText = new Text( denominator, options.textOptions );
+      const numeratorNode = new Text( numerator, options.textOptions );
+      const denominatorNode = new Text( denominator, options.textOptions );
+
+      // Compute the width of the fraction-bar.
+      const fractionBarWidth = Math.max( numeratorNode.width, denominatorNode.width ) + options.fractionBarExtension;
 
       // Create the fraction-bar.
-      const fractionBar = new Line( 0, 0, Math.max( numeratorText.width, denominatorText.width ) + 3, 0, {
+      const fractionBar = new Line( 0, 0, fractionBarWidth, 0, {
         fill: options.fractionBarFill,
         stroke: options.fractionBarStroke,
         strokeWidth: options.fractionBarStrokeWidth
       } );
 
-      // Add a Node that takes up Space for un-even spacing
-      const spacer = new Node( { height: 3 } ); // eye-balled
-
       // Set the children of the FractionNode
-      this.children = [ numeratorText, fractionBar, spacer, denominatorText ];
+      this.children = [ numeratorNode, fractionBar, denominatorNode ];
     }
   }
 
