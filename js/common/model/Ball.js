@@ -7,6 +7,7 @@
  * Primary responsibilities are:
  *  1. position Property to track the position of the Ball's center.
  *  2. radius Property to track the inner radius of the Ball.
+ *  3. mass Property to track the mass of the Ball.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -24,9 +25,10 @@ define( require => {
     /**
      * @param {Vector} initialCenterPosition - starting center position for the Ball
      * @param {number} initialRadius - the initial inner radius of the Ball.
+     * @param {number} initialMass - the initial mass of the Ball.
      * @param {Object} [options] - key-value pairs that control simple ball properties.
      */
-    constructor( initialCenterPosition, initialRadius, options ) {
+    constructor( initialCenterPosition, initialRadius, initialMass, options ) {
       assert( initialCenterPosition instanceof Vector, `invalid initialCenterPosition: ${ initialCenterPosition }` );
       assert( typeof initialRadius === 'number', `invalid initialRadius: ${ initialRadius }` );
 
@@ -38,6 +40,12 @@ define( require => {
         type: 'number',
         isValidValue: value => value >= 0 // radius must be greater than 0
       } );
+
+      // @public (read-only) massProperty - Property of the mass of the Ball.
+      this.massProperty = new Property( initialMass, {
+        type: 'number',
+        isValidValue: value => value >= 0 // mass must be greater than 0
+      } );
     }
 
     /**
@@ -47,6 +55,7 @@ define( require => {
     reset() {
       this.centerPositionProperty.reset();
       this.radiusProperty.reset();
+      this.massProperty.reset();
     }
 
     /**
@@ -76,6 +85,20 @@ define( require => {
      * @param {number} radius - in meters
      */
     set radius( radius ) { this.radiusProperty.value = radius; }
+
+    /**
+     * Gets the Ball's mass, in kg.
+     * @public
+     * @returns {number} - in kg
+     */
+    get mass() { return this.massProperty.value; }
+
+    /**
+     * Sets the Ball's mass, in kg.
+     * @public
+     * @param {number} mass - in kg
+     */
+    set mass( mass ) { this.massProperty.value = mass; }
   }
 
   return Ball;

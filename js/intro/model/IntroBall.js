@@ -23,6 +23,9 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
+  // constants
+  const INTRO_BALL_MASS = 1; // IntroBalls have a constant mass.
+
   class IntroBall extends Ball {
 
     /**
@@ -46,12 +49,12 @@ define( require => {
       assert( circularMotionRadiusProperty instanceof Property, 'invalid circularMotionRadiusProperty' );
       assert( circularMotionAngleProperty instanceof Property, 'invalid circularMotionAngleProperty' );
 
-      super( initialCenterPosition, ballRadius );
+      super( initialCenterPosition, ballRadius, INTRO_BALL_MASS );
 
       //----------------------------------------------------------------------------------------
 
-      // @public (read-only) velocityProperty - Property of the linear (tangential) velocity of the center of mass of
-      //                                        the Ball. Lasts for the entire sim and is never disposed.
+      // @public (read-only) - Property of the linear (tangential) velocity of the center of mass of the Ball. Lasts for
+      //                       the entire sim and is never disposed.
       this.tangentialVelocityVectorProperty = new DerivedProperty( [
         angularVelocityProperty,      // in radians per second
         circularMotionRadiusProperty, // in meters
@@ -64,8 +67,8 @@ define( require => {
           return new Vector( velocity, 0 ).rotate( angle + Math.PI / 2 ); // Rotate 90 to make the vector tangential
       } );
 
-      // @public (read-only) accelerationProperty - Property of the linear (tangential) acceleration of the center of
-      //                                            mass of the Ball. Lasts for the entire sim and is never disposed.
+      // @public (read-only) - Property of the linear (tangential) acceleration of the center of mass of the Ball. Lasts
+      //                       for the entire sim and is never disposed.
       this.tangentialAccelerationVectorProperty = new DerivedProperty( [
         angularAccelerationProperty,  // in radians per second per second
         circularMotionRadiusProperty, // in meters
@@ -78,6 +81,26 @@ define( require => {
           return new Vector( acceleration, 0 ).rotate( angle + Math.PI / 2 ); // Rotate 90 to make the vector tangential
       } );
 
+      // @public (read-only) - Property of the total acceleration of the center of mass of the Ball. Lasts for the entire
+      //                      sim and is never disposed.
+      this.totalAccelerationVectorProperty = new DerivedProperty( [
+        this.tangentialAccelerationVectorProperty,
+        this.tangentialVelocityVectorProperty,
+        circularMotionRadiusProperty,
+        circularMotionAngleProperty
+      ], ( tangentialAccelerationVector, tangentialVelocityVector, radius ) => {
+
+          // Calculate the centripetal acceleration of the Ball due to the Spinner. See
+          // https://en.wikipedia.org/wiki/Centripetal_force for physics background. Calculated as mv^2/r
+          const centripetalAcceleration = this.mass * Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
+
+          // Create the centripetal acceleration vector, pointing in the negative direction to make it center seeking.
+          const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 )
+                                                  .rotate( -circularMotionAngleProperty.value );
+
+          // Add both Vectors together to get the total acceleration.
+          return centripetalAccelerationVector.add( tangentialAccelerationVector );
+      } );
     }
   }
 
