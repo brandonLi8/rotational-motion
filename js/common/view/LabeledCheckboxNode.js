@@ -1,9 +1,9 @@
 // Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
- * A Custom Checkbox for this simulation with a label Node to the right-side of the box.
+ * LabeledCheckboxNode is a custom Node for this simulation with a label Node to the right-side of a Checkbox.
  *
- * The LabeledCheckbox looks visually like:
+ * The LabeledCheckboxNode looks visually like:
  *
  *  □ label
  *
@@ -22,10 +22,10 @@ define( require => {
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
-  class LabeledCheckbox extends Node {
+  class LabeledCheckboxNode extends Node {
 
     /**
-     * @param {Node} label - the label Node of the LabeledCheckbox
+     * @param {Node} label - the label Node of the LabeledCheckboxNode
      * @param {Property.<boolean>} toggleProperty - the Property to toggle when the Checkbox is pressed. The initial
      *                                              visibility of the check will be determined by the current value.
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
@@ -37,7 +37,11 @@ define( require => {
 
       options = {
 
-        spacing: 8, // {number} spacing between the box an the label
+        // {Object} - if provided, these options will be passed to the Checkbox instance
+        checkboxOptions: null,
+
+        // {number} spacing between the Checkbox an the label
+        spacing: 8,
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -47,16 +51,13 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Checkbox} - create the checkbox with options
-      this._checkbox = new Checkbox( toggleProperty, options );
+      // @private {Checkbox} - create the Checkbox with options
+      this._checkbox = new Checkbox( toggleProperty, options.checkboxOptions );
 
-      // Reset the location of Checkbox
-      this._checkbox.topLeft = Vector.ZERO;
-
-      // Set the location of the label relative to the checkbox.
+      // Set the location of the label relative to the Checkbox.
       label.centerLeft = this._checkbox.background.centerRight.addXY( options.spacing, 0 );
 
-      // Set the children of the LabeledCheckbox
+      // Set the children of the LabeledCheckboxNode
       this.children = [ this._checkbox, label ];
 
       // Apply any additionally Bounds setters
@@ -64,5 +65,5 @@ define( require => {
     }
   }
 
-  return LabeledCheckbox;
+  return LabeledCheckboxNode;
 } );

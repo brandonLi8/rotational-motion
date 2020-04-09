@@ -20,7 +20,7 @@ define( require => {
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
-  const LabeledCheckbox = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckbox' );
+  const LabeledCheckboxNode = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckboxNode' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
@@ -180,7 +180,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
       // Checkboxes
 
-      const linearVelocityVisibleCheckbox = new LabeledCheckbox(
+      const linearVelocityVisibleCheckbox = new LabeledCheckboxNode(
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
           new Text( 'Velocity Vector', { fontSize: 12 } ),
           RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
@@ -191,7 +191,7 @@ define( require => {
       this.content.addChild( linearVelocityVisibleCheckbox );
 
       if ( spinner.type === CircularMotionTypes.NON_UNIFORM ) {
-        const linearAccelerationVisibleCheckbox = new LabeledCheckbox(
+        const linearAccelerationVisibleCheckbox = new LabeledCheckboxNode(
           new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
             new Text( 'Linear Acceleration Vector', { fontSize: 12 } ),
             RotationalMotionIconFactory.createVectorArrowIcon(
@@ -206,7 +206,7 @@ define( require => {
       const totalAccelLabel = new Text( spinner.type === CircularMotionTypes.UNIFORM ? 'Acceleration Vector' :
         'Total Acceleration Vector', { fontSize: 12 } );
 
-      const totalAccelerationVisibleCheckbox = new LabeledCheckbox(
+      const totalAccelerationVisibleCheckbox = new LabeledCheckboxNode(
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
           totalAccelLabel,
           RotationalMotionIconFactory.createVectorArrowIcon(
