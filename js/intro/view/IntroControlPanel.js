@@ -217,9 +217,6 @@ define( require => {
       );
       this.content.addChild( totalAccelerationVisibleCheckbox );
 
-      // Add a Node that takes up Space for un-even spacing
-      this.content.addChild( fixHeight( new Node(), 15 ) );
-
       // Apply any additionally Bounds setters
       this.mutate( options );
     }

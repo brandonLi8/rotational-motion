@@ -52,7 +52,7 @@ define( require => {
      */
     createCircularMotionTypeIcon( circularMotionType ) {
       const label = new Text( circularMotionType === CircularMotionTypes.UNIFORM ? 'Uniform' : 'Non-uniform' );
-      return new AlignBox( label, 100, 15 );
+      return new AlignBox( label, 100, 17 );
     }
   };
 
