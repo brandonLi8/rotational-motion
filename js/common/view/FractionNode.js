@@ -73,6 +73,9 @@ define( require => {
 
       // Set the children of the FractionNode
       this.children = [ numeratorNode, fractionBar, denominatorNode ];
+
+      // Apply any additionally Bounds setters
+      this.mutate( options );
     }
   }
 

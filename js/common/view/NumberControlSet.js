@@ -4,8 +4,8 @@
  * Control Set for changing and displaying the value of a number Property.
  *
  * A NumberControlSet consists of:
- *   - A text label
- *   - A NumberDisplay of the number Property. See NumberDisplay.js for doc.
+ *   - A title Node
+ *   - A NumberDisplay of the number Property. See NumberDisplay.js for context.
  *   - A Slider to modify the value of the number Property.
  *
  * The NumberControlSet looks visually like:
@@ -33,26 +33,25 @@ define( require => {
   class NumberControlSet extends Node {
 
     /**
-     * @param {string} title - the text displayed in the label.
+     * @param {Node} title - the title displayed (see the comment at the top of the file for context).
      * @param {Property.<number|null>} numberProperty
-     * @param {Range} range - this range of the numberProperty.
+     * @param {Range} range - this range of the numberProperty
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
      *                             the options are set in the early portion of the constructor for details.
      */
     constructor( title, numberProperty, range, options ) {
-      assert( typeof title === 'string', `invalid title: ${ title }` );
+      assert( title instanceof Node, `invalid title: ${ title }` );
       assert( numberProperty instanceof Property, `invalid numberProperty: ${ numberProperty }` );
       assert( range instanceof Range, `invalid range: ${ range }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
-        sliderTopMargin: 4, // {number} margin between the slider and the content above
+
+        // {number} margin between the slider and the content above
+        sliderTopMargin: 4,
 
         // {Object} - if provided, these options will be passed to the Slider instance
         sliderOptions: null,
-
-        // {Object} - if provided, these options will be passed to the Text instance for the title
-        titleTextOptions: null,
 
         // {Object} - if provided, these options will be passed to the NumberDisplay instance
         numberDisplayOptions: null,
@@ -66,12 +65,10 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // @private {*} - see parameter declaration for documentation. Referenced for use in our methods.
+      this._title = title;
       this._numberProperty = numberProperty;
       this._range = range;
       this._sliderTopMargin = options.sliderTopMargin;
-
-      // @private {Text} - the Text Node for the title label of the NumberControlSet
-      this._titleNode = new Text( title, options.titleTextOptions );
 
       // @private {NumberDisplay} - the number display of the NumberControlSet
       this._numberDisplay = new NumberDisplay( numberProperty, range, options.numberDisplayOptions );
@@ -79,8 +76,14 @@ define( require => {
       // @private {Slider} (read-only) - the slider of the NumberControlSet.
       this._slider = new Slider( range, numberProperty, options.sliderOptions );
 
+      // @private {boolean} - Indicates if we are in the process of updating the layout of the Panel. Used
+      //                      to reduce the number of _recomputeAncestorBounds calls while layouting.
+      this._isUpdatingLayout = false;
+
+      //----------------------------------------------------------------------------------------
+
       // Add the content of the NumberControlSet as children
-      this.children = [ this._titleNode, this._numberDisplay, this._slider ];
+      this.children = [ this._title, this._numberDisplay, this._slider ];
 
       // Update the layout of our children.
       this._updateLayout();
@@ -97,7 +100,6 @@ define( require => {
     dispose() {
       this._slider.dispose();
       this._numberDisplay.dispose();
-      this._titleNode.dispose();
       super.dispose();
     }
 
@@ -136,16 +138,40 @@ define( require => {
      * NOTE: Will change the location of its children, and possibly the location of this Node's content.
      */
     _updateLayout() {
-      this._titleNode.left = this._slider.left;
+      this._isUpdatingLayout = true; // Indicate that we are now updating our layout.
+
+      // First position the title and numberDisplay horizontally relative to the slider.
+      this._title.left = this._slider.left;
       this._numberDisplay.right = this._slider.right;
 
-      if ( this._titleNode.height > this._numberDisplay.height ) {
-        this._numberDisplay.centerY = this._titleNode.centerY;
-        this._slider.top = this._titleNode.bottom + this._sliderTopMargin;
+      // Position the title and NumberDisplay vertically relative to the slider.
+      if ( this._title.height > this._numberDisplay.height ) {
+        this._numberDisplay.centerY = this._title.centerY;
+        this._slider.top = this._title.bottom + this._sliderTopMargin;
       }
       else {
-        this._titleNode.centerY = this._numberDisplay.centerY;
+        this._title.centerY = this._numberDisplay.centerY;
         this._slider.top = this._numberDisplay.bottom + this._sliderTopMargin;
+      }
+
+      this._isUpdatingLayout = false; // Indicate that we are now done updating our layout of our children.
+      super._recomputeAncestorBounds();
+    }
+
+    /**
+     * @override
+     * This method is called when a child's Bounds changes. In Node, this method is responsible for adjusting its
+     * Bounds and recursively calling the method for each parent up the ancestor tree.
+     * @protected
+     *
+     * This is overridden to reduce redundant calls to this method when we are manually updating our child's Bounds in
+     * our _updateLayout method. We remove the super-class functionality when we are still layouting.
+     */
+    _recomputeAncestorBounds() {
+      if ( this._isUpdatingLayout === true ) { /** do nothing **/ }
+      else {
+        this._updateLayout();
+        super._recomputeAncestorBounds(); // now that layouting is finished, forward to the super-class functionality
       }
     }
   }

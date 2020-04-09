@@ -101,7 +101,7 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // IntroControlPanel's always have a NumberControlSet for the radius
-      const radiusNumberControlSet = new NumberControlSet( 'Radius', spinner.radiusProperty, spinner.radiusRange, {
+      const radiusNumberControlSet = new NumberControlSet( new Text( 'Radius' ), spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions,
         numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: 0 }
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
@@ -123,7 +123,7 @@ define( require => {
         const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
-        const angularVelocityNumberControlSet = new NumberControlSet( `Angular Velocity (${ Symbols.OMEGA })`,
+        const angularVelocityNumberControlSet = new NumberControlSet( new Text( `Angular Velocity (${ Symbols.OMEGA })` ),
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions,
@@ -149,7 +149,7 @@ define( require => {
         const minNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.max ) );
 
         // Add a angular acceleration NumberControlSet for non-uniform spinners.
-        const angularAccelerationNumberControlSet = new NumberControlSet( Symbols.ALPHA,
+        const angularAccelerationNumberControlSet = new NumberControlSet( new Text( Symbols.ALPHA ),
           spinner.angularAccelerationProperty,
           spinner.angularAccelerationRange, {
             sliderOptions,
