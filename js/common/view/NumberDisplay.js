@@ -47,7 +47,7 @@ define( require => {
         xAlign: 'center',  // {string} - the alignment of the Text: 'left', 'center', or 'right'.
         yAlign: 'center',  // {string} - the alignment of the Text: 'top', 'center', or 'bottom'.
         unit: null,        // {Node} - if provided, this will be appended to the end of the Text as a unit.
-        unitSpacing: 4,    // {number} - spacing between a potential Unit node and the text.
+        unitSpacing: 3,    // {number} - spacing between a potential Unit node and the text.
         decimalPlaces: 0,  // {number|null} the number of decimal places to show. If null, the full value is displayed.
         xMargin: 11,       // {number} - the x-margin between the longest/tallest Text and the background.
         yMargin: 1,        // {number} - the x-margin between the longest/tallest Text and the background.
@@ -148,7 +148,7 @@ define( require => {
       const yAlignKey = this._yAlign === 'center' ? 'centerY' : this._yAlign;
 
       this._content[ xAlignKey ] = this._background[ xAlignKey ];
-      this._content[ yAlignKey ] = this._background[ yAlignKey ] + 1.5; // eye-balled
+      this._content[ yAlignKey ] = this._background[ yAlignKey ];
     }
   }
 
