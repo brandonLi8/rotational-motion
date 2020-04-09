@@ -1,14 +1,13 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * Base class for a Ball view for all types of Balls.
+ * BallNode is the root view-class for a Ball in all Screens.
  * It is intended to be subclassed as its functionality differs for different screens.
  *
  * Primary responsibilities are:
- *  1. Create a Circle that represents the visual aspect of a Ball
- *  2. Update the Circle's center location when the Ball's position changes.
- *  3. Update the Circle's radius when the Ball's radius changes.
- *  4. Create an API that allows for all Ball appearances and behaviors.
+ *  - Create a Circle that represents the visual Ball object
+ *  - Update the Circle's center location when the Ball's position changes
+ *  - Update the Circle's radius when the Ball's radius changes
  *
  * BallNode subtypes are created at the start of the sim and are never disposed, so no dispose method is necessary
  * and links are left as-is.
@@ -42,10 +41,10 @@ define( require => {
 
       options = {
 
-        fill: 'white',            // {string|Gradient} - fill color of the ball.
-        stroke: 'black',          // {string|Gradient} - border color of the ball.
-        strokeWidth: 1,           // {string} - stroke width of the ball.
-        cursor: 'pointer',        // {string} - cursor of the ball.
+        fill: 'white',      // {string|Gradient} - fill color of the ball-circle.
+        stroke: 'black',    // {string|Gradient} - border color of the ball-circle.
+        strokeWidth: 1,     // {string} - stroke width of the ball-circle.
+        cursor: 'pointer',  // {string} - cursor of the entire Ball Node.
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -59,25 +58,36 @@ define( require => {
       const ballCircle = new Circle( 0, {
         fill: options.fill,
         stroke: options.stroke,
-        strokeWidth: options.strokeWidth,
-        cursor: options.cursor
+        strokeWidth: options.strokeWidth
       } );
 
       // Add the ball-circle as a child of this Node.
       this.addChild( ballCircle );
 
       // Listen to when the when the Ball's position changes and update the position of the ballCircle. Links are left
-      // as-is since BallNode subtypes are not meant to be disposed.
+      // as-is since BallNode subtypes are never disposed.
       ball.centerPositionProperty.link( center => {
         ballCircle.center = modelViewTransform.modelToViewPoint( center );
       } );
 
       // Listen to when the when the Ball's radius changes and update the radius of the ballCircle. Links are left
-      // as-is since BallNode subtypes are not meant to be disposed.
+      // as-is since BallNode subtypes are never disposed.
       ball.radiusProperty.link( radius => {
         ballCircle.radius = modelViewTransform.modelToViewDeltaX( radius );
       } );
     }
+
+    /**
+     * @override
+     * This method is called when a child's Bounds changes. In Node, this method is responsible for adjusting its
+     * Bounds and recursively calling the method for each parent up the ancestor tree.
+     * @protected
+     *
+     * This is overridden to allow for negative Bounds of its children. The current implementation of Node shifts the
+     * Bounds of children so that they are all positive and offsets it. However, since the accuracy of Bounds is not
+     * important for BallNodes, this removes that functionality.
+     */
+    _recomputeAncestorBounds() { /** do nothing **/ }
   }
 
   return BallNode;

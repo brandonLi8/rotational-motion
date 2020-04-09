@@ -137,7 +137,7 @@ define( require => {
      * Bounds of children if they are negative and offsets it.
      */
     _recomputeAncestorBounds() {
-      this.layout( this.screenViewScale );
+      // do nothing
     }
   }
 
