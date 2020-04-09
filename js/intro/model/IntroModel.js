@@ -12,12 +12,8 @@ define( require => {
   'use strict';
 
   // modules
-  const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
-  const Property = require( 'SIM_CORE/util/Property' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const NonUniformSpinner = require( 'ROTATIONAL_MOTION/intro/model/NonUniformSpinner' );
   const UniformSpinner = require( 'ROTATIONAL_MOTION/intro/model/UniformSpinner' );
-  const nonUniformSpinner = require( 'ROTATIONAL_MOTION/intro/model/nonUniformSpinner' );
 
   class IntroModel {
 
@@ -27,7 +23,7 @@ define( require => {
       this.uniformSpinner = new UniformSpinner();
 
       // @public (read-only) {Spinner} - the non-uniform Spinner
-      this.nonUniformSpinner = new nonUniformSpinner();
+      this.nonUniformSpinner = new NonUniformSpinner();
     }
 
     /**

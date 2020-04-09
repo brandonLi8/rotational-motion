@@ -13,11 +13,9 @@ define( require => {
 
   // modules
   const Arrow = require( 'SIM_CORE/scenery/Arrow' );
-  const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
 
   const RotationalMotionIconFactory = {
 

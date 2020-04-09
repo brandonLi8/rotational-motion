@@ -31,7 +31,7 @@ define( require => {
     constructor( circularMotionTypeProperty, options ) {
       assert( circularMotionTypeProperty instanceof Property &&
         CircularMotionTypes.includes( circularMotionTypeProperty.value ), 'invalid circularMotionTypeProperty' );
-      assert( Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${options}` );
+      assert( Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
         spacing: 8,

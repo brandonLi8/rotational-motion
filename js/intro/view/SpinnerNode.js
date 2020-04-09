@@ -89,8 +89,8 @@ define( require => {
 
       // Create a Time Control Box
       const timeControlBox = new TimeControlBox( spinner.isPlayingProperty, {
-        stepBackwardOptions: { listener() { spinner.stepBackwards(); }, },
-        stepForwardOptions: { listener() { spinner.stepForwards(); }, },
+        stepBackwardOptions: { listener() { spinner.stepBackwards(); } },
+        stepForwardOptions: { listener() { spinner.stepForwards(); } },
         topCenter: playAreaViewBounds.topCenter.addXY( 0, 15 ) // eye-balled margin
       } );
 

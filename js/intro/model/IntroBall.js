@@ -23,9 +23,6 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
-  // constants
-  const INTRO_BALL_MASS = 1; // IntroBalls have a constant mass.
-
   class IntroBall extends Ball {
 
     /**
@@ -49,7 +46,7 @@ define( require => {
       assert( circularMotionRadiusProperty instanceof Property, 'invalid circularMotionRadiusProperty' );
       assert( circularMotionAngleProperty instanceof Property, 'invalid circularMotionAngleProperty' );
 
-      super( initialCenterPosition, ballRadius, INTRO_BALL_MASS );
+      super( initialCenterPosition, ballRadius );
 
       //----------------------------------------------------------------------------------------
 
@@ -81,8 +78,8 @@ define( require => {
           return new Vector( acceleration, 0 ).rotate( angle + Math.PI / 2 ); // Rotate 90 to make the vector tangential
       } );
 
-      // @public (read-only) - Property of the total acceleration of the center of mass of the Ball. Lasts for the entire
-      //                      sim and is never disposed.
+      // @public (read-only) - Property of the total acceleration of the center of mass of the Ball. Lasts for the
+      //                       entire sim and is never disposed.
       this.totalAccelerationVectorProperty = new DerivedProperty( [
         this.tangentialAccelerationVectorProperty,
         this.tangentialVelocityVectorProperty,
@@ -91,8 +88,8 @@ define( require => {
       ], ( tangentialAccelerationVector, tangentialVelocityVector, radius ) => {
 
           // Calculate the centripetal acceleration of the Ball due to the Spinner. See
-          // https://en.wikipedia.org/wiki/Centripetal_force for physics background. Calculated as mv^2/r
-          const centripetalAcceleration = this.mass * Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
+          // https://en.wikipedia.org/wiki/Centripetal_force for physics background. Calculated as v^2/r
+          const centripetalAcceleration = Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
 
           // Create the centripetal acceleration vector, pointing in the negative direction to make it center seeking.
           const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 )

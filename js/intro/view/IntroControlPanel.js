@@ -42,9 +42,9 @@ define( require => {
     }
   };
   const OMEGA_TICK_INCREMENT = Math.PI / 16;
-  const OMEGA_TIC_LABEL_INCREMENT = 2;
+  const OMEGA_TICK_LABEL_INCREMENT = 2;
   const ALPHA_TICK_INCREMENT = Math.PI / 16;
-  const ALPHA_TIC_LABEL_INCREMENT = 2;
+  const ALPHA_TICK_LABEL_INCREMENT = 2;
 
   class IntroControlPanel extends Panel {
 
@@ -117,7 +117,7 @@ define( require => {
       this.content.addChild( radiusNumberControlSet );
 
       //----------------------------------------------------------------------------------------
-      if ( spinner.type === CircularMotionTypes.UNIFORM  ) {
+      if ( spinner.type === CircularMotionTypes.UNIFORM ) {
         const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
         const maxNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.min ) );
         const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
@@ -135,7 +135,7 @@ define( require => {
         // Add the minor ticks
         for ( let i = 1; i <= spinner.angularVelocityRange.max / OMEGA_TICK_INCREMENT - 1; i++ ) {
           const value = i * OMEGA_TICK_INCREMENT + spinner.angularVelocityRange.min;
-          const label = i % OMEGA_TIC_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          const label = i % OMEGA_TICK_LABEL_INCREMENT ? null : fractionalPiNode( value );
           angularVelocityNumberControlSet.addSliderMinorTick( value, label );
         }
 
@@ -161,8 +161,13 @@ define( require => {
         // Add the minor ticks
         for ( let i = 1; i <= spinner.angularAccelerationRange.length / ALPHA_TICK_INCREMENT - 1; i++ ) {
           const value = i * ALPHA_TICK_INCREMENT + spinner.angularAccelerationRange.min;
-          const label = i % ALPHA_TIC_LABEL_INCREMENT ? null : fractionalPiNode( value );
-          angularAccelerationNumberControlSet.addSliderMinorTick( value, label );
+          const label = i % ALPHA_TICK_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          if ( value === 0 ) {
+            angularAccelerationNumberControlSet.addSliderMajorTick( value, label );
+          }
+          else {
+            angularAccelerationNumberControlSet.addSliderMinorTick( value, label );
+          }
         }
 
         // Add the angular velocity NumberControlSet as a child.

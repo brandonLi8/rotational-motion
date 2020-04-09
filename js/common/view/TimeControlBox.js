@@ -13,7 +13,6 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
   const PlayPauseButton = require( 'SIM_CORE/scenery/buttons/PlayPauseButton' );
   const Property = require( 'SIM_CORE/util/Property' );
   const StepButton = require( 'SIM_CORE/scenery/buttons/StepButton' );

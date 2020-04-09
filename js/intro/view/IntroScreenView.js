@@ -18,12 +18,10 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const Bounds = require( 'SIM_CORE/util/Bounds' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const CircularMotionTypesRadioButtonGroup = require( 'ROTATIONAL_MOTION/intro/view/CircularMotionTypesRadioButtonGroup' ); // eslint-disable-line max-len
   const IntroControlPanel = require( 'ROTATIONAL_MOTION/intro/view/IntroControlPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
-  const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
   const ResetButton = require( 'SIM_CORE/scenery/buttons/ResetButton' );
@@ -86,8 +84,8 @@ define( require => {
           } );
 
         // Create a wrapper scene Node.
-        const scene = new Node().setChildren( [ spinnerNode, controlPanel ] );
-        scene.playingWhenSceneSwitches = null; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+        const scene = new Node().setChildren( [ controlPanel, spinnerNode ] );
+        scene.playingWhenSceneSwitches = null; // Flag that indicates if the spinner was playing when a drag starts.
 
         // Adjust visibility based on the circularMotionTypeProperty
         this.circularMotionTypeProperty.link( () => {

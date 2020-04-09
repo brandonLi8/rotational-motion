@@ -20,7 +20,6 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
-  const Property = require( 'SIM_CORE/util/Property' );
   const Range = require( 'SIM_CORE/util/Range' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
 
@@ -34,9 +33,14 @@ define( require => {
 
       options = {
 
-        angularAccelerationRange: new Range( -Math.PI / 4, Math.PI / 4 ), // {range} - the range of the angular acceleration
-        initialAngularVelocity: 0,                                // {number} - the starting angular velocity
-        initialAngularAcceleration: Math.PI / 8,                  // {number} - the starting angular acceleration
+        // {range} - the range of the angular acceleration
+        angularAccelerationRange: new Range( -Math.PI / 4, Math.PI / 4 ),
+
+        // {number} - the starting angular velocity
+        initialAngularVelocity: 0,
+
+        // {number} - the starting angular acceleration
+        initialAngularAcceleration: Math.PI / 8,
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -45,8 +49,7 @@ define( require => {
       super( CircularMotionTypes.NON_UNIFORM,
              options.initialAngularVelocity,
              options.initialAngularAcceleration,
-             options
-      );
+             options );
 
       //----------------------------------------------------------------------------------------
 
