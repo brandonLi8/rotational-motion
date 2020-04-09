@@ -20,7 +20,7 @@ define( require => {
     // intro-screen
     INTRO_BALL_RADIUS: 0.05, // in meters
     VELOCITY_SCALAR: 0.5, // eye-balled
-    ACCELERATION_SCALAR: 0.5, // eye-balled
+    ACCELERATION_SCALAR: 0.3, // eye-balled
     INTRO_MAX_VELOCITY: Math.PI / 2,
     INTRO_MAX_VELOCITY_SYMBOL: `${ Symbols.PI } / 2`
 

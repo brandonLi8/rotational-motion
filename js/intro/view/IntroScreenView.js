@@ -79,7 +79,8 @@ define( require => {
         // Create the Control Panel
         const controlPanel = new IntroControlPanel( spinner,
           this.linearVelocityVisibleProperty,
-          this.linearAccelerationVisibleProperty, {
+          this.linearAccelerationVisibleProperty,
+          this.totalAccelerationVisibleProperty, {
             right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
             top: SCREEN_VIEW_Y_MARGIN
           } );

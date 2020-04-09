@@ -52,12 +52,20 @@ define( require => {
      * @param {Spinner} spinner
      * @param {Property.<boolean>} linearVelocityVisibleProperty
      * @param {Property.<boolean>} linearAccelerationVisibleProperty
+     * @param {Property.<boolean>} totalAccelerationVisibleProperty
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.
      */
-    constructor( spinner, linearVelocityVisibleProperty, linearAccelerationVisibleProperty, options ) {
+    constructor(
+      spinner,
+      linearVelocityVisibleProperty,
+      linearAccelerationVisibleProperty,
+      totalAccelerationVisibleProperty,
+      options
+    ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( linearVelocityVisibleProperty instanceof Property, 'invalid linearVelocityVisibleProperty' );
       assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
+      assert( totalAccelerationVisibleProperty instanceof Property, 'invalid totalAccelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
@@ -169,7 +177,7 @@ define( require => {
 
       const linearVelocityVisibleCheckbox = new LabeledCheckbox(
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
-          new Text( 'Linear Velocity Vector', { fontSize: 12 } ),
+          new Text( 'Velocity Vector', { fontSize: 12 } ),
           RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
         ] ),
         linearVelocityVisibleProperty,
@@ -189,6 +197,20 @@ define( require => {
         );
         this.content.addChild( linearAccelerationVisibleCheckbox );
       }
+
+      const totalAccelLabel = new Text( spinner.type === CircularMotionTypes.UNIFORM ? 'Acceleration Vector' :
+        'Total Acceleration Vector', { fontSize: 12 } );
+
+      const totalAccelerationVisibleCheckbox = new LabeledCheckbox(
+        new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
+          totalAccelLabel,
+          RotationalMotionIconFactory.createVectorArrowIcon(
+            RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_COLORS )
+        ] ),
+        totalAccelerationVisibleProperty,
+        { boxSize: 16 }
+      );
+      this.content.addChild( totalAccelerationVisibleCheckbox );
 
       // Add a Node that takes up Space for un-even spacing
       this.content.addChild( fixHeight( new Node(), 15 ) );
