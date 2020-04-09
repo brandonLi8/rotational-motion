@@ -51,7 +51,6 @@ define( require => {
 
       // Add a spacer to align ensure that the Bounds of the AlignBox is fixed.
       const spacer = new Node( { width: fixedWidth, height: fixedHeight } );
-      content.mutate( { maxWidth: fixedWidth, maxHeight: fixedHeight } );
 
       // Strip center to centerX or centerY
       const xAlignKey = options.xAlign === 'center' ? 'centerX' : options.xAlign;
