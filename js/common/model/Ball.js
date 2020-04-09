@@ -24,9 +24,8 @@ define( require => {
     /**
      * @param {Vector} initialCenterPosition - starting center position for the Ball
      * @param {number} initialRadius - the initial inner radius of the Ball.
-     * @param {Object} [options] - key-value pairs that control simple ball properties.
      */
-    constructor( initialCenterPosition, initialRadius, options ) {
+    constructor( initialCenterPosition, initialRadius ) {
       assert( initialCenterPosition instanceof Vector, `invalid initialCenterPosition: ${ initialCenterPosition }` );
       assert( typeof initialRadius === 'number', `invalid initialRadius: ${ initialRadius }` );
 
@@ -49,9 +48,12 @@ define( require => {
       this.radiusProperty.reset();
     }
 
+    //----------------------------------------------------------------------------------------
+
     /**
      * Gets the position of the Ball's center, in meter coordinates.
      * @public
+     *
      * @returns {Vector} - in meter coordinates
      */
     get center() { return this.centerPositionProperty.value; }
@@ -59,6 +61,7 @@ define( require => {
     /**
      * Sets the position of the Ball's center, in meter coordinates.
      * @public
+     *
      * @param {Vector} center - in meter coordinates
      */
     set center( center ) { this.centerPositionProperty.value = center; }
@@ -66,6 +69,7 @@ define( require => {
     /**
      * Gets the Ball's radius, in meters.
      * @public
+     *
      * @returns {number} - in meters
      */
     get radius() { return this.radiusProperty.value; }
@@ -73,6 +77,7 @@ define( require => {
     /**
      * Sets the Ball's radius, in meters.
      * @public
+     *
      * @param {number} radius - in meters
      */
     set radius( radius ) { this.radiusProperty.value = radius; }
