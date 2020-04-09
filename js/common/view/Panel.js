@@ -71,7 +71,7 @@ define( require => {
       this.children = [ this._background, this.content ];
 
       // At this point, call mutate to ensure that any location setters provided are correctly mutated and our
-      // properties are correctly set. in Node.mutate()
+      // properties are correctly set in Node.mutate()
       this.mutate( options );
     }
 
