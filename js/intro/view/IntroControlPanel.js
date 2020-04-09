@@ -143,7 +143,7 @@ define( require => {
         this.content.addChild( angularVelocityNumberControlSet );
       }
       else {
-        const radPerSecSquaredNode = new FractionNode( 'rad', 'sec^2', FRACTION_OPTIONS );
+        const radPerSecSquaredNode = new FractionNode( 'rad', `sec${ Symbols.TIMES }sec`, FRACTION_OPTIONS );
 
         const maxNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.min ) );
         const minNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.max ) );
