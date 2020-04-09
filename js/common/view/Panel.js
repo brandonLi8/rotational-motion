@@ -95,20 +95,23 @@ define( require => {
       this.content.center = this._background.center;
 
       this._isUpdatingLayout = false; // Indicate that we are now done updating our layout of our children.
-      super._recomputeAncestorBounds();
     }
 
     /**
      * @override
-     * Called when this Node's Bounds changes due to a child's Bounds changing or when a child is added or removed.
-     * Also responsible for recursively calling the method for each parent up to either the ScreenView or to the
-     * point where a Node doesn't have a parent.
+     * This method is called when a child's Bounds changes. In Node, this method is responsible for adjusting its
+     * Bounds and recursively calling the method for each parent up the ancestor tree.
      * @protected
      *
-     * This is overridden so that the layout of the Panel updates when a child changes.
+     * This is overridden to reduce redundant calls to this method when we are manually updating our child's Bounds in
+     * our _updateLayout method. We remove the super-class functionality when we are still layouting.
      */
     _recomputeAncestorBounds() {
-      if ( this._isUpdatingLayout === false ) return this._updateLayout();
+      if ( this._isUpdatingLayout === true ) { /** do nothing **/ }
+      else {
+        this._updateLayout();
+        super._recomputeAncestorBounds(); // now that layouting is finished, forward to the super-class functionality
+      }
     }
   }
 
