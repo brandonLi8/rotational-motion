@@ -40,14 +40,14 @@ define( require => {
 
     // Colors for tangential acceleration vectors of Ball's in the intro screen.
     LINEAR_ACCELERATION_VECTOR_COLORS: {
-      fill: 'red',
+      fill: 'purple',
       stroke: 'black',
       strokeWidth: 0.5
     },
 
     // Colors for total acceleration vectors of Ball's in the intro screen.
     TOTAL_ACCELERATION_VECTOR_COLORS: {
-      fill: 'purple',
+      fill: 'red',
       stroke: 'black',
       strokeWidth: 0.5
     },

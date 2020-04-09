@@ -34,9 +34,9 @@ define( require => {
 
       options = {
 
-        angularAccelerationRange: new Range( 0, Math.PI / 4 ),    // {range} - the range of the angular acceleration
+        angularAccelerationRange: new Range( -Math.PI / 4, Math.PI / 4 ), // {range} - the range of the angular acceleration
         initialAngularVelocity: 0,                                // {number} - the starting angular velocity
-        initialAngularAcceleration: Math.PI / 4,                  // {number} - the starting angular acceleration
+        initialAngularAcceleration: Math.PI / 8,                  // {number} - the starting angular acceleration
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options

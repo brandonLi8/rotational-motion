@@ -159,7 +159,7 @@ define( require => {
         .addSliderMajorTick( spinner.angularAccelerationRange.max, minNode );
 
         // Add the minor ticks
-        for ( let i = 1; i <= spinner.angularAccelerationRange.max / ALPHA_TICK_INCREMENT - 1; i++ ) {
+        for ( let i = 1; i <= spinner.angularAccelerationRange.length / ALPHA_TICK_INCREMENT - 1; i++ ) {
           const value = i * ALPHA_TICK_INCREMENT + spinner.angularAccelerationRange.min;
           const label = i % ALPHA_TIC_LABEL_INCREMENT ? null : fractionalPiNode( value );
           angularAccelerationNumberControlSet.addSliderMinorTick( value, label );
