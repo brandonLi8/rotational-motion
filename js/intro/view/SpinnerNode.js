@@ -45,16 +45,19 @@ define( require => {
     /**
      * @param {Spinner} spinner
      * @param {Property.<boolean>} velocityVisibleProperty
-     * @param {Property.<boolean>} accelerationVisibleProperty
+     * @param {Property.<boolean>} linearAccelerationVisibleProperty
+     * @param {Property.<boolean>} totalAccelerationVisibleProperty
      */
     constructor(
       spinner,
       velocityVisibleProperty,
-      accelerationVisibleProperty
+      linearAccelerationVisibleProperty,
+      totalAccelerationVisibleProperty
     ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
-      assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
+      assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
+      assert( totalAccelerationVisibleProperty instanceof Property, 'invalid totalAccelerationVisibleProperty' );
 
       //----------------------------------------------------------------------------------------
 
@@ -79,7 +82,8 @@ define( require => {
       const ballNode = new IntroBallNode( spinner.ball,
         modelViewTransform,
         velocityVisibleProperty,
-        accelerationVisibleProperty,
+        linearAccelerationVisibleProperty,
+        totalAccelerationVisibleProperty,
         { ...RotationalMotionColors.SPINNER_BALL_COLORS } );
 
 

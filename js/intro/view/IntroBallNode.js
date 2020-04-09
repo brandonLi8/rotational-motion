@@ -37,20 +37,23 @@ define( require => {
      * @param {IntroBall} ball - the Ball model
      * @param {ModelViewTransform} modelViewTransform - coordinate transform between model and view
      * @param {Property.<boolean>} velocityVisibleProperty
-     * @param {Property.<boolean>} accelerationVisibleProperty
+     * @param {Property.<boolean>} linearAccelerationVisibleProperty
+     * @param {Property.<boolean>} totalAccelerationVisibleProperty
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior.
      */
     constructor(
       ball,
       modelViewTransform,
       velocityVisibleProperty,
-      accelerationVisibleProperty,
+      linearAccelerationVisibleProperty,
+      totalAccelerationVisibleProperty,
       options
     ) {
       assert( ball instanceof IntroBall, `invalid ball: ${ ball }` );
       assert( modelViewTransform instanceof ModelViewTransform, `invalid modelViewTransform: ${ modelViewTransform }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
-      assert( accelerationVisibleProperty instanceof Property, 'invalid accelerationVisibleProperty' );
+      assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
+      assert( totalAccelerationVisibleProperty instanceof Property, 'invalid totalAccelerationVisibleProperty' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       super( ball, modelViewTransform, options );
@@ -61,11 +64,15 @@ define( require => {
       this._velocityArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS );
 
       // @private {Arrow} - represents the Ball's LINEAR acceleration, initialized at 0 for now.
-      this._accelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS );
+      this._linearAccelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS );
+
+      // @private {Arrow} - represents the Ball's total acceleration, initialized at 0 for now.
+      this._totalAccelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_COLORS );
 
       // Add the Arrow's as children, which will allow it to be displayed above the Ball circle.
       this.addChild( this._velocityArrow );
-      this.addChild( this._accelerationArrow );
+      this.addChild( this._linearAccelerationArrow );
+      this.addChild( this._totalAccelerationArrow );
 
       //----------------------------------------------------------------------------------------
 
@@ -78,19 +85,29 @@ define( require => {
           this._velocityArrow.tip = modelViewTransform.modelToViewPoint( scaledVelocity.add( ball.center ) );
         } );
 
-      // Updates the acceleration arrow when the Ball's acceleration changes or when the Ball's center position changes.
-      // Doesn't need to be disposed since IntroBalls are never disposed.
+      // Updates the linear acceleration arrow when the Ball's acceleration changes or when the Ball's center position
+      // changes. Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.tangentialAccelerationVectorProperty, ball.centerPositionProperty ],
         ( accelerationVector ) => {
-          const scaledAcceleration = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
-          this._accelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
-          this._accelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAcceleration.add( ball.center ) );
+          const scaledAccel = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
+          this._linearAccelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
+          this._linearAccelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAccel.add( ball.center ) );
+        } );
+
+      // Updates the total acceleration arrow when the Ball's acceleration changes or when the Ball's center position
+      // changes. Doesn't need to be disposed since IntroBalls are never disposed.
+      new Multilink( [ ball.totalAccelerationVectorProperty, ball.centerPositionProperty ],
+        ( accelerationVector ) => {
+          const scaledAccel = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
+          this._totalAccelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
+          this._totalAccelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAccel.add( ball.center ) );
         } );
 
       // Observe when the Vector Visibility Properties change and update the visibility of the Arrows.
       // Links don't have to be unlinked since Intro Ball's are never disposed.
       velocityVisibleProperty.linkAttribute( this._velocityArrow, 'visible' );
-      accelerationVisibleProperty.linkAttribute( this._accelerationArrow, 'visible' );
+      linearAccelerationVisibleProperty.linkAttribute( this._linearAccelerationArrow, 'visible' );
+      totalAccelerationVisibleProperty.linkAttribute( this._totalAccelerationArrow, 'visible' );
     }
 
     /**

@@ -53,6 +53,9 @@ define( require => {
       // @public (read-only) - indicates if the linear acceleration Vectors are visible or not for both Spinners.
       this.linearAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
 
+      // @public (read-only) - indicates if the total acceleration Vectors are visible or not for both Spinners.
+      this.totalAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
+
       // @public (read-only) - indicates the current circular motion type.
       this.circularMotionTypeProperty = new Property( DEFAULT_CIRCULAR_MOTION_TYPE, {
         validValues: CircularMotionTypes.MEMBERS
@@ -70,7 +73,8 @@ define( require => {
         const spinnerNode = new SpinnerNode(
           spinner,
           this.linearVelocityVisibleProperty,
-          this.linearAccelerationVisibleProperty
+          this.linearAccelerationVisibleProperty,
+          this.totalAccelerationVisibleProperty
         );
         // Create the Control Panel
         const controlPanel = new IntroControlPanel( spinner,
@@ -128,6 +132,7 @@ define( require => {
       this.circularMotionTypeProperty.reset();
       this.linearVelocityVisibleProperty.reset();
       this.linearAccelerationVisibleProperty.reset();
+      this.totalAccelerationVisibleProperty.reset();
     }
   }
 
