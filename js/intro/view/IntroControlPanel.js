@@ -186,7 +186,7 @@ define( require => {
           RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
         ] ),
         linearVelocityVisibleProperty,
-        { boxSize: 16 }
+        { checkboxOptions: { boxSize: 16 } }
       );
       this.content.addChild( linearVelocityVisibleCheckbox );
 
@@ -198,7 +198,7 @@ define( require => {
               RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS )
           ] ),
           linearAccelerationVisibleProperty,
-          { boxSize: 16 }
+          { checkboxOptions: { boxSize: 16 } }
         );
         this.content.addChild( linearAccelerationVisibleCheckbox );
       }
@@ -213,7 +213,7 @@ define( require => {
             RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_COLORS )
         ] ),
         totalAccelerationVisibleProperty,
-        { boxSize: 16 }
+        { checkboxOptions: { boxSize: 16 } }
       );
       this.content.addChild( totalAccelerationVisibleCheckbox );
 
