@@ -96,7 +96,7 @@ define( require => {
 
           // Create the centripetal acceleration vector, pointing in the negative direction to make it center seeking.
           const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 )
-                                                  .rotate( -circularMotionAngleProperty.value );
+                                                  .rotate( circularMotionAngleProperty.value + Math.PI );
 
           // Add both Vectors together to get the total acceleration.
           return centripetalAccelerationVector.add( tangentialAccelerationVector );
