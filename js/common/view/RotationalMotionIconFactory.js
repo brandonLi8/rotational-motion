@@ -49,7 +49,7 @@ define( require => {
 
       const fixedWidthNode = new Node();
       fixedWidthNode.width = 100; // eye-balled
-      text.centerY = fixedWidthNode.centerY + 12;
+      text.centerY = fixedWidthNode.centerY;
       text.centerX = fixedWidthNode.centerX;
 
       const icon = new Node().setChildren( [ fixedWidthNode, text ] );

@@ -20,7 +20,6 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Line = require( 'SIM_CORE/scenery/Line' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
   const Text = require( 'SIM_CORE/scenery/Text' );
 
   class FractionNode extends FlexBox {
