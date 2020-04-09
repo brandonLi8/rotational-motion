@@ -63,7 +63,7 @@ define( require => {
       // Create a container for the scenes.
       const sceneContainer = new Node();
       this.addChild( sceneContainer );
-      const scenes = [];
+      const scenes = {};
 
       // Create a 'scene' for each circular motion type and render it in a single Node.
       [ introModel.uniformSpinner, introModel.nonUniformSpinner ].forEach( spinner => {
@@ -82,28 +82,29 @@ define( require => {
 
         // Create a wrapper scene Node.
         const scene = new Node().setChildren( [ spinnerNode, controlPanel ] );
-
-        let playingWhenSceneSwitches; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
+        scene.playingWhenSceneSwitches = null; // Flag that indicates if the dragPauseProperty was playing when a drag starts.
 
         // Adjust visibility based on the circularMotionTypeProperty
         this.circularMotionTypeProperty.link( () => {
-          if ( !playingWhenSceneSwitches ) playingWhenSceneSwitches = spinner.isPlayingProperty.value;
+          if ( !scene.playingWhenSceneSwitches ) scene.playingWhenSceneSwitches = spinner.isPlayingProperty.value;
           spinner.isPlayingProperty.value = false; // pause
           if ( this.circularMotionTypeProperty.value === spinner.type ) {
             sceneContainer.children = [ scene ];
-            if ( playingWhenSceneSwitches ) spinner.isPlayingProperty.value = true;
-            playingWhenSceneSwitches = null; // reset
+            if ( scene.playingWhenSceneSwitches ) spinner.isPlayingProperty.value = true;
+            scene.playingWhenSceneSwitches = null; // reset
           }
         } );
-        scenes.push( scene );
+        scenes[ spinner.type ] = scene;
       } );
 
       // Add the Reset All Button
       const resetAllButton = new ResetButton( {
         listener: () => {
-          sceneContainer.children = scenes;
-          introModel.reset();
+          sceneContainer.children = Object.values( scenes );
           this.reset();
+          introModel.reset();
+          sceneContainer.children = [ scenes[ this.circularMotionTypeProperty.value ] ];
+          Object.values( scenes ).forEach( scene => { scene.playingWhenSceneSwitches = false; } );
         },
         right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
         bottom: this.layoutBounds.maxY - SCREEN_VIEW_Y_MARGIN

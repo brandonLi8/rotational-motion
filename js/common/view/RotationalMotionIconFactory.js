@@ -51,7 +51,8 @@ define( require => {
 
       const fixedWidthNode = new Node();
       fixedWidthNode.width = 100; // eye-balled
-      text.center = fixedWidthNode.center;
+      text.centerY = fixedWidthNode.centerY + 12;
+      text.centerX = fixedWidthNode.centerX;
 
       const icon = new Node().setChildren( [ fixedWidthNode, text ] );
       icon.width = fixedWidthNode.width;
