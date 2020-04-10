@@ -28,7 +28,6 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const Range = require( 'SIM_CORE/util/Range' );
   const Slider = require( 'SIM_CORE/scenery/Slider' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
 
   class NumberControlSet extends Node {
 

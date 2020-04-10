@@ -103,7 +103,7 @@ define( require => {
       // IntroControlPanel's always have a NumberControlSet for the radius
       const radiusNumberControlSet = new NumberControlSet( new Text( 'Radius' ), spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ), yMargin: 0 }
+        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ) }
       } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
          .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max ) ) );
 
@@ -143,7 +143,7 @@ define( require => {
         this.content.addChild( angularVelocityNumberControlSet );
       }
       else {
-        const radPerSecSquaredNode = new FractionNode( 'rad', `sec${ Symbols.TIMES }sec`, FRACTION_OPTIONS );
+        const radPerSecSquaredNode = new FractionNode( 'rad', `sec${ Symbols.DOT }sec`, FRACTION_OPTIONS );
 
         const maxNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.min ) );
         const minNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.max ) );

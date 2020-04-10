@@ -20,7 +20,6 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class LabeledCheckboxNode extends Node {
 

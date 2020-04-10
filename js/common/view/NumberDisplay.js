@@ -49,8 +49,8 @@ define( require => {
         unit: null,        // {Node} - if provided, this will be appended to the end of the Text as a unit.
         unitSpacing: 3,    // {number} - spacing between a potential Unit node and the text.
         decimalPlaces: 0,  // {number|null} the number of decimal places to show. If null, the full value is displayed.
-        xMargin: 11,       // {number} - the x-margin between the longest/tallest Text and the background.
-        yMargin: 1,        // {number} - the x-margin between the longest/tallest Text and the background.
+        xMargin: 14,       // {number} - the x-margin between the longest/tallest Text and the background.
+        yMargin: 4,        // {number} - the x-margin between the longest/tallest Text and the background.
         cornerRadius: 0,   // {number} - the corner radius of the background
 
         backgroundFill: 'white',        // {string|Gradient} the fill of the background
@@ -87,7 +87,7 @@ define( require => {
       // @private {Rectangle} - create the Rectangle background Node
       this._background = new Rectangle(
         this._valueNode.width + 2 * options.xMargin + ( this._unit ? this._unit.width : 0 ),
-        this._valueNode.height + 2 * options.yMargin + ( this._unit ? this._unit.height : 0 ), {
+        Math.max( this._valueNode.height, ( this._unit ? this._unit.height : 0 ) || 0 ) + 2 * options.yMargin, {
           cornerRadius: options.cornerRadius,
           fill: options.backgroundFill,
           stroke: options.backgroundStroke,
@@ -128,16 +128,18 @@ define( require => {
     _updateNumberDisplay() {
       assert( this._numberProperty.value === null || this._range.contains( this._numberProperty.value ),
         `numberProperty outside of range of NumberDisplay range: ${ this._numberProperty.value }` );
-      const value = this._numberProperty.value; // convenience reference
 
+      // If the Unit Node was provided and isn't a child of our content container, add it as a child.
       if ( this._unit && !this._content.hasChild( this._unit ) ) this._content.addChild( this._unit );
 
-      if ( value === null ) {
-        this._valueNode.text = Symbols.NO_VALUE; // use em-dash if null value
-        this._unit && this._content.removeChild( this._unit );
+      // Set the text of our value Node.
+      if ( this._numberProperty.value ) {
+        if ( this._decminalPlaces === null ) `${ this._valueNode.text = this._numberProperty.value }`;
+        else this._valueNode.text = `${ Util.toFixed( this._numberProperty.value, this._decminalPlaces ) }`;
       }
       else {
-        this._valueNode.text = `${ this._decminalPlaces ? Util.toFixed( value, this._decminalPlaces ) : value }`;
+        this._valueNode.text = Symbols.NO_VALUE; // use em-dash if null value
+        this._unit && this._content.removeChild( this._unit ); // if null value don't display the unit Node
       }
 
       // Ensure that the content fits inside the background
