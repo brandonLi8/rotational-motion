@@ -1,8 +1,15 @@
 // Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
- * A Custom Node for this simulation that displays a step backward button, a play-pause button, and a step forward
- * button in a horizontal FlexBox.
+ * TimeControlBox is a custom view for this simulation that allows the user to modify the stepping and play-pause state
+ * of the simulation.
+ *
+ * A TimeControlBox consists of:
+ *   - a step backward button
+ *   - a play-pause button
+ *   - a step forward button
+ *
+ * All children are formatted horizontally in a horizontal FlexBox. See FlexBox.js for context.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -20,13 +27,12 @@ define( require => {
   class TimeControlBox extends FlexBox {
 
     /**
-     * @param {Property.<boolean>} playProperty - the Property to toggle when the Button is pressed. The initial
-     *                                            content of the Button will be determined by the current value.
+     * @param {Property.<boolean>} isPlayingProperty - the Property that indicates if the simulation is 'playing'
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code
      *                             where the options are set in the early portion of the constructor for details.
      */
-    constructor( playProperty, options ) {
-      assert( playProperty instanceof Property, `invalid playProperty: ${ playProperty }` );
+    constructor( isPlayingProperty, options ) {
+      assert( isPlayingProperty instanceof Property, `invalid isPlayingProperty: ${ isPlayingProperty }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
@@ -51,14 +57,12 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Create the step forward and step backwards buttons.
+      // Create the content of the TimeControlBox, described in the comment at the top of the file.
       const stepBackwardButton = StepButton.backwards( options.stepBackwardOptions );
+      const playPauseButton = new PlayPauseButton( isPlayingProperty, options.playPauseOptions );
       const stepForwardButton = StepButton.forwards( options.stepForwardOptions );
 
-      // Create the play-pause button.
-      const playPauseButton = new PlayPauseButton( playProperty, options.playPauseOptions );
-
-      // Set the children of the FlexBox
+      // Set the children of the FlexBox in the correct sequential formatting.
       this.children = [ stepBackwardButton, playPauseButton, stepForwardButton ];
 
       // Apply any additional location setters.
