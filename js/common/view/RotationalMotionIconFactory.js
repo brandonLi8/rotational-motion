@@ -17,10 +17,10 @@ define( require => {
   'use strict';
 
   // modules
+  const assert = require( 'SIM_CORE/util/assert' );
   const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
   const Arrow = require( 'SIM_CORE/scenery/Arrow' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
   const Text = require( 'SIM_CORE/scenery/Text' );
 
   const RotationalMotionIconFactory = {
@@ -32,12 +32,13 @@ define( require => {
      * @returns {Node}
      */
     createVectorArrowIcon( options ) {
+      assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
+
       options = {
         length: 20,
         headHeight: 9,
         headWidth: 11,
         tailWidth: 3.5,
-
         ...options
       };
       return new Arrow( 0, 0, options.length, 0, options );
@@ -51,6 +52,8 @@ define( require => {
      * @returns {Node}
      */
     createCircularMotionTypeIcon( circularMotionType ) {
+      assert( CircularMotionTypes.includes( circularMotionType ), 'invalid circularMotionType' );
+
       const label = new Text( circularMotionType === CircularMotionTypes.UNIFORM ? 'Uniform' : 'Non-uniform' );
       return new AlignBox( label, 100, 17 );
     }

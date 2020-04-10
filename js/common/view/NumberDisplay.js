@@ -18,6 +18,7 @@ define( require => {
   'use strict';
 
   // modules
+  const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
@@ -82,24 +83,30 @@ define( require => {
       const longestValueString = minValueString.length > maxValueString.length ? minValueString : maxValueString;
 
       // @private {Text} - create the value Node which displays the Text of the number Property.
-      this._valueNode = new Text( longestValueString, options.textOptions );
+      this._value = new Text( longestValueString, options.textOptions );
+
+      // Determine the width and height of the NumberDisplay, which doesn't change.
+      const width = this._value.width + 2 * options.xMargin + ( this._unit ? this._unit.width : 0 );
+      const height = Math.max( this._value.height, ( this._unit ? this._unit.height : 0 ) || 0 ) + 2 * options.yMargin;
 
       // @private {Rectangle} - create the Rectangle background Node
-      this._background = new Rectangle(
-        this._valueNode.width + 2 * options.xMargin + ( this._unit ? this._unit.width : 0 ),
-        Math.max( this._valueNode.height, ( this._unit ? this._unit.height : 0 ) || 0 ) + 2 * options.yMargin, {
-          cornerRadius: options.cornerRadius,
-          fill: options.backgroundFill,
-          stroke: options.backgroundStroke,
-          strokeWidth: options.backgroundStrokeWidth
-        } );
+      this._background = new Rectangle( width, height, {
+        cornerRadius: options.cornerRadius,
+        fill: options.backgroundFill,
+        stroke: options.backgroundStroke,
+        strokeWidth: options.backgroundStrokeWidth
+      } );
 
-      // @private {FlexBox} - create the content Node of the number display
-      this._content = new FlexBox( 'horizontal', { spacing: options.unitSpacing } ).addChild( this._valueNode );
-      if ( this._unit instanceof Node ) this._content.addChild( this._unit );
+      //----------------------------------------------------------------------------------------
+
+      // @private {AlignBox} - create the content Node of the number display
+      this._content = new FlexBox( 'horizontal', { spacing: options.unitSpacing } ).addChild( this._value );
+
+      // Add the Unit as a child if provided.
+      if ( this._unit ) this._content.addChild( this._unit );
 
       // Add the content of the Number Display as children
-      this.children = [ this._background, this._content ];
+      this.children = [ this._background, new AlignBox( this._content, width, height ) ];
 
       // @private {function} - observer of the numberProperty. To be unlinked in the dispose method.
       this._numberPropertyObserver = this._updateNumberDisplay.bind( this );
@@ -133,12 +140,12 @@ define( require => {
       if ( this._unit && !this._content.hasChild( this._unit ) ) this._content.addChild( this._unit );
 
       // Set the text of our value Node.
-      if ( this._numberProperty.value ) {
-        if ( this._decminalPlaces === null ) `${ this._valueNode.text = this._numberProperty.value }`;
-        else this._valueNode.text = `${ Util.toFixed( this._numberProperty.value, this._decminalPlaces ) }`;
+      if ( isFinite( this._numberProperty.value ) ) {
+        if ( this._decminalPlaces === null ) `${ this._value.text = this._numberProperty.value }`;
+        else this._value.text = `${ Util.toFixed( this._numberProperty.value, this._decminalPlaces ) }`;
       }
       else {
-        this._valueNode.text = Symbols.NO_VALUE; // use em-dash if null value
+        this._value.text = Symbols.NO_VALUE; // use em-dash if null value
         this._unit && this._content.removeChild( this._unit ); // if null value don't display the unit Node
       }
 
