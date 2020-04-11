@@ -6,7 +6,18 @@
  * Each IntroControlPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
  * be adjusted by the current circular motion type. Its content is fixed and doesn't change after instantiation.
  *
- * The IntroControlPanel will contain a varied number of NumberControlSets.
+ * Displays for Uniform Circular Motion Types:
+ *  - A radius Number Control Set
+ *  - A angular velocity Number Control Set
+ *  - A Velocity Vector Checkbox
+ *  - A (total) Acceleration Vector Checkbox
+ *
+ * Displays for Non Uniform Circular Motion Types:
+ *  - A radius Number Control Set
+ *  - A angular acceleration Number Control Set
+ *  - A Velocity Vector Checkbox
+ *  - A Linear Acceleration Vector Checkbox
+ *  - A Total Acceleration Vector Checkbox
  *
  * @author Brandon Li
  */
@@ -15,38 +26,27 @@ define( require => {
   'use strict';
 
   // modules
-  const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
-  const FractionalPINode = require( 'ROTATIONAL_MOTION/intro/view/FractionalPINode' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const LabeledCheckboxNode = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckboxNode' );
-  const Node = require( 'SIM_CORE/scenery/Node' );
-  const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const SpinnerNumberControlSet = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNumberControlSet' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
-  const Util = require( 'SIM_CORE/util/Util' );
 
   // constants
-  const RADIUS_TICK_INCREMENT = 0.1;
-  const RADIUS_TIC_LABEL_INCREMENT = 3;
-  const FRACTION_OPTIONS = {
-    textOptions: {
-      fontSize: 12,
-      fontWeight: 500
-    }
+  const ARROW_ICON_SPACING = 5;
+  const TEXT_OPTIONS = {
+    fontSize: 12.5,
+    fontWeight: 500
   };
-  const OMEGA_TICK_INCREMENT = Math.PI / 16;
-  const OMEGA_TICK_LABEL_INCREMENT = 2;
-  const ALPHA_TICK_INCREMENT = Math.PI / 16;
-  const ALPHA_TICK_LABEL_INCREMENT = 2;
 
   class IntroControlPanel extends Panel {
 
@@ -75,7 +75,7 @@ define( require => {
         ...RotationalMotionColors.PANEL_COLORS,
 
         // {number} - spacing between the content of the Panel.
-        spacing: 10,
+        spacing: 13,
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -85,140 +85,75 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      let playingWhenDragStarted; // Flag that indicates if the spinner was playing when a slider-drag starts.
-
-      // Create the options that are commonly used in all NumberControlSet instances. When the sliders are being
-      // dragged, the Spinner object is paused.
-      const sliderOptions = {
-        startDrag: () => {
-          playingWhenDragStarted = spinner.isPlayingProperty.value; // set the playingWhenDragStarted flag
-          spinner.isPlayingProperty.value = false; // pause when dragging
-        },
-        endDrag: () => {
-          playingWhenDragStarted && spinner.isPlayingProperty.set( true ); // play if it was playing before dragging
-          playingWhenDragStarted = null; // reset the playingWhenDragStarted flag
-        }
-      };
-
-      //----------------------------------------------------------------------------------------
-
-      // IntroControlPanel's always have a NumberControlSet for the radius
-      const radiusNumberControlSet = new NumberControlSet( new Text( 'Radius' ), spinner.radiusProperty, spinner.radiusRange, {
-        sliderOptions,
-        numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ) }
-      } ).addSliderMajorTick( spinner.radiusRange.min, AlignBox.fixedWidth( new Text( spinner.radiusRange.min ), 20 ) )
-         .addSliderMajorTick( spinner.radiusRange.max, AlignBox.fixedWidth( new Text( spinner.radiusRange.max ), 20 ) );
-
-      // Add the minor ticks
-      for ( let i = 1; i < spinner.radiusRange.max / RADIUS_TICK_INCREMENT - 1; i++ ) {
-        const value = Util.toFixed( i * RADIUS_TICK_INCREMENT + spinner.radiusRange.min, 2 );
-        radiusNumberControlSet.addSliderMinorTick( value, i % RADIUS_TIC_LABEL_INCREMENT ? null : new Text( value ) );
-      }
+      // IntroControlPanel's always have a NumberControlSet for the radius.
+      const radiusNumberControlSet = new SpinnerNumberControlSet( spinner, new Text( 'Radius' ),
+        'radius', new Text( 'm' ), TEXT_OPTIONS,
+        { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false } );
 
       // Add the radius NumberControlSet as a child.
       this.content.addChild( radiusNumberControlSet );
 
-      //----------------------------------------------------------------------------------------
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
-        const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
-        const maxNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularVelocityRange.min ), 20 );
-        const minNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularVelocityRange.max ), 20 );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
-        const angularVelocityNumberControlSet = new NumberControlSet( new Text( `Angular Velocity (${ Symbols.OMEGA })` ),
-          spinner.angularVelocityProperty,
-          spinner.angularVelocityRange, {
-            sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode }
-          } )
-        .addSliderMajorTick( spinner.angularVelocityRange.min, maxNode )
-        .addSliderMajorTick( spinner.angularVelocityRange.max, minNode );
-
-        // Add the minor ticks
-        for ( let i = 1; i <= spinner.angularVelocityRange.max / OMEGA_TICK_INCREMENT - 1; i++ ) {
-          const value = i * OMEGA_TICK_INCREMENT + spinner.angularVelocityRange.min;
-          const label = i % OMEGA_TICK_LABEL_INCREMENT ? null : new FractionalPINode( value );
-          angularVelocityNumberControlSet.addSliderMinorTick( value, label );
-        }
+        const angularVelocityNumberControlSet = new SpinnerNumberControlSet( spinner,
+          new Text( `Angular Velocity (${ Symbols.OMEGA })` ), 'angularVelocity',
+          new FractionNode( 'rad', 'sec', { textOptions: TEXT_OPTIONS } ),
+          TEXT_OPTIONS,
+          { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularVelocityRange.length } );
 
         // Add the angular velocity NumberControlSet as a child.
         this.content.addChild( angularVelocityNumberControlSet );
       }
       else {
-        const radPerSecSquaredNode = new FractionNode( 'rad', `sec${ Symbols.DOT }sec`, FRACTION_OPTIONS );
 
-        const maxNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularAccelerationRange.min ), 20 );
-        const minNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularAccelerationRange.max ), 20 );
+        // Create the Title Node of the Angular Acceleration NumberControlSet
+        const title = new FlexBox( 'horizontal', {
+          children: [
+            new FractionNode( `d${ Symbols.OMEGA }`, 'dt' ),
+            new Text( Symbols.EQUAL_TO ),
+            new Text( Symbols.ALPHA )
+          ],
+          spacing: 6 // eye-balled
+        } );
 
         // Add a angular acceleration NumberControlSet for non-uniform spinners.
-        const angularAccelerationNumberControlSet = new NumberControlSet( new FlexBox( 'horizontal', { children: [ new FractionNode( `d${ Symbols.OMEGA }`, 'dt' ), new Text( Symbols.EQUAL_TO ), new Text( Symbols.ALPHA ) ], spacing: 6 } ),
-          spinner.angularAccelerationProperty,
-          spinner.angularAccelerationRange, {
-            sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecSquaredNode }
-          } )
-        .addSliderMajorTick( spinner.angularAccelerationRange.min, maxNode )
-        .addSliderMajorTick( spinner.angularAccelerationRange.max, minNode );
-
-        // Add the minor ticks
-        for ( let i = 1; i <= spinner.angularAccelerationRange.length / ALPHA_TICK_INCREMENT - 1; i++ ) {
-          const value = i * ALPHA_TICK_INCREMENT + spinner.angularAccelerationRange.min;
-          const label = i % ALPHA_TICK_LABEL_INCREMENT ? null : new FractionalPINode( value );
-          if ( value === 0 ) {
-            angularAccelerationNumberControlSet.addSliderMajorTick( value, label );
-          }
-          else {
-            angularAccelerationNumberControlSet.addSliderMinorTick( value, label );
-          }
-        }
+        const angularAccelerationNumberControlSet = new SpinnerNumberControlSet( spinner,
+          title, 'angularAcceleration',
+          new FractionNode( 'rad', `sec${ Symbols.DOT }sec`, { textOptions: TEXT_OPTIONS } ),
+          TEXT_OPTIONS,
+          { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularAccelerationRange.length / 2 } );
 
         // Add the angular velocity NumberControlSet as a child.
         this.content.addChild( angularAccelerationNumberControlSet );
       }
 
       //----------------------------------------------------------------------------------------
-      // Checkboxes
 
-      const linearVelocityVisibleCheckbox = new LabeledCheckboxNode(
-        new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
-          new Text( 'Velocity Vector', { fontSize: 12 } ),
-          RotationalMotionIconFactory.createVectorArrowIcon(
-            { fill: RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL }
-          )
-        ] ),
-        linearVelocityVisibleProperty,
-        RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
-      );
-      this.content.addChild( linearVelocityVisibleCheckbox );
+      // Function that creates and adds a Labeled Checkbox to toggle the visibility of a Property
+      const addLabeledCheckbox = ( property, name, fill ) => {
+        const label = new FlexBox( 'horizontal', {
+          spacing: ARROW_ICON_SPACING,
+          children: [ new Text( name, TEXT_OPTIONS ), RotationalMotionIconFactory.createVectorArrowIcon( { fill } ) ]
+        } );
+        this.content.addChild(
+          new LabeledCheckboxNode( label, property, RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS )
+        );
+      };
+
+      addLabeledCheckbox( linearVelocityVisibleProperty,
+        'Velocity Vector',
+        RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL );
 
       if ( spinner.type === CircularMotionTypes.NON_UNIFORM ) {
-        const linearAccelerationVisibleCheckbox = new LabeledCheckboxNode(
-          new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
-            new Text( 'Linear Acceleration Vector', { fontSize: 12 } ),
-            RotationalMotionIconFactory.createVectorArrowIcon(
-              { fill: RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_FILL }
-            )
-          ] ),
-          linearAccelerationVisibleProperty,
-          RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
-        );
-        this.content.addChild( linearAccelerationVisibleCheckbox );
+        addLabeledCheckbox( linearAccelerationVisibleProperty,
+          'Linear Acceleration Vector',
+          RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_FILL );
       }
 
-      const totalAccelLabel = new Text( spinner.type === CircularMotionTypes.UNIFORM ? 'Acceleration Vector' :
-        'Total Acceleration Vector', { fontSize: 12 } );
-
-      const totalAccelerationVisibleCheckbox = new LabeledCheckboxNode(
-        new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
-          totalAccelLabel,
-          RotationalMotionIconFactory.createVectorArrowIcon(
-            { fill: RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL }
-          )
-        ] ),
-        totalAccelerationVisibleProperty,
-        RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
-      );
-      this.content.addChild( totalAccelerationVisibleCheckbox );
+      addLabeledCheckbox( totalAccelerationVisibleProperty,
+        CircularMotionTypes.UNIFORM ? 'Acceleration Vector' : 'Total Acceleration Vector',
+        RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL );
 
       // Apply any additionally Bounds setters
       this.mutate( options );

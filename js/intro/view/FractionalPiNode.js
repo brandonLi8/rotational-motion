@@ -16,10 +16,10 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
+  const Line = require( 'SIM_CORE/scenery/Line' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Util = require( 'SIM_CORE/util/Util' );
-  const Line = require( 'SIM_CORE/scenery/Line' );
 
   class FractionalPiNode extends FlexBox {
 

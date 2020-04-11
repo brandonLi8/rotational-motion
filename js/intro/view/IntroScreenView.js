@@ -18,7 +18,6 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const CircularMotionTypesRadioButtonGroup = require( 'ROTATIONAL_MOTION/intro/view/CircularMotionTypesRadioButtonGroup' ); // eslint-disable-line max-len
   const IntroControlPanel = require( 'ROTATIONAL_MOTION/intro/view/IntroControlPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );

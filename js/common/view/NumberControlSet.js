@@ -63,7 +63,7 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {*} - see parameter declaration for documentation. Referenced for use in our methods.
+      // @protected {*} - see parameter declaration for documentation. Referenced for use in our methods.
       this._title = title;
       this._numberProperty = numberProperty;
       this._range = range;

@@ -33,7 +33,10 @@ define( require => {
       headHeight: 12,
       headWidth: 12,
       tailWidth: 3
-    }
+    },
+
+    // miscellaneous
+    NUMBER_DISPLAY_DECIMAL_PLACES: 2
   };
 
   return RotationalMotionConstants;
