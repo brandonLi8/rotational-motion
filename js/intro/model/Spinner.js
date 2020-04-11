@@ -133,7 +133,7 @@ define( require => {
      * Pauses the Spinner if not already paused.
      * @public
      */
-    pause() { this.isPlayingProperty.value = false; };
+    pause() { this.isPlayingProperty.value = false; }
 
     /**
      * Un-pauses the Spinner if not already playing.

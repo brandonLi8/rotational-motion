@@ -1,10 +1,10 @@
 // Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
- * View for the radio button group near the top of the scene that allows the user to select between a uniform
+ * View for the radio button group near the top of the 'Intro' Screen that allows the user to select between a uniform
  * and a non-uniform Spinner.
  *
- * See CircularMotionTypes for more documentation.
+ * See CircularMotionTypes.js for more documentation on Spinners and circular motion types.
  *
  * CircularMotionTypesRadioButtonGroup is never disposed and exists for the entire simulation.
  *
@@ -29,19 +29,23 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( circularMotionTypeProperty, options ) {
-      assert( circularMotionTypeProperty instanceof Property &&
-        CircularMotionTypes.includes( circularMotionTypeProperty.value ), 'invalid circularMotionTypeProperty' );
+      assert( circularMotionTypeProperty instanceof Property, 'invalid circularMotionTypeProperty' );
       assert( Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
+
+        // {number} - spacing between the radio buttons.
         spacing: 8,
+
+        // rewrite options such that it overrides the defaults above if provided.
         ...options
       };
 
       //----------------------------------------------------------------------------------------
 
-      // Create the RadioButton for each CircularMotionType
+      // Create a RadioButton that corresponds to each CircularMotionType
       const radioButtons = [];
+
       CircularMotionTypes.MEMBERS.forEach( circularMotionType => {
         const radioButton = new RadioButton( circularMotionType,
           RotationalMotionIconFactory.createCircularMotionTypeIcon( circularMotionType ) );

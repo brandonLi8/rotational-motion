@@ -58,7 +58,7 @@ define( require => {
      * @public
      */
     reset() {
-      this.spinners.forEach( spinner => { spinner.reset() } );
+      this.spinners.forEach( spinner => { spinner.reset(); } );
       this.circularMotionTypeProperty.reset();
     }
   }

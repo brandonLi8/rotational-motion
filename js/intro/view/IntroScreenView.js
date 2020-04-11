@@ -93,7 +93,7 @@ define( require => {
         const scene = new Node( { children: [ controlPanel, spinnerNode ] } );
         this.addChild( scene ); // Add the scene as a child.
 
-        // Adjust visibility based on the active Spinner.  Link lasts for the entire simulation and is never disposed.
+        // Adjust visibility based on the active Spinner. Link lasts for the entire simulation and is never disposed.
         introModel.activeSpinnerProperty.link( activeSpinner => { scene.visible = activeSpinner === spinner; } );
       } );
     }
