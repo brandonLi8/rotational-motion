@@ -17,9 +17,9 @@ define( require => {
   'use strict';
 
   // modules
-  const assert = require( 'SIM_CORE/util/assert' );
   const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
   const Arrow = require( 'SIM_CORE/scenery/Arrow' );
+  const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Text = require( 'SIM_CORE/scenery/Text' );
 
@@ -36,9 +36,11 @@ define( require => {
 
       options = {
         length: 20,
-        headHeight: 9,
-        headWidth: 11,
+        headHeight: 8.5,
+        headWidth: 10.5,
         tailWidth: 3.5,
+        strokeWidth: 0.7,
+        stroke: 'black',
         ...options
       };
       return new Arrow( 0, 0, options.length, 0, options );

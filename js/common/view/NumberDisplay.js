@@ -48,7 +48,7 @@ define( require => {
         xAlign: 'center',  // {string} - the alignment of the Text: 'left', 'center', or 'right'.
         yAlign: 'center',  // {string} - the alignment of the Text: 'top', 'center', or 'bottom'.
         unit: null,        // {Node} - if provided, this will be appended to the end of the Text as a unit.
-        unitSpacing: 3,    // {number} - spacing between a potential Unit node and the text.
+        unitSpacing: 6,    // {number} - spacing between a potential Unit node and the text.
         decimalPlaces: 0,  // {number|null} the number of decimal places to show. If null, the full value is displayed.
         xMargin: 14,       // {number} - the x-margin between the longest/tallest Text and the background.
         yMargin: 4,        // {number} - the x-margin between the longest/tallest Text and the background.

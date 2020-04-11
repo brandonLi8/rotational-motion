@@ -26,6 +26,7 @@ define( require => {
   const Panel = require( 'ROTATIONAL_MOTION/common/view/Panel' );
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
@@ -127,7 +128,7 @@ define( require => {
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange, {
             sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode, yMargin: -2 }
+            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecNode }
           } )
         .addSliderMajorTick( spinner.angularVelocityRange.min, maxNode )
         .addSliderMajorTick( spinner.angularVelocityRange.max, minNode );
@@ -153,7 +154,7 @@ define( require => {
           spinner.angularAccelerationProperty,
           spinner.angularAccelerationRange, {
             sliderOptions,
-            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecSquaredNode, yMargin: -2 }
+            numberDisplayOptions: { decimalPlaces: 2, unit: radPerSecSquaredNode }
           } )
         .addSliderMajorTick( spinner.angularAccelerationRange.min, maxNode )
         .addSliderMajorTick( spinner.angularAccelerationRange.max, minNode );
@@ -183,10 +184,12 @@ define( require => {
       const linearVelocityVisibleCheckbox = new LabeledCheckboxNode(
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
           new Text( 'Velocity Vector', { fontSize: 12 } ),
-          RotationalMotionIconFactory.createVectorArrowIcon( RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS )
+          RotationalMotionIconFactory.createVectorArrowIcon(
+            { fill: RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL }
+          )
         ] ),
         linearVelocityVisibleProperty,
-        { checkboxOptions: { boxSize: 16 } }
+        RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
       );
       this.content.addChild( linearVelocityVisibleCheckbox );
 
@@ -195,10 +198,11 @@ define( require => {
           new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
             new Text( 'Linear Acceleration Vector', { fontSize: 12 } ),
             RotationalMotionIconFactory.createVectorArrowIcon(
-              RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS )
+              { fill: RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_FILL }
+            )
           ] ),
           linearAccelerationVisibleProperty,
-          { checkboxOptions: { boxSize: 16 } }
+          RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
         );
         this.content.addChild( linearAccelerationVisibleCheckbox );
       }
@@ -210,10 +214,11 @@ define( require => {
         new FlexBox( 'horizontal', { spacing: 5 } ).setChildren( [
           totalAccelLabel,
           RotationalMotionIconFactory.createVectorArrowIcon(
-            RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_COLORS )
+            { fill: RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL }
+          )
         ] ),
         totalAccelerationVisibleProperty,
-        { checkboxOptions: { boxSize: 16 } }
+        RotationalMotionConstants.LABELED_CHECKBOX_NODE_OPTIONS
       );
       this.content.addChild( totalAccelerationVisibleCheckbox );
 

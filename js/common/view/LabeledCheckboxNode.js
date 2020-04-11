@@ -40,7 +40,7 @@ define( require => {
         checkboxOptions: null,
 
         // {number} spacing between the Checkbox an the label
-        spacing: 8,
+        spacing: 10,
 
         // Rewrite options so that it overrides the defaults.
         ...options

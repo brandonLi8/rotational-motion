@@ -73,10 +73,13 @@ define( require => {
       const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
 
       // Create the string Line, to be set later.
-      const string = Line.withPoints( viewOrigin, viewOrigin, { ...RotationalMotionColors.SPINNER_STRING_COLORS } );
+      const string = Line.withPoints( viewOrigin, viewOrigin, {
+        stroke: RotationalMotionColors.SPINNER_STRING_COLOR,
+        strokeWidth: 2
+      } );
 
       // Create the pin at the center of the Spinner. It's location never changes.
-      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, ...RotationalMotionColors.SPINNER_PIN_COLORS } );
+      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, fill: RotationalMotionColors.SPINNER_PIN_FILL } );
 
       // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
@@ -84,7 +87,7 @@ define( require => {
         velocityVisibleProperty,
         linearAccelerationVisibleProperty,
         totalAccelerationVisibleProperty,
-        { ...RotationalMotionColors.SPINNER_BALL_COLORS } );
+        { fill: RotationalMotionColors.INTRO_BALL_FILL } );
 
 
       // Create a Time Control Box
@@ -128,17 +131,15 @@ define( require => {
 
     /**
      * @override
-     * Called when this Node's Bounds changes due to a child's Bounds changing or when a child is added or removed.
-     * Also responsible for recursively calling the method for each parent up to either the ScreenView or to the
-     * point where a Node doesn't have a parent.
+     * This method is called when a child's Bounds changes. In Node, this method is responsible for adjusting its
+     * Bounds and recursively calling the method for each parent up the ancestor tree.
      * @protected
      *
-     * This is overridden to allow for negative Bounds with the arrows. The current implementation of Node shifts the
-     * Bounds of children if they are negative and offsets it.
+     * This is overridden to allow for negative Bounds of its children. The current implementation of Node shifts the
+     * Bounds of children so that they are all positive and offsets it. However, since the accuracy of Bounds is not
+     * important for Spinners, this removes that functionality.
      */
-    _recomputeAncestorBounds() {
-      // do nothing
-    }
+    _recomputeAncestorBounds() { /** do nothing **/ }
   }
 
   return SpinnerNode;

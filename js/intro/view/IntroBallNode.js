@@ -60,14 +60,23 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Arrow} - represents the Ball's LINEAR velocity, initialized at 0 for now.
-      this._velocityArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_VELOCITY_VECTOR_COLORS );
+      // @private {Arrow} - represents the Ball's tangential velocity, initialized at 0 for now.
+      this._velocityArrow = new Arrow( 0, 0, 0, 0, {
+        ...RotationalMotionConstants.VECTOR_ARROW_OPTIONS,
+        fill: RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL
+      } );
 
-      // @private {Arrow} - represents the Ball's LINEAR acceleration, initialized at 0 for now.
-      this._linearAccelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_COLORS );
+      // @private {Arrow} - represents the Ball's tangential acceleration, initialized at 0 for now.
+      this._linearAccelerationArrow = new Arrow( 0, 0, 0, 0, {
+        ...RotationalMotionConstants.VECTOR_ARROW_OPTIONS,
+        fill: RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_FILL
+      } );
 
       // @private {Arrow} - represents the Ball's total acceleration, initialized at 0 for now.
-      this._totalAccelerationArrow = new Arrow( 0, 0, 0, 0, RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_COLORS );
+      this._totalAccelerationArrow = new Arrow( 0, 0, 0, 0, {
+        ...RotationalMotionConstants.VECTOR_ARROW_OPTIONS,
+        fill: RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL
+      } );
 
       // Add the Arrow's as children, which will allow it to be displayed above the Ball circle.
       this.addChild( this._velocityArrow );

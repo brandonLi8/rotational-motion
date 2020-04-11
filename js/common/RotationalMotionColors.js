@@ -11,52 +11,23 @@ define( require => {
 
   const RotationalMotionColors = {
 
-    // Colors for the pin circle in the center of the Spinner in the intro screen.
-    SPINNER_PIN_COLORS: {
-      fill: 'rgb( 100, 100, 100 )',
-      stroke: 'black',
-      strokeWidth: 0.2
-    },
+    // spinners
+    SPINNER_PIN_FILL: 'rgb( 100, 100, 100 )',
+    SPINNER_STRING_COLOR: 'black',
 
-    // Colors for the string that provides the tension of the Spinner in the intro screen.
-    SPINNER_STRING_COLORS: {
-      stroke: 'black',
-      strokeWidth: 2
-    },
+    // intro balls
+    INTRO_BALL_FILL: 'green',
 
-    // Colors for the ball of the Spinner in the intro screen.
-    SPINNER_BALL_COLORS: {
-      fill: 'green',
-      stroke: 'black',
-      strokeWidth: 0.5
-    },
+    // vectors
+    VECTOR_STROKE: 'black',
+    LINEAR_VELOCITY_VECTOR_FILL: 'rgb( 10, 170, 250 )',
+    LINEAR_ACCELERATION_VECTOR_FILL: 'rgb( 255, 0, 215 )',
+    TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 254, 0, 0 )',
 
-    // Colors for tangential velocity vectors of Ball's in the intro screen.
-    LINEAR_VELOCITY_VECTOR_COLORS: {
-      fill: 'rgb( 10, 170, 250 )',
-      stroke: 'black',
-      strokeWidth: 0.5
-    },
-
-    // Colors for tangential acceleration vectors of Ball's in the intro screen.
-    LINEAR_ACCELERATION_VECTOR_COLORS: {
-      fill: 'purple',
-      stroke: 'black',
-      strokeWidth: 0.5
-    },
-
-    // Colors for total acceleration vectors of Ball's in the intro screen.
-    TOTAL_ACCELERATION_VECTOR_COLORS: {
-      fill: 'red',
-      stroke: 'black',
-      strokeWidth: 0.5
-    },
-
-    // Colors for all Panel instances
+    // panels
     PANEL_COLORS: {
       stroke: 'rgb( 100, 100, 100 )',
-      fill: 'rgb( 240, 240, 240 )',
-      strokeWidth: 0.5
+      fill: 'rgb( 240, 240, 240 )'
     }
   };
 

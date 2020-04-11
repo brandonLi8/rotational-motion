@@ -9,12 +9,31 @@
 define( require => {
   'use strict';
 
+  // modules
+  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+
   const RotationalMotionConstants = {
 
     // screen-view
     SCREEN_VIEW_X_MARGIN: 60,
-    SCREEN_VIEW_Y_MARGIN: 25
+    SCREEN_VIEW_Y_MARGIN: 25,
 
+    // labeled checkboxes
+    LABELED_CHECKBOX_NODE_OPTIONS: {
+      checkboxOptions: {
+        boxSize: 16,
+        boxStrokeWidth: 1.5
+      }
+    },
+
+    // arrow vectors
+    VECTOR_ARROW_OPTIONS: {
+      strokeWidth: 0.8,
+      stroke: RotationalMotionColors.VECTOR_STROKE,
+      headHeight: 12,
+      headWidth: 12,
+      tailWidth: 3
+    }
   };
 
   return RotationalMotionConstants;
