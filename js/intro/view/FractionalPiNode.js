@@ -19,6 +19,7 @@ define( require => {
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
   const Util = require( 'SIM_CORE/util/Util' );
+  const Line = require( 'SIM_CORE/scenery/Line' );
 
   class FractionalPiNode extends FlexBox {
 
@@ -40,11 +41,16 @@ define( require => {
         fractionOptions: null,
 
         // {number} - spacing between each the negative bar and the Fraction
-        spacing: 0.5,
+        spacing: 2.5,
+
+        // {number} - negative bar width, if needed
+        negativeBarWidth: 4.5,
 
         // Rewrite options so that it overrides the defaults.
         ...options
       };
+
+      super( 'horizontal', options );
 
       //----------------------------------------------------------------------------------------
 
@@ -60,24 +66,32 @@ define( require => {
       numerator = Math.abs( numerator / divisor );
       denominator = Math.abs( denominator / divisor );
 
-      // Flag of the children of the Node
-      const children = [];
+      //----------------------------------------------------------------------------------------
 
-      if ( decimal === 0 ) children.push( new Text( '0', options.textOptions ) );
+      if ( decimal === 0 ) this.addChild( new Text( '0', options.textOptions ) );
       else {
-        // Add a negative bar if the decimal is negative.
-        if ( decimal < 0 ) children.push( new Text( Symbols.UNARY_MINUS, options.textOptions ) );
-
-        // Add the FractionNode that represents the absolute value of the PI Fraction
-        children.push( new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, {
+        // Create the FractionNode that represents the absolute value of the PI fraction
+        const fractionNode = new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, {
           ...options.fractionOptions,
           textOptions: options.textOptions
-        } ) );
+        } );
+
+        // Add a negative bar if the decimal is negative.
+        if ( decimal < 0 ) {
+          this.addChild( new Line( 0, 0, options.negativeBarWidth, 0, {
+            centerRight: fractionNode.topLeft.add( fractionNode.bar.centerLeft ),
+            stroke: fractionNode.bar.stroke,
+            fill: fractionNode.bar.fill,
+            strokeWidth: fractionNode.bar.strokeWidth
+          } ) );
+        }
+
+        // Add the Fraction Node
+        this.addChild( fractionNode );
       }
 
-      // Set the children option
-      options.children = children;
-      super( 'horizontal', options );
+      // Apply any additional bounds mutators
+      this.mutate( options );
     }
   }
 

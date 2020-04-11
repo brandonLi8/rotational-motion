@@ -176,7 +176,6 @@ define( require => {
         this.content.addChild( angularAccelerationNumberControlSet );
       }
 
-
       //----------------------------------------------------------------------------------------
       // Checkboxes
 

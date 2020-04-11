@@ -64,15 +64,15 @@ define( require => {
       // Compute the width of the fraction-bar.
       const fractionBarWidth = Math.max( numeratorNode.width, denominatorNode.width ) + options.fractionBarExtension;
 
-      // Create the fraction-bar.
-      const fractionBar = new Line( 0, 0, fractionBarWidth, 0, {
+      // @public {Line} (read-only) - Create the fraction-bar. Exposed for relative positioning.
+      this.bar = new Line( 0, 0, fractionBarWidth, 0, {
         fill: options.fractionBarFill,
         stroke: options.fractionBarStroke,
         strokeWidth: options.fractionBarStrokeWidth
       } );
 
       // Set the children of the FractionNode
-      this.children = [ numeratorNode, fractionBar, denominatorNode ];
+      this.children = [ numeratorNode, this.bar, denominatorNode ];
 
       // Apply any additionally Bounds setters
       this.mutate( options );
