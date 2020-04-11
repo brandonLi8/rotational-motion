@@ -130,6 +130,18 @@ define( require => {
     }
 
     /**
+     * Pauses the Spinner if not already paused.
+     * @public
+     */
+    pause() { this.isPlayingProperty.value = false; };
+
+    /**
+     * Un-pauses the Spinner if not already playing.
+     * @public
+     */
+    play() { this.isPlayingProperty.value = true; }
+
+    /**
      * Steps the Spinner by one time step. For this screen, the Ball spins around the origin (circular motion).
      * This method changes the Ball's position such that it matches the correct angular acceleration,
      * angular velocity, and radius.
@@ -139,18 +151,15 @@ define( require => {
      * @param {number} dt - time in seconds
      */
     step( dt ) {
-
       // Calculate the change in angle (in radians) based on the average angular velocity (rad/sec)
-      // This is calculated with the equation of kinematic: theta = initial-theta + omega * t + 1/2 * alpha * t^2
+      // This is calculated with the equation of kinematic: deltaTheta = omega * t + 1/2 * alpha * t^2
       // Rearranging this equation and we get deltaTheta = omega * dt + 0.5 * alpha * t^2.
       // For more info, see https://courses.lumenlearning.com/physics/chapter/10-2-kinematics-of-rotational-motion/
       this.angle += this.angularVelocityProperty.value * dt + 0.5 * this.angularAccelerationProperty.value * dt * dt;
 
-      // Calculate the change in angular velocity if there is an angular acceleration
-      if ( this.angularAccelerationProperty.value ) {
-        this.angularVelocityProperty.value = this.angularVelocityProperty.value
-          + this.angularAccelerationProperty.value * dt;
-      }
+      // Calculate the change in angular velocity (in radians per second) based on the angular acceleration.
+      // This is calculated with dimensional analysis.
+      if ( this.angularAcceleration ) this.angularVelocity += this.angularAcceleration * dt;
     }
 
     /**
@@ -158,7 +167,7 @@ define( require => {
      * @public
      */
     stepBackwards() {
-      this.isPlayingProperty.value = false;
+      this.pause();
       this.step( -this.stepTime );
     }
 
@@ -167,21 +176,21 @@ define( require => {
      * @public
      */
     stepForwards() {
-      this.isPlayingProperty.value = false;
+      this.pause();
       this.step( this.stepTime );
     }
 
     /**
-     * Called when the Ball is dragged. Attempts to position the Ball at the new Radius but constrains its bounds to
+     * Called when the Ball is dragged. Attempts to position the Ball at the position but constrains its bounds to
      * remain in the radius range. Angles and radii are updated.
      * @public
      *
-     * @param {Vector} position - the position of the Center of the Ball
+     * @param {Vector} position - the position of the Center of the Ball to drag to
      */
     dragBallTo( position ) {
       // First shift the angle of the position vector. Correct the angle such that it outputs angles from [0, 2PI)
       const positionAngle = position.angle; // [-PI, PI] => [0, 2PI)
-      this.angleProperty.value = positionAngle > 0 ? positionAngle : Math.PI * 2 + positionAngle;
+      this.angle = positionAngle > 0 ? positionAngle : Math.PI * 2 + positionAngle;
 
       // Update the radius, restraining it in the radius range.
       this.radius = Util.clamp( position.magnitude, this.radiusRange.min, this.radiusRange.max );
@@ -190,6 +199,7 @@ define( require => {
     /**
      * Gets the Spinner's radius, in meters.
      * @public
+     *
      * @returns {number} - in meters.
      */
     get radius() { return this.radiusProperty.value; }
@@ -197,6 +207,7 @@ define( require => {
     /**
      * Sets the Spinner's radius, in meters.
      * @public
+     *
      * @param {number} radius - in meters.
      */
     set radius( radius ) { this.radiusProperty.value = radius; }
@@ -204,6 +215,7 @@ define( require => {
     /**
      * Gets the Spinner's angle, in radians.
      * @public
+     *
      * @returns {number} - in radians.
      */
     get angle() { return this.angleProperty.value; }
@@ -211,9 +223,42 @@ define( require => {
     /**
      * Sets the Spinner's angle, in radians.
      * @public
+     *
      * @param {number} angle - in radians.
      */
     set angle( angle ) { this.angleProperty.value = angle; }
+
+    /**
+     * Gets the Spinner's angularVelocity, in radians per second.
+     * @public
+     *
+     * @returns {number} - in radians per second.
+     */
+    get angularVelocity() { return this.angularVelocityProperty.value; }
+
+    /**
+     * Sets the Spinner's angularVelocity, in radians per second.
+     * @public
+     *
+     * @param {number} angularVelocity - in radians per second.
+     */
+    set angularVelocity( angularVelocity ) { this.angularVelocityProperty.value = angularVelocity; }
+
+    /**
+     * Gets the Spinner's angularAcceleration, in radians per second squared.
+     * @public
+     *
+     * @returns {number} - in radians per second squared.
+     */
+    get angularAcceleration() { return this.angularAccelerationProperty.value; }
+
+    /**
+     * Sets the Spinner's angularAcceleration, in radians per second squared.
+     * @public
+     *
+     * @param {number} angularAcceleration - in radians per second squared.
+     */
+    set angularAcceleration( angularAcceleration ) { this.angularAccelerationProperty.value = angularAcceleration; }
   }
 
   return Spinner;

@@ -4,9 +4,9 @@
  * UniformSpinner is a Spinner sup-type that conforms to the uniform circular motion type.
  *
  * Characteristics of a UniformSpinner are:
- *    - the angular acceleration property is always 0
  *    - the angular velocity is set by the user within a range
  *    - the radius is set by the user within a range
+ *    - the angular acceleration property is always 0
  *
  * UniformSpinners are created at the start of the Sim and are never disposed, so all links are left as is.
  *

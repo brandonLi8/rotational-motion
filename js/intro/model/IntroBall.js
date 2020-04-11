@@ -6,7 +6,8 @@
  *
  * Extends Ball but adds the following functionality:
  *   - Velocity Derived Property to track the tangential velocity vector of the center of mass.
- *   - Acceleration Derived Property to track the tangential acceleration vector of the center of mass.
+ *   - Linear Acceleration Derived Property to track the tangential acceleration vector of the center of mass.
+ *   - Total Acceleration Derived Property to track the total acceleration vector of the center of mass.
  *
  * IntroBalls are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
@@ -27,7 +28,7 @@ define( require => {
 
     /**
      * @param {Vector} initialCenterPosition - starting center position for the Ball.
-     * @param {number} ballRadius - the inner radius of the Ball (not the circular motion's radius).
+     * @param {number} ballRadius - the radius of the Ball (not the circular motion's radius).
      * @param {Property.<number>} angularVelocityProperty - the angular velocity of the circular motion of the Ball.
      * @param {Property.<number>} angularAccelerationProperty - the angular acceleration of the circular motion.
      * @param {Property.<number>} circularMotionRadiusProperty - the radius of the circular motion.
@@ -85,15 +86,14 @@ define( require => {
         this.tangentialVelocityVectorProperty,
         circularMotionRadiusProperty,
         circularMotionAngleProperty
-      ], ( tangentialAccelerationVector, tangentialVelocityVector, radius ) => {
+      ], ( tangentialAccelerationVector, tangentialVelocityVector, radius, angle ) => {
 
           // Calculate the centripetal acceleration of the Ball due to the Spinner. See
-          // https://en.wikipedia.org/wiki/Centripetal_force for physics background. Calculated as v^2/r
+          // https://en.wikipedia.org/wiki/Centripetal_force for the physics background. Calculated as v^2/r
           const centripetalAcceleration = Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
 
           // Create the centripetal acceleration vector, pointing in the negative direction to make it center seeking.
-          const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 )
-                                                  .rotate( circularMotionAngleProperty.value + Math.PI );
+          const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 ).rotate( angle + Math.PI );
 
           // Add both Vectors together to get the total acceleration.
           return centripetalAccelerationVector.add( tangentialAccelerationVector );

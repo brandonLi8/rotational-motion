@@ -19,10 +19,10 @@ define( require => {
 
     constructor() {
 
-      // @public (read-only) {Spinner} - the uniform Spinner
+      // @public (read-only) {UniformSpinner} - the uniform Spinner
       this.uniformSpinner = new UniformSpinner();
 
-      // @public (read-only) {Spinner} - the non-uniform Spinner
+      // @public (read-only) {NonUniformSpinner} - the non-uniform Spinner
       this.nonUniformSpinner = new NonUniformSpinner();
     }
 

@@ -5,8 +5,7 @@
  *
  * Characteristics of a NonUniformSpinner are:
  *    - the angular acceleration property is set by the user within a range
- *    - the angular velocity is constantly changing but not set by the user directly
- *    - the initial angular velocity is set by the user within a range
+ *    - the angular velocity is constantly changing but not directly set by the user
  *    - the radius is set by the user within a range
  *
  * UniformSpinners are created at the start of the Sim and are never disposed, so all links are left as is.
@@ -55,9 +54,6 @@ define( require => {
 
       // @public {Range} (read-only) - the range of the angular acceleration
       this.angularAccelerationRange = options.angularAccelerationRange;
-
-      // @public {Range} (read-only) - the initial angular velocity
-      this.initialAngularVelocity = options.initialAngularVelocity;
 
       // Ensure that the angular acceleration is set correctly
       assert.enabled && this.angularAccelerationProperty.link( angularAcceleration => {
