@@ -17,6 +17,8 @@ define( require => {
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
+  const Text = require( 'SIM_CORE/scenery/Text' );
+  const Util = require( 'SIM_CORE/util/Util' );
 
   class FractionalPiNode extends FlexBox {
 
@@ -61,14 +63,17 @@ define( require => {
       // Flag of the children of the Node
       const children = [];
 
-      // Add a negative bar if the decimal is negative.
-      if ( decimal < 0 ) children.push( new Text( Symbols.UNARY_MINUS ), options.textOptions );
+      if ( decimal === 0 ) children.push( new Text( '0', options.textOptions ) );
+      else {
+        // Add a negative bar if the decimal is negative.
+        if ( decimal < 0 ) children.push( new Text( Symbols.UNARY_MINUS, options.textOptions ) );
 
-      // Add the FractionNode that represents the absolute value of the PI Fraction
-      children.push( new Fraction( `${ numerator === 1 ? '' : numerator }${ Symbols.PI }`, denominator, {
-        ...options.fractionOptions,
-        textOptions
-      } ) );
+        // Add the FractionNode that represents the absolute value of the PI Fraction
+        children.push( new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, {
+          ...options.fractionOptions,
+          textOptions: options.textOptions
+        } ) );
+      }
 
       // Set the children option
       options.children = children;

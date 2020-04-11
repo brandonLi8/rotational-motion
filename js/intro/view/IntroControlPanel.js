@@ -15,9 +15,11 @@ define( require => {
   'use strict';
 
   // modules
+  const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
+  const FractionalPINode = require( 'ROTATIONAL_MOTION/intro/view/FractionalPINode' );
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const LabeledCheckboxNode = require( 'ROTATIONAL_MOTION/common/view/LabeledCheckboxNode' );
   const Node = require( 'SIM_CORE/scenery/Node' );
@@ -104,8 +106,8 @@ define( require => {
       const radiusNumberControlSet = new NumberControlSet( new Text( 'Radius' ), spinner.radiusProperty, spinner.radiusRange, {
         sliderOptions,
         numberDisplayOptions: { decimalPlaces: 2, unit: new Text( 'm' ) }
-      } ).addSliderMajorTick( spinner.radiusRange.min, fixWidth( new Text( spinner.radiusRange.min ) ) )
-         .addSliderMajorTick( spinner.radiusRange.max, fixWidth( new Text( spinner.radiusRange.max ) ) );
+      } ).addSliderMajorTick( spinner.radiusRange.min, AlignBox.fixedWidth( new Text( spinner.radiusRange.min ), 20 ) )
+         .addSliderMajorTick( spinner.radiusRange.max, AlignBox.fixedWidth( new Text( spinner.radiusRange.max ), 20 ) );
 
       // Add the minor ticks
       for ( let i = 1; i < spinner.radiusRange.max / RADIUS_TICK_INCREMENT - 1; i++ ) {
@@ -119,8 +121,8 @@ define( require => {
       //----------------------------------------------------------------------------------------
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
         const radPerSecNode = new FractionNode( 'rad', 'sec', FRACTION_OPTIONS );
-        const maxNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.min ) );
-        const minNode = fixWidth( fractionalPiNode( spinner.angularVelocityRange.max ) );
+        const maxNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularVelocityRange.min ), 20 );
+        const minNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularVelocityRange.max ), 20 );
 
         // Add a angular velocity NumberControlSet for uniform spinners.
         const angularVelocityNumberControlSet = new NumberControlSet( new Text( `Angular Velocity (${ Symbols.OMEGA })` ),
@@ -135,7 +137,7 @@ define( require => {
         // Add the minor ticks
         for ( let i = 1; i <= spinner.angularVelocityRange.max / OMEGA_TICK_INCREMENT - 1; i++ ) {
           const value = i * OMEGA_TICK_INCREMENT + spinner.angularVelocityRange.min;
-          const label = i % OMEGA_TICK_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          const label = i % OMEGA_TICK_LABEL_INCREMENT ? null : new FractionalPINode( value );
           angularVelocityNumberControlSet.addSliderMinorTick( value, label );
         }
 
@@ -145,8 +147,8 @@ define( require => {
       else {
         const radPerSecSquaredNode = new FractionNode( 'rad', `sec${ Symbols.DOT }sec`, FRACTION_OPTIONS );
 
-        const maxNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.min ) );
-        const minNode = fixWidth( fractionalPiNode( spinner.angularAccelerationRange.max ) );
+        const maxNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularAccelerationRange.min ), 20 );
+        const minNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularAccelerationRange.max ), 20 );
 
         // Add a angular acceleration NumberControlSet for non-uniform spinners.
         const angularAccelerationNumberControlSet = new NumberControlSet( new Text( Symbols.ALPHA ),
@@ -161,7 +163,7 @@ define( require => {
         // Add the minor ticks
         for ( let i = 1; i <= spinner.angularAccelerationRange.length / ALPHA_TICK_INCREMENT - 1; i++ ) {
           const value = i * ALPHA_TICK_INCREMENT + spinner.angularAccelerationRange.min;
-          const label = i % ALPHA_TICK_LABEL_INCREMENT ? null : fractionalPiNode( value );
+          const label = i % ALPHA_TICK_LABEL_INCREMENT ? null : new FractionalPINode( value );
           if ( value === 0 ) {
             angularAccelerationNumberControlSet.addSliderMajorTick( value, label );
           }
@@ -174,8 +176,6 @@ define( require => {
         this.content.addChild( angularAccelerationNumberControlSet );
       }
 
-      // Add a Node that takes up Space for un-even spacing
-      this.content.addChild( fixHeight( new Node(), 10 ) );
 
       //----------------------------------------------------------------------------------------
       // Checkboxes
@@ -225,58 +225,6 @@ define( require => {
       this.mutate( options );
     }
   }
-
-  //----------------------------------------------------------------------------------------
-  // Helpers
-  //----------------------------------------------------------------------------------------
-
-  /**
-   * Wraps a Node around another Node so that its a fixed width.
-   * @public
-   *
-   * @param {Node} node
-   * @returns {Node} the fixed width Node
-   */
-  function fixWidth( node ) {
-    // reset the location of node
-    node.left = 0;
-    node.top = 0;
-
-    const fixedWidthNode = new Node();
-    fixedWidthNode.width = 20; // eye-balled
-
-    // center the node
-    node.centerX = fixedWidthNode.centerX;
-
-    const wrapper = new Node().setChildren( [ fixedWidthNode, node ] );
-    wrapper.width = fixedWidthNode.width;
-    return wrapper;
-  }
-
-  /**
-   * Wraps a Node around another Node so that its a fixed height.
-   * @public
-   *
-   * @param {Node} node
-   * @returns {Node} the fixed height Node
-   */
-  function fixHeight( node, height ) {
-    // reset the location of node
-    node.left = 0;
-    node.top = 0;
-
-    const fixedHeightNode = new Node();
-    fixedHeightNode.height = height; // eye-balled
-
-    // center the node
-    node.centerY = fixedHeightNode.centerY;
-
-    const wrapper = new Node().setChildren( [ fixedHeightNode, node ] );
-    wrapper.height = fixedHeightNode.height;
-    return wrapper;
-  }
-
-
 
   return IntroControlPanel;
 } );

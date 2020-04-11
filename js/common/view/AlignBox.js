@@ -94,6 +94,32 @@ define( require => {
     _recomputeAncestorBounds() {
       if ( this.parent instanceof Node ) this.parent._recomputeAncestorBounds();
     }
+
+    /**
+     * Creates an AlignBox with a fixedWidth that is specified but the fixedHeight is the current height of the content.
+     * @public
+     *
+     * @param {Node} content - Node wrapped by the AlignBox
+     * @param {number} fixedWidth - the fixed width of the AlignBox
+     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
+     *                             the options are set in the early portion of the constructor for details.
+     */
+    static fixedWidth( content, fixedWidth, options ) {
+      return new AlignBox( content, fixedWidth, content.height, options );
+    }
+
+    /**
+     * Creates an AlignBox with a fixedHeight that is specified but the fixedWidth is the current width of the content.
+     * @public
+     *
+     * @param {Node} content - Node wrapped by the AlignBox
+     * @param {number} fixedHeight - the fixed height of the AlignBox
+     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
+     *                             the options are set in the early portion of the constructor for details.
+     */
+    static fixedHeight( content, fixedHeight, options ) {
+      return new AlignBox( content, content.width, fixedHeight, options );
+    }
   }
 
   return AlignBox;
