@@ -7,7 +7,7 @@
  *  1. Add a Linear tangential Velocity Arrow Node to represent the Vector.
  *  2. Add a Linear tangential Acceleration Arrow Node to represent the Vector.
  *  2. Add a total Acceleration Arrow Node to represent the total acceleration Vector.
-
+ *
  * IntroBallNodes are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
  * @author Brandon Li <brandon.li820@gmail.com>

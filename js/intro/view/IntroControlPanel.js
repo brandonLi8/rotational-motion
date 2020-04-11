@@ -6,8 +6,7 @@
  * Each IntroControlPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
  * be adjusted by the current circular motion type. Its content is fixed and doesn't change after instantiation.
  *
- * The IntroControlPanel will contain a varied number of NumberControlSets. When the sliders are being dragged, the
- * Spinner object is paused.
+ * The IntroControlPanel will contain a varied number of NumberControlSets.
  *
  * @author Brandon Li
  */
@@ -277,28 +276,7 @@ define( require => {
     return wrapper;
   }
 
-  /**
-   * Returns a Pi Fraction Node given a decimal. For instance, fractionalPiNode( 1.57 ) => new FractionNode( 'PI', '2' )
-   * @public
-   *
-   * @param {number} fraction
-   * @returns {FractionNode}
-   */
-  function fractionalPiNode( fraction ) {
-    fraction = fraction / Math.PI; // divide by PI first.
 
-    const length = fraction.toString().length - 2;
-    let denominator = Math.pow( 10, length );
-    let numerator = fraction * denominator;
-
-    const divisor = Util.gcd( numerator, denominator );
-    numerator = numerator / divisor;
-    denominator = denominator / divisor;
-
-    return Util.equalsEpsilon( numerator, 0 ) ?
-      new Text( 0, FRACTION_OPTIONS ) :
-      new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, FRACTION_OPTIONS );
-  }
 
   return IntroControlPanel;
 } );
