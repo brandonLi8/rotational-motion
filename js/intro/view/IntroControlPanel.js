@@ -151,7 +151,7 @@ define( require => {
         const minNode = AlignBox.fixedWidth( new FractionalPINode( spinner.angularAccelerationRange.max ), 20 );
 
         // Add a angular acceleration NumberControlSet for non-uniform spinners.
-        const angularAccelerationNumberControlSet = new NumberControlSet( new Text( Symbols.ALPHA ),
+        const angularAccelerationNumberControlSet = new NumberControlSet( new FlexBox( 'horizontal', { children: [ new FractionNode( `d${ Symbols.OMEGA }`, 'dt' ), new Text( Symbols.EQUAL_TO ), new Text( Symbols.ALPHA ) ], spacing: 6 } ),
           spinner.angularAccelerationProperty,
           spinner.angularAccelerationRange, {
             sliderOptions,

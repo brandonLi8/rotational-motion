@@ -40,7 +40,7 @@ define( require => {
         // fraction-bar
         fractionBarFill: 'black',    // {string} the fill color of the fraction bar
         fractionBarStroke: 'black',  // {string} the stroke color of the fraction bar
-        fractionBarStrokeWidth: 0.5, // {number} the stroke width of the fraction bar
+        fractionBarStrokeWidth: 0.8, // {number} the stroke width of the fraction bar
         fractionBarExtension: 3.5,   // {number} how far the fraction bar extends past the larger text
 
         // {Object} - if provided, these options will be passed to the Text instances
