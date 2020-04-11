@@ -6,7 +6,8 @@
  * Extends BallNode but adds the following functionality:
  *  1. Add a Linear tangential Velocity Arrow Node to represent the Vector.
  *  2. Add a Linear tangential Acceleration Arrow Node to represent the Vector.
- *
+ *  2. Add a total Acceleration Arrow Node to represent the total acceleration Vector.
+
  * IntroBallNodes are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
@@ -28,8 +29,8 @@ define( require => {
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
-  const VELOCITY_SCALAR = 0.5; // scalar of velocity Vectors.
-  const ACCELERATION_SCALAR = 0.36; // scalar of acceleration Vectors.
+  const VELOCITY_SCALAR = 0.5; // scalar of velocity Vectors to fit reasonable on the screen.
+  const ACCELERATION_SCALAR = 0.36; // scalar of acceleration Vectors to fit reasonable on the screen.
 
   class IntroBallNode extends BallNode {
 
@@ -78,7 +79,7 @@ define( require => {
         fill: RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL
       } );
 
-      // Add the Arrow's as children, which will allow it to be displayed above the Ball circle.
+      // Add the Arrows as children, which will allow it to be displayed above the Ball circle.
       this.addChild( this._velocityArrow );
       this.addChild( this._linearAccelerationArrow );
       this.addChild( this._totalAccelerationArrow );
@@ -89,27 +90,27 @@ define( require => {
       // Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.tangentialVelocityVectorProperty, ball.centerPositionProperty ],
         ( velocityVector ) => {
-          const scaledVelocity = Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR );
+          Vector.scratch.set( velocityVector ).multiply( VELOCITY_SCALAR ); // scale the velocity vector
           this._velocityArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
-          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( scaledVelocity.add( ball.center ) );
+          this._velocityArrow.tip = modelViewTransform.modelToViewPoint( Vector.scratch.add( ball.center ) );
         } );
 
       // Updates the linear acceleration arrow when the Ball's acceleration changes or when the Ball's center position
       // changes. Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.tangentialAccelerationVectorProperty, ball.centerPositionProperty ],
         ( accelerationVector ) => {
-          const scaledAccel = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
+          Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR ); // scale the acceleration vector
           this._linearAccelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
-          this._linearAccelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAccel.add( ball.center ) );
+          this._linearAccelerationArrow.tip = modelViewTransform.modelToViewPoint( Vector.scratch.add( ball.center ) );
         } );
 
       // Updates the total acceleration arrow when the Ball's acceleration changes or when the Ball's center position
       // changes. Doesn't need to be disposed since IntroBalls are never disposed.
       new Multilink( [ ball.totalAccelerationVectorProperty, ball.centerPositionProperty ],
         ( accelerationVector ) => {
-          const scaledAccel = Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR );
+          Vector.scratch.set( accelerationVector ).multiply( ACCELERATION_SCALAR ); // scale the acceleration vector
           this._totalAccelerationArrow.tail = modelViewTransform.modelToViewPoint( ball.center );
-          this._totalAccelerationArrow.tip = modelViewTransform.modelToViewPoint( scaledAccel.add( ball.center ) );
+          this._totalAccelerationArrow.tip = modelViewTransform.modelToViewPoint( Vector.scratch.add( ball.center ) );
         } );
 
       // Observe when the Vector Visibility Properties change and update the visibility of the Arrows.
@@ -117,20 +118,6 @@ define( require => {
       velocityVisibleProperty.linkAttribute( this._velocityArrow, 'visible' );
       linearAccelerationVisibleProperty.linkAttribute( this._linearAccelerationArrow, 'visible' );
       totalAccelerationVisibleProperty.linkAttribute( this._totalAccelerationArrow, 'visible' );
-    }
-
-    /**
-     * @override
-     * Called when this Node's Bounds changes due to a child's Bounds changing or when a child is added or removed.
-     * Also responsible for recursively calling the method for each parent up to either the ScreenView or to the
-     * point where a Node doesn't have a parent.
-     * @protected
-     *
-     * This is overridden to allow for negative Bounds with the arrows. The current implementation of Node shifts the
-     * Bounds of children if they are negative and offsets it.
-     */
-    _recomputeAncestorBounds() {
-      this.layout( this.screenViewScale );
     }
   }
 
