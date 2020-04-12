@@ -1,23 +1,17 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * Control Panel at the top right of each CircularMotionTypes scene in the 'intro' screen.
+ * Control Panel at the top right of each CircularMotionTypes scene in the 'intro' screen that allows the user to modify
+ * the properties of the Spinner.
  *
- * Each IntroControlPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
+ * Each SpinnerPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
  * be adjusted by the current circular motion type. Its content is fixed and doesn't change after instantiation.
  *
- * Displays for Uniform Circular Motion Types:
+ * A SpinnerPanel displays:
  *  - A radius Number Control Set
- *  - A angular velocity Number Control Set
- *  - A Velocity Vector Checkbox
- *  - A (total) Acceleration Vector Checkbox
- *
- * Displays for Non Uniform Circular Motion Types:
- *  - A radius Number Control Set
- *  - A angular acceleration Number Control Set
- *  - A Velocity Vector Checkbox
- *  - A Linear Acceleration Vector Checkbox
- *  - A Total Acceleration Vector Checkbox
+ *  - A angular velocity Number Control Set for uniform and a angular acceleration Number Control Set for non-uniform
+ *  - A horizontal separator line
+ *  - An angle visibility checkbox
  *
  * @author Brandon Li
  */
@@ -48,7 +42,7 @@ define( require => {
     fontWeight: 500
   };
 
-  class IntroControlPanel extends Panel {
+  class SpinnerPanel extends Panel {
 
     /**
      * @param {Spinner} spinner
@@ -85,7 +79,7 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // IntroControlPanel's always have a NumberControlSet for the radius.
+      // SpinnerPanel's always have a NumberControlSet for the radius.
       const radiusNumberControlSet = new SpinnerNumberControlSet( spinner, new Text( 'Radius' ),
         'radius', new Text( 'm' ), TEXT_OPTIONS,
         { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false } );
@@ -160,5 +154,5 @@ define( require => {
     }
   }
 
-  return IntroControlPanel;
+  return SpinnerPanel;
 } );
