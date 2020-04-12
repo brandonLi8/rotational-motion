@@ -3,7 +3,7 @@
 /**
  * Control Panel at the top right of each CircularMotionTypes scene in the 'intro' screen.
  *
- * Each SpinnerPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
+ * Each IntroControlPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
  * be adjusted by the current circular motion type. Its content is fixed and doesn't change after instantiation.
  *
  * Displays for Uniform Circular Motion Types:
@@ -48,7 +48,7 @@ define( require => {
     fontWeight: 500
   };
 
-  class SpinnerPanel extends Panel {
+  class IntroControlPanel extends Panel {
 
     /**
      * @param {Spinner} spinner
@@ -85,7 +85,7 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // SpinnerPanel's always have a NumberControlSet for the radius.
+      // IntroControlPanel's always have a NumberControlSet for the radius.
       const radiusNumberControlSet = new SpinnerNumberControlSet( spinner, new Text( 'Radius' ),
         'radius', new Text( 'm' ), TEXT_OPTIONS,
         { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false } );
@@ -160,5 +160,5 @@ define( require => {
     }
   }
 
-  return SpinnerPanel;
+  return IntroControlPanel;
 } );

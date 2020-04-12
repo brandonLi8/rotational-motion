@@ -19,7 +19,7 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypesRadioButtonGroup = require( 'ROTATIONAL_MOTION/intro/view/CircularMotionTypesRadioButtonGroup' ); // eslint-disable-line max-len
-  const IntroControlPanel = require( 'ROTATIONAL_MOTION/intro/view/IntroControlPanel' );
+  const SpinnerPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
@@ -80,7 +80,7 @@ define( require => {
           this.totalAccelerationVisibleProperty );
 
         // Create the Control Panel
-        const controlPanel = new IntroControlPanel( spinner,
+        const controlPanel = new SpinnerPanel( spinner,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty,
           this.totalAccelerationVisibleProperty, {
