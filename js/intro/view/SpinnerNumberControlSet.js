@@ -30,15 +30,15 @@ define( require => {
 
     /**
      * @param {Spinner} spinner
-     * @param {Node} title - the title displayed (see the comment at the top of the file for context).
-     * @param {string} property - the property name that the Spinner modifies (e.g 'radius')
-     * @param {Node} unit - the unit displayed in the Number Control.
-     * @param {Object} textOptions - passed to all Text instances.
+     * @param {Property.<number|null>} spinnerProperty
+     * @param {Range} range - this range of the spinnerProperty
+     * @param {Node} title - the title displayed
+     * @param {Node} unit - the unit displayed in the Number Control
      * @param {Object} increments - required object literal that provides configuration information on ticks
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
      *                             the options are set in the early portion of the constructor for details.
      */
-    constructor( spinner, title, property, unit, textOptions, increments, options ) {
+    constructor( spinner, spinnerProperty, range, title, unit, increments, options ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( title instanceof Node, `invalid title: ${ title }` );
       assert( unit instanceof Node, `invalid unit: ${ unit }` );
@@ -83,8 +83,8 @@ define( require => {
       };
 
       super( title,
-        spinner[ property + 'Property' ],
-        spinner[ property + 'Range' ], {
+        spinnerProperty,
+        range, {
           ...options,
           numberDisplayOptions: { decimalPlaces: RotationalMotionConstants.NUMBER_DISPLAY_DECIMAL_PLACES, unit },
           sliderOptions
@@ -96,20 +96,21 @@ define( require => {
 
       // Add the Major Ticks
       for ( let i = this._range.min; i <= this._range.max; i += increments.major ) {
-        this.addSliderMajorTick( i,
-          AlignBox.withWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
+        const label = new labelClass( i, { textOptions: RotationalMotionConstants.SLIDER_TICK_TEXT_OPTIONS } );
+        this.addSliderMajorTick( i, AlignBox.withWidth( label, options.tickWidth ) );
       }
 
       // Add the Minor Ticks
       for ( let i = this._range.min; i <= this._range.max; i += increments.minor ) {
+
+        // Skip if it already has a major tick.
         if ( Util.equalsEpsilon( ( i - this._range.min ) % increments.major, 0 ) ) continue;
+
         if ( Util.equalsEpsilon( ( i - this._range.min ) % increments.minorLabel, 0 ) ) {
-          this.addSliderMinorTick( i,
-            AlignBox.withWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
+          const label = new labelClass( i, { textOptions: RotationalMotionConstants.SLIDER_TICK_TEXT_OPTIONS } );
+          this.addSliderMinorTick( i, AlignBox.withWidth( label, options.tickWidth ) );
         }
-        else {
-          this.addSliderMinorTick( i );
-        }
+        else this.addSliderMinorTick( i );
       }
     }
   }
