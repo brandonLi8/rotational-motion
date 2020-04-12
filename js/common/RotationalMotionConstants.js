@@ -27,6 +27,24 @@ define( require => {
       tailWidth: 3
     },
 
+    // panel labels
+    PANEL_TEXT_OPTIONS: {
+      fontSize: 13.5,
+      fontWeight: 500
+    },
+
+    // slider ticks
+    SLIDER_TICK_TEXT_OPTIONS: {
+      fontSize: 12.5,
+      fontWeight: 500
+    },
+
+    // number display units
+    NUMBER_DISPLAY_UNIT_TEXT_OPTIONS: {
+      fontSize: 11.5,
+      fontWeight: 500
+    },
+
     // miscellaneous
     NUMBER_DISPLAY_DECIMAL_PLACES: 2
   };
