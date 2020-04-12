@@ -19,7 +19,6 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypesRadioButtonGroup = require( 'ROTATIONAL_MOTION/intro/view/CircularMotionTypesRadioButtonGroup' ); // eslint-disable-line max-len
-  const SpinnerPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerPanel' );
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
@@ -27,6 +26,7 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
+  const SpinnerPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerPanel' );
 
   // constants
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
@@ -51,6 +51,9 @@ define( require => {
 
       // @public (read-only) - indicates if the total acceleration Vectors are visible or not for both Spinners.
       this.totalAccelerationVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
+
+      // @public (read-only) - indicates if the spinner angle is visible.
+      this.angleVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
 
       //----------------------------------------------------------------------------------------
 
@@ -81,9 +84,7 @@ define( require => {
 
         // Create the Control Panel
         const controlPanel = new SpinnerPanel( spinner,
-          this.linearVelocityVisibleProperty,
-          this.linearAccelerationVisibleProperty,
-          this.totalAccelerationVisibleProperty, {
+          this.angleVisibleProperty, {
             right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
             top: SCREEN_VIEW_Y_MARGIN
           } );
