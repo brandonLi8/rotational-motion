@@ -16,11 +16,11 @@ define( require => {
   'use strict';
 
   // modules
-  const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
+  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const FractionalPiNode = require( 'ROTATIONAL_MOTION/intro/view/FractionalPiNode' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const NumberControlSet = require( 'ROTATIONAL_MOTION/common/view/NumberControlSet' );
+  const NumberControlSet = require( 'SIM_CORE/scenery/components/NumberControlSet' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Text = require( 'SIM_CORE/scenery/Text' );
@@ -97,7 +97,7 @@ define( require => {
       // Add the Major Ticks
       for ( let i = this._range.min; i <= this._range.max; i += increments.major ) {
         this.addSliderMajorTick( i,
-          AlignBox.fixedWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
+          AlignBox.withWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
       }
 
       // Add the Minor Ticks
@@ -105,7 +105,7 @@ define( require => {
         if ( Util.equalsEpsilon( ( i - this._range.min ) % increments.major, 0 ) ) continue;
         if ( Util.equalsEpsilon( ( i - this._range.min ) % increments.minorLabel, 0 ) ) {
           this.addSliderMinorTick( i,
-            AlignBox.fixedWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
+            AlignBox.withWidth( new labelClass( i, { textOptions } ), options.tickWidth ) );
         }
         else {
           this.addSliderMinorTick( i );

@@ -8,7 +8,7 @@
  *  □ label
  *
  * The Label can be any Node (not just limited to Text), as they can be labeled with icons.
- * See sim-core/scenery/buttons/Checkbox for background on Checkboxes.
+ * See sim-core/scenery/components/buttons/Checkbox for background on Checkboxes.
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -18,7 +18,7 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const Checkbox = require( 'SIM_CORE/scenery/buttons/Checkbox' );
+  const Checkbox = require( 'SIM_CORE/scenery/components/buttons/Checkbox' );
   const Node = require( 'SIM_CORE/scenery/Node' );
 
   class LabeledCheckboxNode extends Node {

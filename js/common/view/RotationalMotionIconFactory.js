@@ -17,7 +17,7 @@ define( require => {
   'use strict';
 
   // modules
-  const AlignBox = require( 'ROTATIONAL_MOTION/common/view/AlignBox' );
+  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const Arrow = require( 'SIM_CORE/scenery/Arrow' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );

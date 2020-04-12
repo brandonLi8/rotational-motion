@@ -31,7 +31,7 @@ define( require => {
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
-  const TimeControlBox = require( 'ROTATIONAL_MOTION/common/view/TimeControlBox' );
+  const TimeControlBox = require( 'SIM_CORE/scenery/components/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants

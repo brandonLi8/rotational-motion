@@ -18,8 +18,8 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const RadioButton = require( 'SIM_CORE/scenery/buttons/RadioButton' );
-  const RadioButtonGroup = require( 'SIM_CORE/scenery/RadioButtonGroup' );
+  const RadioButton = require( 'SIM_CORE/scenery/components/buttons/RadioButton' );
+  const RadioButtonGroup = require( 'SIM_CORE/scenery/components/RadioButtonGroup' );
   const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
 
   class CircularMotionTypesRadioButtonGroup extends RadioButtonGroup {
