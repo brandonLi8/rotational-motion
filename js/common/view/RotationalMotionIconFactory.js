@@ -21,7 +21,13 @@ define( require => {
   const Arrow = require( 'SIM_CORE/scenery/Arrow' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
+  const CurvedArrow = require( 'ROTATIONAL_MOTION/intro/view/CurvedArrow' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
+  const Path = require( 'SIM_CORE/scenery/Path' );
+  const Shape = require( 'SIM_CORE/util/Shape' );
+  const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
+  const Util = require( 'SIM_CORE/util/Util' );
 
   const RotationalMotionIconFactory = {
 
@@ -58,6 +64,34 @@ define( require => {
 
       const label = new Text( circularMotionType === CircularMotionTypes.UNIFORM ? 'Uniform' : 'Non-uniform' );
       return new AlignBox( label, 100, 17 );
+    },
+
+    /**
+     * Creates the icon that appears next to the checkbox that toggles the 'Angle' visibility
+     * @public
+     * @returns {Node}
+     */
+    createAngleIcon() {
+      const wedgeLength = 20;
+      const angle = Util.toRadians( 50 );
+      const curvedArrowRadius = 14;
+
+      const wedgeShape = new Shape()
+        .moveTo( wedgeLength, 0 )
+        .horizontalLineTo( 0 )
+        .lineTo( Math.cos( angle ) * wedgeLength, -Math.sin( angle ) * wedgeLength );
+      const wedgeNode = new Path( wedgeShape, { stroke: 'black', fill: 'none', strokeWidth: 0.9 } );
+
+      const icon = new Node().addChild( wedgeNode );
+
+      const curvedArrow = new CurvedArrow( wedgeNode.bottomLeft, curvedArrowRadius, 0, angle );
+
+      const thetaNode = new Text( Symbols.THETA, {
+        left: curvedArrow.right + 4,
+        centerY: wedgeNode.centerY,
+        fontFamily: '"Times New Roman", Times, serif'
+      } );
+      return icon.addChild( curvedArrow ).addChild( thetaNode );
     }
   };
 
