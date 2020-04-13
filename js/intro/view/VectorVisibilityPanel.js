@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * Control Panel at the bottom right of each CircularMotionTypes scene in the 'intro' screen that allows the user to
@@ -20,7 +20,6 @@ define( require => {
   'use strict';
 
   // modules
-  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
@@ -86,7 +85,7 @@ define( require => {
 
       // 'Linear Velocity' Checkbox
       checkboxes.addChild( new VisibilityCheckbox( linearVelocityVisibleProperty,
-        new Text( 'Linear Velocity', RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+        new Text( 'Linear Velocity', RotationalMotionConstants.PANEL_TEXT_OPTIONS )
       ) );
       icons.addChild( RotationalMotionIconFactory.createVectorArrowIcon( {
         fill: RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL
