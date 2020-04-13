@@ -22,7 +22,7 @@ define( require => {
     VECTOR_STROKE: 'black',
     LINEAR_VELOCITY_VECTOR_FILL: 'rgb( 10, 170, 250 )',
     LINEAR_ACCELERATION_VECTOR_FILL: 'rgb( 255, 0, 215 )',
-    TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 254, 0, 0 )',
+    TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 255, 144, 35 )',
 
     // panels
     PANEL_COLORS: {
