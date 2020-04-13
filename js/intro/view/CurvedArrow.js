@@ -18,6 +18,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Path = require( 'SIM_CORE/scenery/Path' );
   const Shape = require( 'SIM_CORE/util/Shape' );
+  const Util = require( 'SIM_CORE/util/Util' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
@@ -41,9 +42,9 @@ define( require => {
 
       options = {
 
-        headHeight: 6,     // {number} - the head-height of the curved arrow.
-        headWidth: 8,      // {number} - the head-width of the curved arrow.
-        tailWidth: 1.2,      // {number} - the tail-width of the curved arrow.
+        headHeight: 8,     // {number} - the head-height of the curved arrow.
+        headWidth: 11,     // {number} - the head-width of the curved arrow.
+        tailWidth: 1.2,    // {number} - the tail-width of the curved arrow.
         fill: 'black',     // {string} - the fill of the curved arrow.
         clockwise: false,  // {boolean} - indicates if the arrow is in clockwise direction
 
@@ -89,6 +90,45 @@ define( require => {
     get tip() { return assert( false, 'tip not a property of CurvedArrow' ); }
 
     /**
+     * Sets the startAngle of the Curved Arrow.
+     * @public
+     *
+     * @param {Vector} startAngle
+     */
+    set startAngle( startAngle ) {
+      if ( startAngle === this._startAngle ) return; // Exit if setting to the same 'startAngle'
+      assert( typeof startAngle === 'number', `invalid startAngle: ${ startAngle }` );
+      this._startAngle = startAngle;
+      this._updateArrowShape();
+    }
+
+    /**
+     * Sets the endAngle coordinate of the Curved Arrow.
+     * @public
+     *
+     * @param {Vector} endAngle
+     */
+    set endAngle( endAngle ) {
+      if ( endAngle === this._endAngle ) return; // Exit if setting to the same 'endAngle'
+      assert( typeof endAngle === 'number', `invalid endAngle: ${ endAngle }` );
+      this._endAngle = endAngle;
+      this._updateArrowShape();
+    }
+
+    /**
+     * Sets the radius coordinate of the Curved Arrow.
+     * @public
+     *
+     * @param {Vector} radius
+     */
+    set radius( radius ) {
+      if ( radius === this._radius ) return; // Exit if setting to the same 'radius'
+      assert( typeof radius === 'number', `invalid radius: ${ radius }` );
+      this._radius = radius;
+      this._updateArrowShape();
+    }
+
+    /**
      * @override
      * Generates a Arrow shape and updates the shape of this Arrow. Called when a property or the Arrow that is
      * displayed is changed, resulting in a different Arrow Shape.
@@ -98,6 +138,10 @@ define( require => {
 
       // Must be a valid CurvedArrow
       if ( isFinite( this._radius ) && isFinite( this._startAngle ) && isFinite( this._endAngle ) ) {
+        if ( Util.equalsEpsilon( this._startAngle, this._endAngle ) ) {
+          // If the start and end angle are the same, exit.
+          return Object.getOwnPropertyDescriptor( Path.prototype, 'shape' ).set.call( this, null );
+        }
 
         assert( this.headWidth > this.tailWidth, 'tailWidth must be smaller than the headWidth' );
         assert( this._radius > this.headWidth / 2, 'radius smaller than half of the headWidth' );
@@ -105,8 +149,8 @@ define( require => {
         const innerRadius = this._radius - this.tailWidth / 2;
         const outerRadius = this._radius + this.tailWidth / 2;
 
-        // Make sure that head height is less than half the arrow length.
-        const headHeight = Math.min( this._headHeight, 0.5 * ( Math.PI * 2 * this._radius ) );
+        // Make sure that head height is less than half the arc length.
+        const headHeight = Math.min( this._headHeight, 0.5 * ( this._radius * ( this.endAngle - this.startAngle ) ) );
 
         // The arrowhead subtended angle is defined as the angle between the vector from the center to the tip of the
         // arrow and the vector of the center to first point the arc and the triangle intersect
