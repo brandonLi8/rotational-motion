@@ -47,7 +47,7 @@ define( require => {
 
     // miscellaneous
     NUMBER_DISPLAY_DECIMAL_PLACES: 2,
-    MATH_FONT: '"Times New Roman", Times, serif'
+    MATH_TEXT_OPTIONS: { fontFamily: '"Times New Roman", Times, serif', fontWeight: 500, fontStyle: 'italic' }
   };
 
   return RotationalMotionConstants;

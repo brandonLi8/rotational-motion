@@ -51,7 +51,7 @@ define( require => {
         maxCurvedArrowRadius: 40,
 
         // {number} - the scale the Spinner string radius is multiplied by to get the curved arrow radius.
-        radiusScale: 0.79,
+        radiusScale: 0.4,
 
         // {number} - the maximum percentage of the baseline when compared to the radius of the curved arrow.
         maxBaselineWidth: 65,
@@ -80,7 +80,7 @@ define( require => {
       const curvedArrow = new CurvedArrow( viewOrigin, options.maxCurvedArrowRadius, 0, spinner.angle );
 
       // Create the label, set to an arbitrary string for now.
-      const label = new Text( '', { fontFamily: RotationalMotionConstants.MATH_FONT } );
+      const label = new Text( '', { fontSize: 14, fontWeight: 500 } );
 
       this.setChildren( [ baseline, curvedArrow, label ] );
 
