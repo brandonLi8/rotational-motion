@@ -20,6 +20,7 @@ define( require => {
   'use strict';
 
   // modules
+  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
@@ -84,33 +85,36 @@ define( require => {
       this.content.addChild( vectorsText );
 
       // 'Linear Velocity' Checkbox
-      checkboxes.addChild( new VisibilityCheckbox( linearVelocityVisibleProperty,
+      const linearVelocityCheckbox = new VisibilityCheckbox( linearVelocityVisibleProperty,
         new Text( 'Linear Velocity', RotationalMotionConstants.PANEL_TEXT_OPTIONS )
-      ) );
-      icons.addChild( RotationalMotionIconFactory.createVectorArrowIcon( {
+      );
+      checkboxes.addChild( linearVelocityCheckbox );
+      icons.addChild( AlignBox.withHeight( RotationalMotionIconFactory.createVectorArrowIcon( {
         fill: RotationalMotionColors.LINEAR_VELOCITY_VECTOR_FILL
-      } ) );
+      } ), linearVelocityCheckbox.height ) );
 
       // 'Linear Acceleration' Checkbox
       if ( circularMotionType === CircularMotionTypes.NON_UNIFORM ) {
 
-        checkboxes.addChild( new VisibilityCheckbox( linearAccelerationVisibleProperty,
+        const linearAccelerationCheckbox = new VisibilityCheckbox( linearAccelerationVisibleProperty,
           new Text( 'Linear Acceleration', RotationalMotionConstants.PANEL_TEXT_OPTIONS )
-        ) );
-        icons.addChild( RotationalMotionIconFactory.createVectorArrowIcon( {
+        );
+        checkboxes.addChild( linearAccelerationCheckbox );
+        icons.addChild( AlignBox.withHeight( RotationalMotionIconFactory.createVectorArrowIcon( {
           fill: RotationalMotionColors.LINEAR_ACCELERATION_VECTOR_FILL
-        } ) );
+        } ), linearAccelerationCheckbox.height ) );
       }
 
       // 'Total Acceleration' Checkbox
-      checkboxes.addChild( new VisibilityCheckbox( totalAccelerationVisibleProperty,
+      const totalAccelerationCheckbox = new VisibilityCheckbox( totalAccelerationVisibleProperty,
         new Text( circularMotionType === CircularMotionTypes.UNIFORM ?
                   'Acceleration' :
                   'Total Acceleration', RotationalMotionConstants.PANEL_TEXT_OPTIONS )
-      ) );
-      icons.addChild( RotationalMotionIconFactory.createVectorArrowIcon( {
+      );
+      checkboxes.addChild( totalAccelerationCheckbox );
+      icons.addChild( AlignBox.withHeight( RotationalMotionIconFactory.createVectorArrowIcon( {
         fill: RotationalMotionColors.TOTAL_ACCELERATION_VECTOR_FILL
-      } ) );
+      } ), totalAccelerationCheckbox.height ) );
 
       // Position the icons to the right of the checkboxes
       checkboxes.top = vectorsText.bottom + 10;

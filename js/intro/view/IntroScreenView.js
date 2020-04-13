@@ -103,7 +103,7 @@ define( require => {
           } );
 
         // Create a wrapper scene Node.
-        const scene = new Node( { children: [ controlPanel, spinnerNode, vectorVisiblePanel ] } );
+        const scene = new Node( { children: [ controlPanel, vectorVisiblePanel, spinnerNode ] } );
         this.addChild( scene ); // Add the scene as a child.
 
         // Adjust visibility based on the active Spinner. Link lasts for the entire simulation and is never disposed.
