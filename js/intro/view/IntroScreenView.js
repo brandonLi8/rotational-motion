@@ -27,6 +27,7 @@ define( require => {
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
   const SpinnerPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerPanel' );
+  const VectorVisibilityPanel = require( 'ROTATIONAL_MOTION/intro/view/VectorVisibilityPanel' );
 
   // constants
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
@@ -90,8 +91,19 @@ define( require => {
             top: SCREEN_VIEW_Y_MARGIN
           } );
 
+        // Create the Vector Visible Panel
+        const vectorVisiblePanel = new VectorVisibilityPanel(
+          spinner.type,
+          controlPanel.content.width,
+          this.linearVelocityVisibleProperty,
+          this.linearAccelerationVisibleProperty,
+          this.totalAccelerationVisibleProperty, {
+            left: controlPanel.left,
+            top: controlPanel.bottom + 10
+          } );
+
         // Create a wrapper scene Node.
-        const scene = new Node( { children: [ controlPanel, spinnerNode ] } );
+        const scene = new Node( { children: [ controlPanel, spinnerNode, vectorVisiblePanel ] } );
         this.addChild( scene ); // Add the scene as a child.
 
         // Adjust visibility based on the active Spinner. Link lasts for the entire simulation and is never disposed.

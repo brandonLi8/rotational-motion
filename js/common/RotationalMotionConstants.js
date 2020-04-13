@@ -29,7 +29,7 @@ define( require => {
 
     // panel labels
     PANEL_TEXT_OPTIONS: {
-      fontSize: 13.5,
+      fontSize: 13,
       fontWeight: 500
     },
 

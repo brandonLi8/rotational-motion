@@ -47,7 +47,7 @@ define( require => {
         },
 
         // {number} spacing between each piece of the VisibilityCheckbox
-        spacing: 6.5,
+        spacing: 7,
 
         // Rewrite options so that it overrides the defaults.
         ...options
