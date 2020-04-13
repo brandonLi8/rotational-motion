@@ -18,7 +18,7 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const CurvedArrow = require( 'ROTATIONAL_MOTION/intro/view/CurvedArrow' );
+  const CurvedArrow = require( 'SIM_CORE/scenery/components/CurvedArrow' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
