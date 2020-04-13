@@ -24,6 +24,7 @@ define( require => {
   const CurvedArrow = require( 'ROTATIONAL_MOTION/intro/view/CurvedArrow' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Path = require( 'SIM_CORE/scenery/Path' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Shape = require( 'SIM_CORE/util/Shape' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
@@ -84,12 +85,16 @@ define( require => {
 
       const icon = new Node().addChild( wedgeNode );
 
-      const curvedArrow = new CurvedArrow( wedgeNode.bottomLeft, curvedArrowRadius, 0, angle );
+      const curvedArrow = new CurvedArrow( wedgeNode.bottomLeft, curvedArrowRadius, 0, angle, {
+        headHeight: 6,
+        headWidth: 8,
+        tailWidth: 1.2
+      } );
 
       const thetaNode = new Text( Symbols.THETA, {
         left: curvedArrow.right + 4,
         centerY: wedgeNode.centerY,
-        fontFamily: '"Times New Roman", Times, serif'
+        fontFamily: RotationalMotionConstants.MATH_FONT
       } );
       return icon.addChild( curvedArrow ).addChild( thetaNode );
     }

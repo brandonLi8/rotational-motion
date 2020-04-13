@@ -31,6 +31,7 @@ define( require => {
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
+  const SpinnerAngleNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerAngleNode' );
   const TimeControlBox = require( 'SIM_CORE/scenery/components/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
@@ -47,17 +48,20 @@ define( require => {
      * @param {Property.<boolean>} velocityVisibleProperty
      * @param {Property.<boolean>} linearAccelerationVisibleProperty
      * @param {Property.<boolean>} totalAccelerationVisibleProperty
+     * @param {Property.<boolean>} angleVisibleProperty
      */
     constructor(
       spinner,
       velocityVisibleProperty,
       linearAccelerationVisibleProperty,
-      totalAccelerationVisibleProperty
+      totalAccelerationVisibleProperty,
+      angleVisibleProperty
     ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
       assert( totalAccelerationVisibleProperty instanceof Property, 'invalid totalAccelerationVisibleProperty' );
+      assert( angleVisibleProperty instanceof Property, 'invalid angleVisibleProperty' );
 
       //----------------------------------------------------------------------------------------
 
@@ -89,6 +93,8 @@ define( require => {
         totalAccelerationVisibleProperty,
         { fill: RotationalMotionColors.INTRO_BALL_FILL } );
 
+      // Create the Angle Node
+      const spinnerAngleNode = new SpinnerAngleNode( spinner, angleVisibleProperty, modelViewTransform );
 
       // Create a Time Control Box
       const timeControlBox = new TimeControlBox( spinner.isPlayingProperty, {
@@ -97,7 +103,7 @@ define( require => {
         topCenter: playAreaViewBounds.topCenter.addXY( 0, 15 ) // eye-balled margin
       } );
 
-      super( { children: [ timeControlBox, string, pin, ballNode ] } );
+      super( { children: [ timeControlBox, string, pin, ballNode, spinnerAngleNode ] } );
 
       //----------------------------------------------------------------------------------------
 

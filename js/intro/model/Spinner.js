@@ -89,7 +89,10 @@ define( require => {
       } );
 
       // @private {Property} - Property of the current angle the circular motion is in, in radians.
-      this.angleProperty = new Property( options.initialAngle, { type: 'number' } );
+      this.angleProperty = new Property( options.initialAngle, {
+        type: 'number',
+        isValidValue: value => value >= 0 && value < Math.PI * 2 // between 0 and 2PI
+      } );
 
       // @public (read-only) {*} - reference options that were passed-in. See options declaration for type documentation
       this.radiusRange = options.radiusRange;
@@ -221,12 +224,17 @@ define( require => {
     get angle() { return this.angleProperty.value; }
 
     /**
-     * Sets the Spinner's angle, in radians.
+     * Sets the Spinner's angle, in radians. Ensures the angle is in the range [0, Math.PI * 2)
      * @public
      *
      * @param {number} angle - in radians.
      */
-    set angle( angle ) { this.angleProperty.value = angle; }
+    set angle( angle ) {
+      if ( angle < 0 ) angle += Math.PI * 2;
+      if ( angle >= Math.PI * 2 ) angle -= Math.PI * 2;
+
+      this.angleProperty.value = angle;
+    }
 
     /**
      * Gets the Spinner's angularVelocity, in radians per second.

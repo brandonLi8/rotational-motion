@@ -80,7 +80,8 @@ define( require => {
         const spinnerNode = new SpinnerNode( spinner,
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty,
-          this.totalAccelerationVisibleProperty );
+          this.totalAccelerationVisibleProperty,
+          this.angleVisibleProperty );
 
         // Create the Control Panel
         const controlPanel = new SpinnerPanel( spinner,
