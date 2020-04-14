@@ -109,6 +109,17 @@ define( require => {
         // Adjust visibility based on the active Spinner. Link lasts for the entire simulation and is never disposed.
         introModel.activeSpinnerProperty.link( activeSpinner => { scene.visible = activeSpinner === spinner; } );
       } );
+
+      const TogglePanel = require( 'ROTATIONAL_MOTION/common/view/TogglePanel' );
+
+  const Text = require( 'SIM_CORE/scenery/Text' );
+
+      const t = new TogglePanel( new Property( true ), new Text( 'I am Closed' ), new Text( 'open' ), {
+        center: this.layoutBounds.center,
+        stroke: 'rgb( 100, 100, 100 )',
+        fill: 'rgb( 240, 240, 240 )'
+      } )
+      this.addChild( t )
     }
 
     /**
