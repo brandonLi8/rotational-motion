@@ -63,9 +63,11 @@ define( require => {
     createCircularMotionTypeIcon( circularMotionType ) {
       assert( CircularMotionTypes.includes( circularMotionType ), 'invalid circularMotionType' );
 
-      const label = new Text( circularMotionType === CircularMotionTypes.UNIFORM ? 'Uniform' : 'Non-uniform',
-       RotationalMotionConstants.PANEL_TEXT_OPTIONS );
-      return new AlignBox( label, 100, 17 );
+      const label = new Text( circularMotionType === CircularMotionTypes.UNIFORM ? 'Uniform' : 'Non-uniform', {
+        ...RotationalMotionConstants.PANEL_TEXT_OPTIONS,
+        fontSize: 14
+      } );
+      return new AlignBox( label, 97, 19 );
     },
 
     /**

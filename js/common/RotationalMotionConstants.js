@@ -15,8 +15,8 @@ define( require => {
   const RotationalMotionConstants = {
 
     // screen-view
-    SCREEN_VIEW_X_MARGIN: 60,
-    SCREEN_VIEW_Y_MARGIN: 25,
+    SCREEN_VIEW_X_MARGIN: 20,
+    SCREEN_VIEW_Y_MARGIN: 16,
 
     // arrow vectors
     VECTOR_ARROW_OPTIONS: {

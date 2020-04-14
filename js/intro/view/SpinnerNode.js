@@ -37,7 +37,8 @@ define( require => {
 
   // constants
   const PIN_RADIUS = 2; // eye-balled
-  const MODEL_TO_VIEW_SCALE = 230; // meter to view coordinates (1 m = 200 coordinates)
+  const SPINNER_VIEW_CENTER = new Vector( 300, 314 ); // eye-balled
+  const MODEL_TO_VIEW_SCALE = 210; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
@@ -66,24 +67,26 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Create the modelViewTransform by building the play area view bounds
-      const playAreaViewBounds = Bounds.rect( SCREEN_VIEW_X_MARGIN,
-        SCREEN_VIEW_Y_MARGIN,
-        MODEL_TO_VIEW_SCALE * spinner.playBounds.width,
-        MODEL_TO_VIEW_SCALE * spinner.playBounds.height );
+      const playAreaViewBounds = new Bounds(
+        SPINNER_VIEW_CENTER.x - MODEL_TO_VIEW_SCALE * spinner.playBounds.width / 2,
+        SPINNER_VIEW_CENTER.y - MODEL_TO_VIEW_SCALE * spinner.playBounds.height / 2,
+        SPINNER_VIEW_CENTER.x + MODEL_TO_VIEW_SCALE * spinner.playBounds.width / 2,
+        SPINNER_VIEW_CENTER.y + MODEL_TO_VIEW_SCALE * spinner.playBounds.height / 2
+      );
 
       const modelViewTransform = new ModelViewTransform( spinner.playBounds, playAreaViewBounds );
 
-      // Get the origin in terms of view coordinates
-      const viewOrigin = modelViewTransform.modelToViewPoint( Vector.ZERO );
-
       // Create the string Line, to be set later.
-      const string = Line.withPoints( viewOrigin, viewOrigin, {
+      const string = Line.withPoints( SPINNER_VIEW_CENTER, SPINNER_VIEW_CENTER, {
         stroke: RotationalMotionColors.SPINNER_STRING_COLOR,
         strokeWidth: 2
       } );
 
       // Create the pin at the center of the Spinner. It's location never changes.
-      const pin = new Circle( PIN_RADIUS, { center: viewOrigin, fill: RotationalMotionColors.SPINNER_PIN_FILL } );
+      const pin = new Circle( PIN_RADIUS, {
+        center: SPINNER_VIEW_CENTER, fill:
+        RotationalMotionColors.SPINNER_PIN_FILL
+      } );
 
       // Create the Ball Node of the Spinner.
       const ballNode = new IntroBallNode( spinner.ball,
@@ -100,7 +103,7 @@ define( require => {
       const timeControlBox = new TimeControlBox( spinner.isPlayingProperty, {
         stepBackwardOptions: { listener() { spinner.stepBackwards(); } },
         stepForwardOptions: { listener() { spinner.stepForwards(); } },
-        topCenter: playAreaViewBounds.topCenter.addXY( 0, 15 ) // eye-balled margin
+        topCenter: playAreaViewBounds.topCenter.addXY( 0, 10 ) // eye-balled margin
       } );
 
       super( { children: [ timeControlBox, string, pin, ballNode, spinnerAngleNode ] } );

@@ -71,7 +71,7 @@ define( require => {
       // Add the CircularMotionTypes RadioButtonGroup
       this.addChild( new CircularMotionTypesRadioButtonGroup( introModel.circularMotionTypeProperty, {
         top: 2 * SCREEN_VIEW_Y_MARGIN,
-        right: this.layoutBounds.maxX - 300 // eye-balled
+        right: this.layoutBounds.maxX - 260 // eye-balled
       } ) );
 
       // Create a scene for each Spinner and render it
