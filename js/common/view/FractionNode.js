@@ -20,19 +20,19 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Line = require( 'SIM_CORE/scenery/Line' );
-  const Text = require( 'SIM_CORE/scenery/Text' );
+  const Node = require( 'SIM_CORE/scenery/Node' );
 
   class FractionNode extends FlexBox {
 
     /**
-     * @param {string|number} numerator
-     * @param {string|number} denominator
+     * @param {Node} numerator
+     * @param {Node} denominator
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
      *                             the options are set in the early portion of the constructor for details.
      */
     constructor( numerator, denominator, options ) {
-      assert( typeof numerator === 'number' || typeof numerator === 'string', `invalid numerator: ${ numerator }` );
-      assert( typeof denominator === 'number' || typeof denominator === 'string', 'invalid denominator' );
+      assert( numerator instanceof Node, `invalid numerator: ${ numerator }` );
+      assert( denominator instanceof Node, 'invalid denominator' );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
       options = {
@@ -42,9 +42,6 @@ define( require => {
         fractionBarStroke: 'black',  // {string} the stroke color of the fraction bar
         fractionBarStrokeWidth: 0.8, // {number} the stroke width of the fraction bar
         fractionBarExtension: 3.5,   // {number} how far the fraction bar extends past the larger text
-
-        // {Object} - if provided, these options will be passed to the Text instances
-        textOptions: null,
 
         // {number} - spacing between each component of the Fraction
         spacing: 0.5,
@@ -57,12 +54,8 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Create the numerator and denominator Text Nodes.
-      const numeratorNode = new Text( numerator, options.textOptions );
-      const denominatorNode = new Text( denominator, options.textOptions );
-
       // Compute the width of the fraction-bar.
-      const fractionBarWidth = Math.max( numeratorNode.width, denominatorNode.width ) + options.fractionBarExtension;
+      const fractionBarWidth = Math.max( numerator.width, denominator.width ) + options.fractionBarExtension;
 
       // @public {Line} (read-only) - Create the fraction-bar. Exposed for relative positioning.
       this.bar = new Line( 0, 0, fractionBarWidth, 0, {
@@ -72,7 +65,7 @@ define( require => {
       } );
 
       // Set the children of the FractionNode
-      this.children = [ numeratorNode, this.bar, denominatorNode ];
+      this.children = [ numerator, this.bar, denominator ];
 
       // Apply any additionally Bounds setters
       this.mutate( options );
