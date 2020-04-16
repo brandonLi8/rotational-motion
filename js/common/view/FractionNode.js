@@ -45,7 +45,7 @@ define( require => {
         fractionBarExtension: 3.5,   // {number} how far the fraction bar extends past the larger text
 
         // {number} - spacing between each component of the Fraction
-        spacing: 0.5,
+        spacing: 0.9,
 
         // Rewrite options so that it overrides the defaults.
         ...options
