@@ -86,7 +86,11 @@ define( require => {
         spinnerProperty,
         range, {
           ...options,
-          numberDisplayOptions: { decimalPlaces: RotationalMotionConstants.NUMBER_DISPLAY_DECIMAL_PLACES, unit },
+          numberDisplayOptions: {
+            ...options.numberDisplayOptions,
+            decimalPlaces: RotationalMotionConstants.NUMBER_DISPLAY_DECIMAL_PLACES,
+            unit
+          },
           sliderOptions
         } );
 
