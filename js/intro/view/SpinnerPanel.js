@@ -34,6 +34,7 @@ define( require => {
   const SpinnerNumberControlSet = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNumberControlSet' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
+  const UnitNode = require( 'ROTATIONAL_MOTION/common/view/UnitNode' );
   const VisibilityCheckbox = require( 'ROTATIONAL_MOTION/common/view/VisibilityCheckbox' );
 
   class SpinnerPanel extends Panel {
@@ -69,8 +70,9 @@ define( require => {
         spinner.radiusProperty,
         spinner.radiusRange,
         new Text( 'Radius', RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
-        new Text( 'm', RotationalMotionConstants.NUMBER_DISPLAY_UNIT_TEXT_OPTIONS ),
-        { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false }
+        UnitNode.text( 'm' ),
+        { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false },
+        { numberDisplayOptions: { unitAlign: 'bottom' } }
       ) );
 
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
@@ -80,29 +82,26 @@ define( require => {
           spinner.angularVelocityProperty,
           spinner.angularVelocityRange,
           new Text( `Angular Velocity (${ Symbols.OMEGA })`, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
-          new FractionNode( 'rad', 'sec', { textOptions: RotationalMotionConstants.NUMBER_DISPLAY_UNIT_TEXT_OPTIONS } ),
+          UnitNode.fraction( 'rad', 'sec' ),
           { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularVelocityRange.length }
         ) );
       }
       else {
 
         const title = FlexBox.horizontal( { spacing: 6 } ).setChildren( [
-          new FractionNode( `d${ Symbols.OMEGA }`, 'dt', {
+          FractionNode.withText( `d${ Symbols.OMEGA }`, 'dt', {
             textOptions: RotationalMotionConstants.PANEL_TEXT_OPTIONS
           } ),
           new Text( Symbols.EQUAL_TO, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
           new Text( Symbols.ALPHA, RotationalMotionConstants.PANEL_TEXT_OPTIONS )
         ] );
-        const unit = new FractionNode( 'rad', `sec${ Symbols.DOT }sec`, {
-          textOptions: RotationalMotionConstants.NUMBER_DISPLAY_UNIT_TEXT_OPTIONS
-        } );
 
         // 'Angular Acceleration' NumberControlSet
         this.content.addChild( new SpinnerNumberControlSet( spinner,
           spinner.angularAccelerationProperty,
           spinner.angularAccelerationRange,
           title,
-          unit,
+          UnitNode.richFraction( 'rad', 'sec<sup>2</sup>' ),
           { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularAccelerationRange.length / 2 }
         ) );
       }
