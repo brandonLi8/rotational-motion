@@ -33,6 +33,7 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
+  const DerivedProperty = require( 'SIM_CORE/util/DerivedProperty' );
   const IntroBall = require( 'ROTATIONAL_MOTION/intro/model/IntroBall' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
   const Property = require( 'SIM_CORE/util/Property' );
@@ -88,11 +89,14 @@ define( require => {
         isValidValue: value => options.radiusRange.contains( value )
       } );
 
-      // @private {Property} - Property of the current angle the circular motion is in, in radians.
+      // @public {Property} - Property of the current angle the circular motion is in, in radians.
       this.angleProperty = new Property( options.initialAngle, {
         type: 'number',
         isValidValue: value => value >= 0 && value < Math.PI * 2 // between 0 and 2PI
       } );
+
+      // @public {DerivedProperty} - Property of the current angle the circular motion is in, in degrees.
+      this.angleDegreesProperty = new DerivedProperty( [ this.angleProperty ], angle => Util.toDegrees( angle ) );
 
       // @public (read-only) {*} - reference options that were passed-in. See options declaration for type documentation
       this.radiusRange = options.radiusRange;
@@ -222,6 +226,14 @@ define( require => {
      * @returns {number} - in radians.
      */
     get angle() { return this.angleProperty.value; }
+
+    /**
+     * Gets the Spinner's angle, in degrees.
+     * @public
+     *
+     * @returns {number} - in degrees.
+     */
+    get angleDegrees() { return this.angleDegreesProperty.value; }
 
     /**
      * Sets the Spinner's angle, in radians. Ensures the angle is in the range [0, Math.PI * 2)
