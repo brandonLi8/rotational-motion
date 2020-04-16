@@ -67,7 +67,7 @@ define( require => {
       assert( typeof denominator === 'string', `invalid denominator: ${ denominator }` );
       return new FractionNode(
         new Text( numerator, TEXT_OPTIONS ),
-        new RichText( denominator, { textOptions: TEXT_OPTIONS } )
+        new RichText( denominator, { textOptions: TEXT_OPTIONS, ingoreNonInlineBounds: true } )
       );
     }
   }
