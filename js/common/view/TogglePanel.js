@@ -41,10 +41,10 @@ define( require => {
       options = {
 
         contentAlign: 'left',      // {string} - 'left', 'center', or 'right'
-        contentLeftMargin: 10,     // {number} - margin between the ExpandCollapseButton and the content
+        contentLeftMargin: 15,     // {number} - margin between the ExpandCollapseButton and the content
 
         // super-class options
-        yMargin: 20,
+        yMargin: 15,
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options

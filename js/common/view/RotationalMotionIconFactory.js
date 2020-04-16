@@ -97,7 +97,8 @@ define( require => {
       const thetaNode = new Text( Symbols.THETA, {
         left: curvedArrow.right + 4,
         centerY: wedgeNode.centerY,
-        ...RotationalMotionConstants.MATH_TEXT_OPTIONS
+        ...RotationalMotionConstants.MATH_TEXT_OPTIONS,
+        fontSize: 13.5
       } );
       return icon.addChild( curvedArrow ).addChild( thetaNode );
     }

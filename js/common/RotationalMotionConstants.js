@@ -39,15 +39,14 @@ define( require => {
       fontWeight: 500
     },
 
-    // number display units
-    NUMBER_DISPLAY_UNIT_TEXT_OPTIONS: {
-      fontSize: 11.5,
-      fontWeight: 500
-    },
-
     // miscellaneous
     NUMBER_DISPLAY_DECIMAL_PLACES: 2,
-    MATH_TEXT_OPTIONS: { fontFamily: '"Times New Roman", Times, serif', fontWeight: 500, fontStyle: 'italic' }
+    MATH_TEXT_OPTIONS: {
+      fontFamily: '"Times New Roman", Times, serif',
+      fontWeight: 500,
+      fontStyle: 'italic',
+      fontSize: 18
+    }
   };
 
   return RotationalMotionConstants;
