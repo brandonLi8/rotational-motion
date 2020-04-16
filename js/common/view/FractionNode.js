@@ -4,7 +4,7 @@
  * A custom Fraction Node, which displays a numerator, a horizontal line, and a denominator stacked vertically on top
  * of each other.
  *
- * The numerator and denominator can be numbers or strings, to allow for fractional units (like rad/sec). FractionNode
+ * The numerator and denominator can be and Node, to allow for fractional units (like rad/sec). FractionNode
  * can be sub-typed to allow for multiple denominators (like 4/5/5) if desired.
  *
  * FractionNode is a subtype of FlexBox, mainly to align the centerX of the numerator, fraction-line, and denominator.
@@ -21,6 +21,7 @@ define( require => {
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const Node = require( 'SIM_CORE/scenery/Node' );
+  const Text = require( 'SIM_CORE/scenery/Text' );
 
   class FractionNode extends FlexBox {
 
@@ -69,6 +70,30 @@ define( require => {
 
       // Apply any additionally Bounds setters
       this.mutate( options );
+    }
+
+    /**
+     * Static FractionNode creator that uses Text Nodes as its numerators and denominators.
+     * @public
+     *
+     * @param {string|number} numerator
+     * @param {string|number} denominator
+     * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
+     *                             the options are set in the early portion of the constructor for details.
+     * @returns {FractionNode}
+     */
+    static withText( numerator, denominator, options ) {
+      options = {
+        // {Object} - if provided, these options will be passed to Text instances
+        textOptions: null,
+
+        ...options
+      };
+      return new FractionNode(
+        new Text( numerator, options.textOptions ),
+        new Text( denominator, options.textOptions ),
+        options
+      );
     }
   }
 

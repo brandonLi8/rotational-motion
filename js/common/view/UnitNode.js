@@ -52,7 +52,7 @@ define( require => {
     static fraction( numerator, denominator ) {
       assert( typeof numerator === 'string', `invalid numerator: ${ numerator }` );
       assert( typeof denominator === 'string', `invalid denominator: ${ denominator }` );
-      return new FractionNode( new Text( numerator, TEXT_OPTIONS ), new Text( denominator, TEXT_OPTIONS ) );
+      return FractionNode.withText( numerator, denominator, { textOptions: TEXT_OPTIONS } );
     }
 
     /**
