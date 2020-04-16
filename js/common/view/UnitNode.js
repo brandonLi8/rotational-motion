@@ -39,7 +39,7 @@ define( require => {
      */
     static text( text ) {
       assert( typeof text === 'string', `invalid text: ${ text }` );
-      return new Text( text, TEXT_OPTIONS );
+      return new UnitNode().addChild( new Text( text, TEXT_OPTIONS ) );
     }
 
     /**
@@ -52,7 +52,7 @@ define( require => {
     static fraction( numerator, denominator ) {
       assert( typeof numerator === 'string', `invalid numerator: ${ numerator }` );
       assert( typeof denominator === 'string', `invalid denominator: ${ denominator }` );
-      return FractionNode.withText( numerator, denominator, { textOptions: TEXT_OPTIONS } );
+      return new UnitNode().addChild( FractionNode.withText( numerator, denominator, { textOptions: TEXT_OPTIONS } ) );
     }
 
     /**
@@ -65,10 +65,10 @@ define( require => {
     static richFraction( numerator, denominator ) {
       assert( typeof numerator === 'string', `invalid numerator: ${ numerator }` );
       assert( typeof denominator === 'string', `invalid denominator: ${ denominator }` );
-      return new FractionNode(
+      return new UnitNode().addChild( new FractionNode(
         new Text( numerator, TEXT_OPTIONS ),
         new RichText( denominator, { textOptions: TEXT_OPTIONS, ingoreNonInlineBounds: true } )
-      );
+      ) );
     }
   }
 

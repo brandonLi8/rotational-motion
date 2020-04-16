@@ -24,6 +24,7 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Text = require( 'SIM_CORE/scenery/Text' );
+  const UnitNode = require( 'ROTATIONAL_MOTION/common/view/UnitNode' );
   const Util = require( 'SIM_CORE/util/Util' );
 
   class SpinnerNumberControlSet extends NumberControlSet {
@@ -33,7 +34,7 @@ define( require => {
      * @param {Property.<number|null>} spinnerProperty
      * @param {Range} range - this range of the spinnerProperty
      * @param {Node} title - the title displayed
-     * @param {Node} unit - the unit displayed in the Number Control
+     * @param {UnitNode} unit - the unit displayed in the Number Control
      * @param {Object} increments - required object literal that provides configuration information on ticks
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
      *                             the options are set in the early portion of the constructor for details.
@@ -41,7 +42,7 @@ define( require => {
     constructor( spinner, spinnerProperty, range, title, unit, increments, options ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( title instanceof Node, `invalid title: ${ title }` );
-      assert( unit instanceof Node, `invalid unit: ${ unit }` );
+      assert( unit instanceof UnitNode, `invalid unit: ${ unit }` );
       assert( Object.getPrototypeOf( increments ) === Object.prototype, `invalid increments: ${ increments }` );
       assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
 
