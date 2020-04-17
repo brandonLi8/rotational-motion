@@ -5,9 +5,10 @@
  * Spinner to simulate circular motion. They work for both types of circular motion. See Spinner.js for more doc.
  *
  * Extends Ball but adds the following functionality:
- *   - Velocity Derived Property to track the tangential velocity vector of the center of mass.
- *   - Linear Acceleration Derived Property to track the tangential acceleration vector of the center of mass.
- *   - Total Acceleration Derived Property to track the total acceleration vector of the center of mass.
+ *   - Velocity (Vector) Derived Property to track the tangential velocity vector of the center of mass.
+ *   - Linear Acceleration(Vector)  Derived Property to track the tangential acceleration vector of the center of mass.
+ *   - Total Acceleration (Vector) Derived Property to track the total acceleration vector of the center of mass.
+ *   - A centripetal acceleration (scalar) Derived Property
  *
  * IntroBalls are created at the start of the sim and are never disposed, so no dispose method is necessary.
  *
@@ -51,8 +52,8 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @public (read-only) - Property of the linear (tangential) velocity of the center of mass of the Ball. Lasts for
-      //                       the entire sim and is never disposed.
+      // @public (read-only) - Property of the linear (tangential) velocity vector of the center of mass of the Ball.
+      //                       Lasts for the entire sim and is never disposed.
       this.tangentialVelocityVectorProperty = new DerivedProperty( [
         angularVelocityProperty,      // in radians per second
         circularMotionRadiusProperty, // in meters
@@ -65,8 +66,13 @@ define( require => {
           return new Vector( velocity, 0 ).rotate( angle + Math.PI / 2 ); // Rotate 90 to make the vector tangential
       } );
 
-      // @public (read-only) - Property of the linear (tangential) acceleration of the center of mass of the Ball. Lasts
-      //                       for the entire sim and is never disposed.
+      // @public (read-only) - Property of the linear (tangential) velocity scalar of the center of mass of the Ball.
+      //                       Lasts for the entire sim and is never disposed.
+      this.tangentialVelocityProperty = new DerivedProperty( [ this.tangentialVelocityVectorProperty ],
+        tangentialVelocityVector => tangentialVelocityVector.magnitude );
+
+      // @public (read-only) - Property of the linear (tangential) acceleration vector of the center of mass of the Ball
+      //                       Lasts for the entire sim and is never disposed.
       this.tangentialAccelerationVectorProperty = new DerivedProperty( [
         angularAccelerationProperty,  // in radians per second per second
         circularMotionRadiusProperty, // in meters
@@ -79,18 +85,22 @@ define( require => {
           return new Vector( acceleration, 0 ).rotate( angle + Math.PI / 2 ); // Rotate 90 to make the vector tangential
       } );
 
-      // @public (read-only) - Property of the total acceleration of the center of mass of the Ball. Lasts for the
-      //                       entire sim and is never disposed.
-      this.totalAccelerationVectorProperty = new DerivedProperty( [
-        this.tangentialAccelerationVectorProperty,
-        this.tangentialVelocityVectorProperty,
-        circularMotionRadiusProperty,
-        circularMotionAngleProperty
-      ], ( tangentialAccelerationVector, tangentialVelocityVector, radius, angle ) => {
+      //----------------------------------------------------------------------------------------
 
+      // @public (read-only) - Property of the centripetal acceleration of the center of mass (as a scalar magnitude).
+      //                       Lasts for the entire sim and is never disposed.
+      this.centripetalAccelerationProperty = new DerivedProperty( [ this.tangentialVelocityVectorProperty,
+        circularMotionRadiusProperty ], ( tangentialVelocityVector, radius ) => {
           // Calculate the centripetal acceleration of the Ball due to the Spinner. See
           // https://en.wikipedia.org/wiki/Centripetal_force for the physics background. Calculated as v^2/r
-          const centripetalAcceleration = Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
+          return Math.pow( tangentialVelocityVector.magnitude, 2 ) / radius;
+        } );
+
+      // @public (read-only) - Property of the total acceleration of the center of mass of the Ball. Lasts for the
+      //                       entire sim and is never disposed.
+      this.totalAccelerationVectorProperty = new DerivedProperty( [ this.centripetalAccelerationProperty,
+        this.tangentialAccelerationVectorProperty,
+        circularMotionAngleProperty ], ( centripetalAcceleration, tangentialAccelerationVector, angle ) => {
 
           // Create the centripetal acceleration vector, pointing in the negative direction to make it center seeking.
           const centripetalAccelerationVector = new Vector( centripetalAcceleration, 0 ).rotate( angle + Math.PI );

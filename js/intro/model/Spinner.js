@@ -95,9 +95,6 @@ define( require => {
         isValidValue: value => value >= 0 && value < Math.PI * 2 // between 0 and 2PI
       } );
 
-      // @public {DerivedProperty} - Property of the current angle the circular motion is in, in degrees.
-      this.angleDegreesProperty = new DerivedProperty( [ this.angleProperty ], angle => Util.toDegrees( angle ) );
-
       // @public (read-only) {*} - reference options that were passed-in. See options declaration for type documentation
       this.radiusRange = options.radiusRange;
       this.stepTime = options.stepTime;
@@ -226,14 +223,6 @@ define( require => {
      * @returns {number} - in radians.
      */
     get angle() { return this.angleProperty.value; }
-
-    /**
-     * Gets the Spinner's angle, in degrees.
-     * @public
-     *
-     * @returns {number} - in degrees.
-     */
-    get angleDegrees() { return this.angleDegreesProperty.value; }
 
     /**
      * Sets the Spinner's angle, in radians. Ensures the angle is in the range [0, Math.PI * 2)
