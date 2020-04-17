@@ -26,7 +26,7 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
-  const SpinnerPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerPanel' );
+  const SpinnerControlPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerControlPanel' );
   const VectorVisibilityPanel = require( 'ROTATIONAL_MOTION/intro/view/VectorVisibilityPanel' );
 
   // constants
@@ -56,6 +56,9 @@ define( require => {
       // @public (read-only) - indicates if the spinner angle is visible.
       this.angleVisibleProperty = new Property( DEFAULT_VECTOR_IS_VISIBLE, { type: 'boolean' } );
 
+      // @public (read-only) - indicates if the spinner values are visible.
+      this.spinnerValuesVisibleProperty = new Property( true, { type: 'boolean' } );
+
       //----------------------------------------------------------------------------------------
 
       // Add the Reset All Button
@@ -70,7 +73,7 @@ define( require => {
 
       // Add the CircularMotionTypes RadioButtonGroup
       this.addChild( new CircularMotionTypesRadioButtonGroup( introModel.circularMotionTypeProperty, {
-        top: 2 * SCREEN_VIEW_Y_MARGIN,
+        top: 24,
         right: this.layoutBounds.maxX - 260 // eye-balled
       } ) );
 
@@ -82,10 +85,11 @@ define( require => {
           this.linearVelocityVisibleProperty,
           this.linearAccelerationVisibleProperty,
           this.totalAccelerationVisibleProperty,
-          this.angleVisibleProperty );
+          this.angleVisibleProperty,
+          this.spinnerValuesVisibleProperty );
 
         // Create the Control Panel
-        const controlPanel = new SpinnerPanel( spinner,
+        const controlPanel = new SpinnerControlPanel( spinner,
           this.angleVisibleProperty, {
             right: this.layoutBounds.maxX - SCREEN_VIEW_X_MARGIN,
             top: SCREEN_VIEW_Y_MARGIN
@@ -109,17 +113,6 @@ define( require => {
         // Adjust visibility based on the active Spinner. Link lasts for the entire simulation and is never disposed.
         introModel.activeSpinnerProperty.link( activeSpinner => { scene.visible = activeSpinner === spinner; } );
       } );
-
-      const TogglePanel = require( 'ROTATIONAL_MOTION/common/view/TogglePanel' );
-
-  const Text = require( 'SIM_CORE/scenery/Text' );
-
-      const t = new TogglePanel( new Property( true ), new Text( 'I am Closed' ), new Text( 'open' ), {
-        center: this.layoutBounds.center,
-        stroke: 'rgb( 100, 100, 100 )',
-        fill: 'rgb( 240, 240, 240 )'
-      } )
-      this.addChild( t )
     }
 
     /**
@@ -130,6 +123,8 @@ define( require => {
       this.linearVelocityVisibleProperty.reset();
       this.linearAccelerationVisibleProperty.reset();
       this.totalAccelerationVisibleProperty.reset();
+      this.angleVisibleProperty.reset();
+      this.spinnerValuesVisibleProperty.reset();
     }
   }
 
