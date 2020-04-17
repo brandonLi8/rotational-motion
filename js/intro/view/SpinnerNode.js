@@ -40,8 +40,6 @@ define( require => {
   const PIN_RADIUS = 2; // eye-balled
   const SPINNER_VIEW_CENTER = new Vector( 292, 314 ); // eye-balled
   const MODEL_TO_VIEW_SCALE = 213; // meter to view coordinates (1 m = 200 coordinates)
-  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
-  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
 
   class SpinnerNode extends Node {
 

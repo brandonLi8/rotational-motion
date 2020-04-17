@@ -33,7 +33,6 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
-  const DerivedProperty = require( 'SIM_CORE/util/DerivedProperty' );
   const IntroBall = require( 'ROTATIONAL_MOTION/intro/model/IntroBall' );
   const Multilink = require( 'SIM_CORE/util/Multilink' );
   const Property = require( 'SIM_CORE/util/Property' );

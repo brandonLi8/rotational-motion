@@ -20,7 +20,6 @@ define( require => {
   const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const RichText = require( 'SIM_CORE/scenery/components/RichText' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Text = require( 'SIM_CORE/scenery/Text' );
 
   // constants

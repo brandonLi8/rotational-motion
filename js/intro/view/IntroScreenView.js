@@ -25,8 +25,8 @@ define( require => {
   const ResetButton = require( 'SIM_CORE/scenery/components/buttons/ResetButton' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
-  const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
   const SpinnerControlPanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerControlPanel' );
+  const SpinnerNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerNode' );
   const VectorVisibilityPanel = require( 'ROTATIONAL_MOTION/intro/view/VectorVisibilityPanel' );
 
   // constants

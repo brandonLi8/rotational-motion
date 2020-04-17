@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * SpinnerValuesTogglePanel is the Toggle Panel at the top of each CircularMotionTypes scene in the 'intro' screen that
@@ -22,19 +22,14 @@ define( require => {
   'use strict';
 
   // modules
-  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
-  const FractionNode = require( 'ROTATIONAL_MOTION/common/view/FractionNode' );
-  const Line = require( 'SIM_CORE/scenery/Line' );
   const NumberDisplay = require( 'SIM_CORE/scenery/components/NumberDisplay' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const Range = require( 'SIM_CORE/util/Range' );
   const RichText = require( 'SIM_CORE/scenery/components/RichText' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
-  const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
