@@ -4,10 +4,10 @@
  * Control Panel at the top right of each CircularMotionTypes scene in the 'intro' screen that allows the user to modify
  * the properties of the Spinner.
  *
- * Each SpinnerPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
+ * Each SpinnerControlPanel should be initiated with a corresponding CircularMotionType. Its visibility should then
  * be adjusted by the current circular motion type. Its content is fixed and doesn't change after instantiation.
  *
- * A SpinnerPanel displays:
+ * A SpinnerControlPanel displays:
  *  - A radius Number Control Set
  *  - A angular velocity Number Control Set for uniform and a angular acceleration Number Control Set for non-uniform
  *  - A horizontal separator line
@@ -37,7 +37,7 @@ define( require => {
   const UnitNode = require( 'ROTATIONAL_MOTION/common/view/UnitNode' );
   const VisibilityCheckbox = require( 'ROTATIONAL_MOTION/common/view/VisibilityCheckbox' );
 
-  class SpinnerPanel extends Panel {
+  class SpinnerControlPanel extends Panel {
 
     /**
      * @param {Spinner} spinner
@@ -120,5 +120,5 @@ define( require => {
     }
   }
 
-  return SpinnerPanel;
+  return SpinnerControlPanel;
 } );

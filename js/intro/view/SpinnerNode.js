@@ -32,12 +32,13 @@ define( require => {
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SpinnerAngleNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerAngleNode' );
+  const SpinnerValuesTogglePanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerValuesTogglePanel' );
   const TimeControlBox = require( 'SIM_CORE/scenery/components/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
   const PIN_RADIUS = 2; // eye-balled
-  const SPINNER_VIEW_CENTER = new Vector( 300, 314 ); // eye-balled
+  const SPINNER_VIEW_CENTER = new Vector( 290, 314 ); // eye-balled
   const MODEL_TO_VIEW_SCALE = 210; // meter to view coordinates (1 m = 200 coordinates)
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
@@ -50,19 +51,22 @@ define( require => {
      * @param {Property.<boolean>} linearAccelerationVisibleProperty
      * @param {Property.<boolean>} totalAccelerationVisibleProperty
      * @param {Property.<boolean>} angleVisibleProperty
+     * @param {Property.<boolean>} spinnerValuesVisibleProperty
      */
     constructor(
       spinner,
       velocityVisibleProperty,
       linearAccelerationVisibleProperty,
       totalAccelerationVisibleProperty,
-      angleVisibleProperty
+      angleVisibleProperty,
+      spinnerValuesVisibleProperty
     ) {
       assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
       assert( velocityVisibleProperty instanceof Property, 'invalid velocityVisibleProperty' );
       assert( linearAccelerationVisibleProperty instanceof Property, 'invalid linearAccelerationVisibleProperty' );
       assert( totalAccelerationVisibleProperty instanceof Property, 'invalid totalAccelerationVisibleProperty' );
       assert( angleVisibleProperty instanceof Property, 'invalid angleVisibleProperty' );
+      assert( spinnerValuesVisibleProperty instanceof Property, 'invalid spinnerValuesVisibleProperty' );
 
       //----------------------------------------------------------------------------------------
 
@@ -106,7 +110,13 @@ define( require => {
         topCenter: playAreaViewBounds.topCenter.addXY( 0, 10 ) // eye-balled margin
       } );
 
-      super( { children: [ timeControlBox, string, pin, ballNode, spinnerAngleNode ] } );
+      // Create the Spinner Values Panel
+      const spinnerValuesPanel = new SpinnerValuesTogglePanel( spinner, spinnerValuesVisibleProperty, {
+        centerX: playAreaViewBounds.centerX,
+        top: RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN
+      } );
+
+      super( { children: [ timeControlBox, spinnerValuesPanel, string, pin, ballNode, spinnerAngleNode ] } );
 
       //----------------------------------------------------------------------------------------
 

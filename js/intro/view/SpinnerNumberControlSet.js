@@ -2,7 +2,7 @@
 
 /**
  * A NumberControlSet designed specifically to control a number Property of a Spinner in the 'Intro' Screen. Used
- * inside of SpinnerPanel.
+ * inside of SpinnerControlPanel.
  *
  * Extends NumberControlSet but adds the following functionality:
  *   - Pauses the Spinner when the slider is dragged. When the drag is finished, will play the Spinner again only if it

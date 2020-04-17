@@ -71,10 +71,12 @@ define( require => {
       if ( decimal === 0 ) this.addChild( new Text( '0', options.textOptions ) );
       else {
         // Create the FractionNode that represents the absolute value of the PI fraction
-        const fractionNode = new FractionNode( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, denominator, {
-          ...options.fractionOptions,
-          textOptions: options.textOptions
-        } );
+        const fractionNode = new FractionNode(
+          new Text( `${ numerator === 1 ? '' : numerator } ${ Symbols.PI }`, { textOptions: options.textOptions } ),
+          new Text( denominator, { textOptions: options.textOptions } ), {
+            ...options.fractionOptions,
+            textOptions: options.textOptions
+          } );
 
         // Add a negative bar if the decimal is negative.
         if ( decimal < 0 ) {
