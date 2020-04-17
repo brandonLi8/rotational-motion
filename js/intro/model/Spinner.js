@@ -60,7 +60,7 @@ define( require => {
         stepTime: 0.03,                     // {number} - the time elapsed on each forward or backward step
         initialAngle: 0,                    // {number} - the initial angle of the circular motion, in radians
         initialRadius: 0.5,                 // {number} - the initial radius of the circular motion, in meters
-        ballRadius: 0.055,                  // {number} - the radius of the ball, in meters
+        ballRadius: 0.051,                  // {number} - the radius of the ball, in meters
         radiusRange: new Range( 0.1, 1 ),   // {Range} - the range of the radius of the circular motion, in meters
 
         // rewrite options such that it overrides the defaults above if provided.

@@ -73,7 +73,7 @@ define( require => {
 
       // Add the CircularMotionTypes RadioButtonGroup
       this.addChild( new CircularMotionTypesRadioButtonGroup( introModel.circularMotionTypeProperty, {
-        top: 24,
+        top: 28,
         right: this.layoutBounds.maxX - 260 // eye-balled
       } ) );
 

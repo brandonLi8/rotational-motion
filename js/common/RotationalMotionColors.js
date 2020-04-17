@@ -26,7 +26,7 @@ define( require => {
 
     // panels
     PANEL_COLORS: {
-      stroke: 'rgb( 100, 100, 100 )',
+      stroke: 'rgb( 150, 150, 150 )',
       fill: 'rgb( 240, 240, 240 )'
     }
   };

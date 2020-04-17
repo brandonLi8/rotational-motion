@@ -60,8 +60,8 @@ define( require => {
 
         labelRightMargin: 10,     // {number} margin from the label to the number label (ltr)
         labelLeftMargin: 20,      // {number} margin from then number display to the label (ltr)
-        numberDisplayWidth: 75,   // {number} the width of each number display in the Panel
-        numberDisplayHeight: 35,  // {number} the height of each number display in the Panel
+        numberDisplayWidth: 72,   // {number} the width of each number display in the Panel
+        numberDisplayHeight: 32,  // {number} the height of each number display in the Panel
         decimalPlaces: 1,         // {number} the number of decimal places to display on each NumberDisplay
 
         // rewrite options such that it overrides the defaults above if provided.
