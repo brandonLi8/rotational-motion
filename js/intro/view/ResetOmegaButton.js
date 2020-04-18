@@ -41,12 +41,12 @@ define( require => {
 
       options = {
 
-        baseColor: '#F79722',   // {string} - the base color of the button.
-        cornerRadius: 4,        // {number} - the corner radius of the ResetOmegaButton
+        baseColor: '#F79722',     // {string} - the base color of the button.
+        cornerRadius: 4,          // {number} - the corner radius of the ResetOmegaButton
         buttonStroke: '#A66617',  // {string|Gradient} - the stroke of the border of the ResetOmega Button
-        buttonStrokeWidth: 1.3, // {number} - the stroke-width of the border of the ResetOmega Button
-        xMargin: 28.5,          // {number} - the x-margin between the background rectangle and the Text
-        yMargin: 14,            // {number} - the y-margin between the background rectangle and the Text
+        buttonStrokeWidth: 1,     // {number} - the stroke-width of the border of the ResetOmega Button
+        xMargin: 30,              // {number} - the x-margin between the background rectangle and the Text
+        yMargin: 14,              // {number} - the y-margin between the background rectangle and the Text
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -56,7 +56,7 @@ define( require => {
 
       // Create the content, which is just the Text.
       const content = new Text( `Reset ${ Symbols.OMEGA }`, {
-        fontSize: 16
+        fontSize: 16.5
       } );
 
       // Create the background, which is just a rounded rectangle
@@ -71,8 +71,8 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Custom stops for the ResetOmegaButton. Values determined through experimentation.
-      const gradientStops = [ [ 0.59, 0 ], [ 0.39, 20 ], [ 0.2, 40 ], [ 0, 59 ], [ -0.01, 65 ], [ -0.03, 73 ],
-                              [ -0.07, 80 ], [ -0.11, 86 ], [ -0.14, 91.5 ], [ -0.18, 93.5 ], [ -0.22, 100 ] ];
+      const gradientStops = [ [ 0.59, 0 ], [ 0.39, 20 ], [ 0.2, 40 ], [ 0, 59 ], [ -0.01, 65 ], [ -0.03, 78 ],
+                              [ -0.07, 85 ], [ -0.11, 90 ], [ -0.14, 93.5 ], [ -0.18, 95.5 ], [ -0.24, 100 ] ];
 
       // Apply the 3D Gradient strategy to allow the ResetOmega Button to look 3D
       Button.apply3DGradients( this, options.baseColor, gradientStops );
