@@ -22,12 +22,14 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Circle = require( 'SIM_CORE/scenery/Circle' );
+  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
+  const ResetOmegaButton = require( 'ROTATIONAL_MOTION/intro/view/ResetOmegaButton' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
@@ -115,6 +117,15 @@ define( require => {
       } );
 
       super( { children: [ timeControlBox, spinnerValuesPanel, string, pin, ballNode, spinnerAngleNode ] } );
+
+      // Display the ResetOmegaButton for non-uniform Spinners
+      if ( spinner.type === CircularMotionTypes.NON_UNIFORM ) {
+        const resetOmegaButton = new ResetOmegaButton( spinner, {
+          centerLeft: timeControlBox.centerRight.addXY( 45, 0 )
+        } );
+        this.addChild( resetOmegaButton );
+        resetOmegaButton.moveToBack();
+      }
 
       //----------------------------------------------------------------------------------------
 

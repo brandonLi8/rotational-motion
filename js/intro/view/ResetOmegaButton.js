@@ -2,7 +2,8 @@
 
 /**
  * ResetOmegaButton is the button that displays "Reset ${ Symbols.OMEGA }" on a Rectangular Button. It appears on the
- * non-uniform SpinnerControlPanel. When pressed, it resets the angular velocity Property of the non-uniform spinner.
+ * non-uniform SpinnerNode next to the TimeControlBox. When pressed, it resets the angular velocity Property of the
+ * non-uniform spinner.
  *
  * ResetOmegaButton is a sub-type of Button. See sim-core/scenery/components/button/Button for context.
  *
@@ -40,12 +41,12 @@ define( require => {
 
       options = {
 
-        baseColor: '#C32526',   // {string} - the base color of the button.
+        baseColor: '#F79722',   // {string} - the base color of the button.
         cornerRadius: 4,        // {number} - the corner radius of the ResetOmegaButton
-        buttonStroke: 'black',  // {string|Gradient} - the stroke of the border of the ResetOmega Button
-        buttonStrokeWidth: 0.5, // {number} - the stroke-width of the border of the ResetOmega Button
-        xMargin: 18.5,          // {number} - the x-margin between the background rectangle and the Text
-        yMargin: 27,            // {number} - the y-margin between the background rectangle and the Text
+        buttonStroke: '#A66617',  // {string|Gradient} - the stroke of the border of the ResetOmega Button
+        buttonStrokeWidth: 1.3, // {number} - the stroke-width of the border of the ResetOmega Button
+        xMargin: 28.5,          // {number} - the x-margin between the background rectangle and the Text
+        yMargin: 14,            // {number} - the y-margin between the background rectangle and the Text
 
         // Rewrite options so that it overrides the defaults.
         ...options
@@ -54,7 +55,9 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Create the content, which is just the Text.
-      const content = new Text( `Reset ${ Symbols.OMEGA }` );
+      const content = new Text( `Reset ${ Symbols.OMEGA }`, {
+        fontSize: 16
+      } );
 
       // Create the background, which is just a rounded rectangle
       const background = new Rectangle( content.width + options.xMargin, content.height + options.yMargin, {
@@ -67,13 +70,17 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
+      // Custom stops for the ResetOmegaButton. Values determined through experimentation.
+      const gradientStops = [ [ 0.59, 0 ], [ 0.39, 20 ], [ 0.2, 40 ], [ 0, 59 ], [ -0.01, 65 ], [ -0.03, 73 ],
+                              [ -0.07, 80 ], [ -0.11, 86 ], [ -0.14, 91.5 ], [ -0.18, 93.5 ], [ -0.22, 100 ] ];
+
       // Apply the 3D Gradient strategy to allow the ResetOmega Button to look 3D
-      Button.apply3DGradients( this, options.baseColor );
+      Button.apply3DGradients( this, options.baseColor, gradientStops );
 
       // Listen to when the Button is pressed and reset the angular velocity Property of the spinner. The listener
       // is never unlinked since ResetOmegaButtons are never disposed.
       this.interactionStateProperty.link( interactionState => {
-        if ( interactionState === Button.interactionStateProperty.PRESSED ) {
+        if ( interactionState === Button.interactionStates.PRESSED ) {
           spinner.angularVelocityProperty.reset();
         }
       } );
