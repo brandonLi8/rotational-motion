@@ -41,9 +41,9 @@ define( require => {
 
       options = {
 
-        baseColor: '#F79722',     // {string} - the base color of the button.
+        baseColor: '#ffc800',     // {string} - the base color of the button.
         cornerRadius: 4,          // {number} - the corner radius of the ResetOmegaButton
-        buttonStroke: '#A66617',  // {string|Gradient} - the stroke of the border of the ResetOmega Button
+        buttonStroke: '#CCA000',  // {string|Gradient} - the stroke of the border of the ResetOmega Button
         buttonStrokeWidth: 1,     // {number} - the stroke-width of the border of the ResetOmega Button
         xMargin: 30,              // {number} - the x-margin between the background rectangle and the Text
         yMargin: 14,              // {number} - the y-margin between the background rectangle and the Text
@@ -71,8 +71,8 @@ define( require => {
       //----------------------------------------------------------------------------------------
 
       // Custom stops for the ResetOmegaButton. Values determined through experimentation.
-      const gradientStops = [ [ 0.59, 0 ], [ 0.39, 20 ], [ 0.2, 40 ], [ 0, 59 ], [ -0.01, 65 ], [ -0.03, 78 ],
-                              [ -0.07, 85 ], [ -0.11, 90 ], [ -0.14, 93.5 ], [ -0.18, 95.5 ], [ -0.24, 100 ] ];
+      const gradientStops = [ [ 0.75, 0 ], [ 0.5, 20 ], [ 0.3, 40 ],  [ 0, 59 ], [ -0.01, 69 ], [ -0.015, 75 ],
+                              [ -0.045, 81 ], [ -0.08, 87 ], [ -0.1, 92.5 ], [ -0.13, 95.5 ], [ -0.16, 100 ] ];
 
       // Apply the 3D Gradient strategy to allow the ResetOmega Button to look 3D
       Button.apply3DGradients( this, options.baseColor, gradientStops );
