@@ -22,6 +22,7 @@ define( require => {
   'use strict';
 
   // modules
+  const AlignBox = require( 'SIM_CORE/scenery/AlignBox' );
   const assert = require( 'SIM_CORE/util/assert' );
   const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
@@ -99,19 +100,24 @@ define( require => {
         ]
       } ) );
 
+      //----------------------------------------------------------------------------------------
+
+      const alphaText = new Text( Symbols.ALPHA, { textOptions: RotationalMotionConstants.LABEL_TEXT_OPTIONS } );
+      const omegaText = new Text( Symbols.OMEGA, { textOptions: RotationalMotionConstants.LABEL_TEXT_OPTIONS } );
+
       if ( spinner.type === CircularMotionTypes.UNIFORM ) {
 
         // Alpha
         openContent.addChild( FlexBox.horizontal( {
           spacing: options.labelRightMargin,
           children: [
-            new Text( Symbols.ALPHA, { textOptions: RotationalMotionConstants.LABEL_TEXT_OPTIONS } ),
+            AlignBox.withWidth( alphaText, Math.max( alphaText.width, omegaText.width ) ),
             new NumberDisplay( spinner.angularAccelerationProperty,
-            options.numberDisplayWidth,
-            options.numberDisplayHeight, {
-              decimalPlaces: options.decimalPlaces,
-              unit: UnitNode.richFraction( 'rad', 'sec<sup>2</sup>' )
-            } )
+              options.numberDisplayWidth,
+              options.numberDisplayHeight, {
+                decimalPlaces: options.decimalPlaces,
+                unit: UnitNode.richFraction( 'rad', 'sec<sup>2</sup>' )
+              } )
           ]
         } ) );
       }
@@ -121,13 +127,13 @@ define( require => {
         openContent.addChild( FlexBox.horizontal( {
           spacing: options.labelRightMargin,
           children: [
-            new Text( Symbols.OMEGA, { textOptions: RotationalMotionConstants.LABEL_TEXT_OPTIONS } ),
+            AlignBox.withWidth( omegaText, Math.max( alphaText.width, omegaText.width ) ),
             new NumberDisplay( spinner.angularVelocityProperty,
-            options.numberDisplayWidth,
-            options.numberDisplayHeight, {
-              decimalPlaces: options.decimalPlaces,
-              unit: UnitNode.fraction( 'rad', 'sec' )
-            } )
+              options.numberDisplayWidth,
+              options.numberDisplayHeight, {
+                decimalPlaces: options.decimalPlaces,
+                unit: UnitNode.fraction( 'rad', 'sec' )
+              } )
           ]
         } ) );
       }

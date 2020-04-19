@@ -3,11 +3,11 @@
 /**
  * SpinnerNode is the corresponding view for the Spinner model, in the 'intro' screen.
  *
- * SpinnerNode is responsible for displaying:
- *  - A pin circle, which is the center of the circular motion (and the origin of the Spinner)
- *  - A string line, which is responsible for the tension of the circular motion.
- *  - The IntroBallNode, which is rotated around the circle.
- *  - A TimeControlBox to control the timing of the Spinner.
+ * SpinnerNode is responsible for:
+ *  - Creating the ModelViewTransform
+ *  - Displaying a pin circle, which is the center of the circular motion (and the origin of the Spinner)
+ *  - Displaying a string line, which is responsible for the tension of the circular motion.
+ *  - Displaying the IntroBallNode, which is rotated around the pin.
  *  - Handling drag requests of the Ball and communicating that to the Spinner.
  *
  * SpinnerNodes are created at the start of the Sim and are never disposed, so all links are left as is.
@@ -22,20 +22,15 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Circle = require( 'SIM_CORE/scenery/Circle' );
-  const CircularMotionTypes = require( 'ROTATIONAL_MOTION/intro/model/CircularMotionTypes' );
   const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const IntroBallNode = require( 'ROTATIONAL_MOTION/intro/view/IntroBallNode' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Property = require( 'SIM_CORE/util/Property' );
-  const ResetOmegaButton = require( 'ROTATIONAL_MOTION/intro/view/ResetOmegaButton' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
-  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
   const Spinner = require( 'ROTATIONAL_MOTION/intro/model/Spinner' );
   const SpinnerAngleNode = require( 'ROTATIONAL_MOTION/intro/view/SpinnerAngleNode' );
-  const SpinnerValuesTogglePanel = require( 'ROTATIONAL_MOTION/intro/view/SpinnerValuesTogglePanel' );
-  const TimeControlBox = require( 'SIM_CORE/scenery/components/TimeControlBox' );
   const Vector = require( 'SIM_CORE/util/Vector' );
 
   // constants
@@ -68,17 +63,18 @@ define( require => {
       assert( angleVisibleProperty instanceof Property, 'invalid angleVisibleProperty' );
       assert( spinnerValuesVisibleProperty instanceof Property, 'invalid spinnerValuesVisibleProperty' );
 
+      super();
       //----------------------------------------------------------------------------------------
 
-      // Create the modelViewTransform by building the play area view bounds
-      const playAreaViewBounds = new Bounds(
+      // @public (read-only) - create the modelViewTransform by building the play area view bounds
+      this.playAreaViewBounds = new Bounds(
         SPINNER_VIEW_CENTER.x - MODEL_TO_VIEW_SCALE * spinner.playBounds.width / 2,
         SPINNER_VIEW_CENTER.y - MODEL_TO_VIEW_SCALE * spinner.playBounds.height / 2,
         SPINNER_VIEW_CENTER.x + MODEL_TO_VIEW_SCALE * spinner.playBounds.width / 2,
         SPINNER_VIEW_CENTER.y + MODEL_TO_VIEW_SCALE * spinner.playBounds.height / 2
       );
 
-      const modelViewTransform = new ModelViewTransform( spinner.playBounds, playAreaViewBounds );
+      const modelViewTransform = new ModelViewTransform( spinner.playBounds, this.playAreaViewBounds );
 
       // Create the string Line, to be set later.
       const string = Line.withPoints( SPINNER_VIEW_CENTER, SPINNER_VIEW_CENTER, {
@@ -103,29 +99,7 @@ define( require => {
       // Create the Angle Node
       const spinnerAngleNode = new SpinnerAngleNode( spinner, angleVisibleProperty, modelViewTransform );
 
-      // Create a Time Control Box
-      const timeControlBox = new TimeControlBox( spinner.isPlayingProperty, {
-        stepBackwardOptions: { listener() { spinner.stepBackwards(); } },
-        stepForwardOptions: { listener() { spinner.stepForwards(); } },
-        topCenter: playAreaViewBounds.topCenter.addXY( 0, 10 ) // eye-balled margin
-      } );
-
-      // Create the Spinner Values Panel
-      const spinnerValuesPanel = new SpinnerValuesTogglePanel( spinner, spinnerValuesVisibleProperty, {
-        centerX: playAreaViewBounds.centerX,
-        top: RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN
-      } );
-
-      super( { children: [ timeControlBox, spinnerValuesPanel, string, pin, ballNode, spinnerAngleNode ] } );
-
-      // Display the ResetOmegaButton for non-uniform Spinners
-      if ( spinner.type === CircularMotionTypes.NON_UNIFORM ) {
-        const resetOmegaButton = new ResetOmegaButton( spinner, {
-          centerLeft: timeControlBox.centerRight.addXY( 45, 0 )
-        } );
-        this.addChild( resetOmegaButton );
-        resetOmegaButton.moveToBack();
-      }
+      this.children = [ string, pin, ballNode, spinnerAngleNode ];
 
       //----------------------------------------------------------------------------------------
 
