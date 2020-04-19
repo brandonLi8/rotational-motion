@@ -89,11 +89,11 @@ define( require => {
       else {
 
         const title = FlexBox.horizontal( { spacing: 6 } ).setChildren( [
+          new Text( Symbols.ALPHA, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+          new Text( Symbols.EQUAL_TO, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
           FractionNode.withText( `d${ Symbols.OMEGA }`, 'dt', {
             textOptions: RotationalMotionConstants.PANEL_TEXT_OPTIONS
-          } ),
-          new Text( Symbols.EQUAL_TO, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
-          new Text( Symbols.ALPHA, RotationalMotionConstants.PANEL_TEXT_OPTIONS )
+          } )
         ] );
 
         // 'Angular Acceleration' NumberControlSet
