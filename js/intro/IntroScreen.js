@@ -12,6 +12,7 @@ define( require => {
   // modules
   const IntroModel = require( 'ROTATIONAL_MOTION/intro/model/IntroModel' );
   const IntroScreenView = require( 'ROTATIONAL_MOTION/intro/view/IntroScreenView' );
+  const RotationalMotionIconFactory = require( 'ROTATIONAL_MOTION/common/view/RotationalMotionIconFactory' );
   const Screen = require( 'SIM_CORE/Screen' );
 
   class IntroScreen extends Screen {
@@ -21,6 +22,7 @@ define( require => {
       super( {
         name: 'Intro',
         background: 'rgb( 255, 250, 227 )',
+        icon: RotationalMotionIconFactory.createIntroScreenIcon(),
         model: IntroModel,
         view: IntroScreenView
       } );
