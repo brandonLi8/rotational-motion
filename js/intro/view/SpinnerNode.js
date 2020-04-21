@@ -84,8 +84,8 @@ define( require => {
 
       // Create the pin at the center of the Spinner. It's location never changes.
       const pin = new Circle( PIN_RADIUS, {
-        center: SPINNER_VIEW_CENTER, fill:
-        RotationalMotionColors.SPINNER_PIN_FILL
+        center: SPINNER_VIEW_CENTER,
+        fill: RotationalMotionColors.SPINNER_PIN_FILL
       } );
 
       // Create the Ball Node of the Spinner.
