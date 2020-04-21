@@ -11,15 +11,13 @@ define( require => {
 
   // modules
   const IntroScreen = require( 'ROTATIONAL_MOTION/intro/IntroScreen' );
-  const RollingScreen = require( 'ROTATIONAL_MOTION/rolling/RollingScreen' );
   const Sim = require( 'SIM_CORE/Sim' );
 
   // Start the Rotational Motion Simulation.
   Sim.start( {
     name: 'Rotational Motion',
     screens: [
-      new IntroScreen(),
-      new RollingScreen()
+      new IntroScreen()
     ]
   } );
 } );
