@@ -40,7 +40,7 @@ define( require => {
     /**
      * Creates the 'Intro' screen Icon, displayed on the navigation-bar.
      * @public
-     * @returns {Node}
+     * @returns {ScreenIcon}
      */
     createIntroScreenIcon() {
       const angle = Util.toRadians( 40 );
