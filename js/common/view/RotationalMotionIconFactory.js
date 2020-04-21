@@ -28,6 +28,7 @@ define( require => {
   const Path = require( 'SIM_CORE/scenery/Path' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const ScreenIcon = require( 'SIM_CORE/scenery/components/ScreenIcon' );
   const Shape = require( 'SIM_CORE/util/Shape' );
   const Symbols = require( 'SIM_CORE/util/Symbols' );
   const Text = require( 'SIM_CORE/scenery/Text' );
@@ -66,7 +67,7 @@ define( require => {
         } );
       icon.addChild( vector );
 
-      return icon;
+      return new ScreenIcon( icon );
     },
 
     /**
