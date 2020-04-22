@@ -6,7 +6,7 @@
     "email": "brandon.li820@gmail.com",
     "url": "https://brandonwli.com/"
   },
-  "version": "0.0.0-dev.13",
+  "version": "0.0.0-dev.14",
   "description": "Rotational Motion is an HTML5 educational and interactive simulation that runs in the browser and explores the counterparts of linear motion in terms of rotational motion.",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "requirejs": "^2.3.6",
-    "sim-core": "0.0.0-dev.47"
+    "sim-core": "0.0.0-dev.48"
   },
   "bugs": {
     "url": "https://github.com/brandonLi8/rotational-motion/issues",
