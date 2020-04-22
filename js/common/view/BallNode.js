@@ -41,10 +41,10 @@ define( require => {
 
       options = {
 
-        fill: 'white',      // {string|Gradient} - fill color of the ball-circle.
-        stroke: 'black',    // {string|Gradient} - border color of the ball-circle.
-        strokeWidth: 0.7,   // {string} - stroke width of the ball-circle.
-        cursor: 'pointer',  // {string} - cursor of the entire Ball Node.
+        fill: 'white',           // {string|Gradient} - fill color of the ball-circle.
+        stroke: 'black',         // {string|Gradient} - border color of the ball-circle.
+        strokeWidth: 0.7,        // {string} - stroke width of the ball-circle.
+        cursor: 'scenery-drag',  // {string} - cursor of the entire Ball Node.
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
