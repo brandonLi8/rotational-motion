@@ -4,6 +4,7 @@
  * Top Level view for the 'Rolling' screen.
  *
  * Responsible for:
+ *   - Keeping track of the window scenery Bounds
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
