@@ -20,7 +20,6 @@ define( require => {
 
       super( {
         name: 'Rolling',
-        background: 'rgb( 255, 250, 227 )',
         model: RollingModel,
         view: RollingScreenView
       } );

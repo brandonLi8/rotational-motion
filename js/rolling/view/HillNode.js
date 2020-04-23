@@ -24,6 +24,8 @@ define( require => {
   const Property = require( 'SIM_CORE/util/Property' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Vector = require( 'SIM_CORE/util/Vector' );
+  const Shape = require( 'SIM_CORE/util/Shape' );
+  const Path = require( 'SIM_CORE/scenery/Path' );
 
   class HillNode extends Node {
 
@@ -39,6 +41,27 @@ define( require => {
       assert( modelViewTransform instanceof ModelViewTransform, 'invalid modelViewTransform' );
 
       super();
+
+      //----------------------------------------------------------------------------------------
+
+      // @private {Path} - the Path of the triangle that represents the Hill.
+      this.trianglePath = new Path( null, {
+        fill: 'green'
+      } );
+
+      this.addChild( this.trianglePath );
+
+      hill.angleProperty.link( angle => {
+
+        // Create the shape.
+        this.trianglePath.shape = modelViewTransform.modelToViewShape( new Shape()
+          .moveTo( 0, 0 )
+          .lineTo( hill.playBounds.maxX, 0 )
+          .lineTo( 0, Math.tan( angle ) * hill.playBounds.maxX )
+          .close()
+        );
+        console.log( angle, Math.tan( angle ) * hill.playBounds.maxX )
+      } );
     }
 
     /**

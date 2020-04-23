@@ -15,10 +15,12 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
-  const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
-  const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const HillNode = require( 'ROTATIONAL_MOTION/rolling/view/HillNode' );
+  const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
+  const Rectangle = require( 'SIM_CORE/scenery/Rectangle' );
+  const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
+  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+  const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
 
   // constants
   const HILL_BOTTOM_LEG_LENGTH = 400;
@@ -52,6 +54,10 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
+      this.backgroundNode = new Rectangle( 0, 0, { fill: RotationalMotionColors.ROLLING_SCREEN_BACKGROUND } );
+      this.backgroundNode._computeGlobalBounds = () => {};
+      this.addChild( this.backgroundNode );
+
       const hillNode = new HillNode( rollingModel.hill, this.modelViewTransform );
       this.addChild( hillNode );
     }
@@ -70,6 +76,10 @@ define( require => {
       const xExpand = ( width / this.layoutScale ) / 2;
       const yExpand = ( height / this.layoutScale ) / 2;
       this.windowSceneryBounds.set( this.layoutBounds ).expand( xExpand, yExpand, xExpand, yExpand );
+
+      this.backgroundNode.width = this.windowSceneryBounds.width;
+      this.backgroundNode.height = this.windowSceneryBounds.height;
+      this.backgroundNode.topLeft = this.windowSceneryBounds.bottomLeft;
     }
   }
 

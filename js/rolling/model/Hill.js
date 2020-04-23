@@ -41,7 +41,7 @@ define( require => {
       options = {
 
         // {number} - the initial angle of the hill, in radians
-        initialAngle: 0,
+        initialAngle: Math.PI / 4,
 
         // {Range} - the range of angle of the hill, in radians
         angleRange: new Range( 0, Math.PI * 3 / 8 ),
