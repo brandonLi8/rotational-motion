@@ -15,8 +15,13 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
+  const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
+  const HillNode = require( 'ROTATIONAL_MOTION/rolling/view/HillNode' );
+
+  // constants
+  const HILL_BOTTOM_LEG_LENGTH = 400;
 
   class RollingScreenView extends ScreenView {
 
@@ -28,11 +33,27 @@ define( require => {
 
       super();
 
-      //----------------------------------------------------------------------------------------
-
       // @public (read-only) {Bounds} - The Bounds of the entire browser window (excluding the navigation-bar), in
       //                                scenery coordinates, relative to our layout bounds (can include negative Bounds)
       this.windowSceneryBounds = Bounds.ZERO.copy();
+
+      //----------------------------------------------------------------------------------------
+
+      // Compute the bounds of the entire hill area, in scenery coordinates. The hill is put to the bottom-right of the
+      // ScreenView.
+      const hillViewBounds = new Bounds( 0,
+        this.layoutBounds.maxY - Math.tan( rollingModel.hill.angleRange.max ) * HILL_BOTTOM_LEG_LENGTH,
+        HILL_BOTTOM_LEG_LENGTH,
+        this.layoutBounds.maxY
+      );
+
+      // @public (read-only) {ModelViewTransform} - create the model view transform for the screen
+      this.modelViewTransform = new ModelViewTransform( rollingModel.hill.playBounds, hillViewBounds );
+
+      //----------------------------------------------------------------------------------------
+
+      const hillNode = new HillNode( rollingModel.hill, this.modelViewTransform );
+      this.addChild( hillNode );
     }
 
     /**

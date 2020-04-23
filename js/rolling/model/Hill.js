@@ -62,7 +62,7 @@ define( require => {
       } );
 
       // @public (read-only) {Range} - range of the angle of the hill, in radians.
-      this.angleRangle = options.angleRange;
+      this.angleRange = options.angleRange;
 
       // @public (read-only) {Bounds} - the bounds of the entire hill area. The origin is the bottom-left of the
       //                                hill, and expands to the right to include the bottom-leg. It expands upwards to
