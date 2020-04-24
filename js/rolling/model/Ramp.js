@@ -47,10 +47,10 @@ define( require => {
       options = {
 
         // {number} - the initial angle of the slope relative to the horizontal, in radians
-        initialAngle: 2 * Math.PI / 11,
+        initialAngle: 2 * Math.PI / 13,
 
         // {Range} - the range of the angle of the slope relative to the horizontal, in radians
-        angleRange: new Range( 0, Math.PI * 3 / 8 ),
+        angleRange: new Range( 0, Math.PI / 5 ),
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
@@ -135,19 +135,19 @@ define( require => {
   //----------------------------------------------------------------------------------------
 
   // @public {number} - the height of the stand of the slope (see the comment at the top of the file) in meters.
-  Ramp.STAND_HEIGHT = 0.7;
+  Ramp.STAND_HEIGHT = 0.55;
 
   // @public {number} - the width of the stand of the slope (see the comment at the top of the file) in meters.
   Ramp.STAND_WIDTH = 5;
 
   // @public {number} - the width of the lift-bar (see the comment at the top of the file) in meters.
-  Ramp.LIFT_BAR_WIDTH = 0.8;
+  Ramp.LIFT_BAR_WIDTH = 0.6;
 
   // @public {number} - the amount the lift bar extrudes upwards past the top of the slope, in meters.
   Ramp.LIFT_BAR_Y_EXTENSION = 0.25;
 
   // @public {number} - the amount the stand extrudes rightwards past the edge of the slope, in meters.
-  Ramp.STAND_X_EXTENSION = 2.4;
+  Ramp.STAND_X_EXTENSION = 2.1;
 
   return Ramp;
 } );
