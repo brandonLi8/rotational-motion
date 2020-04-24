@@ -107,8 +107,24 @@ define( require => {
     set angle( angle ) { this.angleProperty.value = angle; }
   }
 
-  // {number} - the length of the bottom side of the ramp-triangle, in meters.
-  Ramp.BOTTOM_LEG_LENGTH = 8;
+  //----------------------------------------------------------------------------------------
+  // Static Constants
+  //----------------------------------------------------------------------------------------
+
+  // @public {number} - the height of the stand of the slope (see the comment at the top of the file) in meters.
+  Ramp.STAND_HEIGHT = 10;
+
+  // @public {number} - the width of the stand of the slope (see the comment at the top of the file) in meters.
+  Ramp.STAND_WIDTH = 100;
+
+  // @public {number} - the width of the lift-bar (see the comment at the top of the file) in meters.
+  Ramp.LIFT_BAR_WIDTH = 30;
+
+  // @public {number} - the amount the lift bar extrudes upwards past the top of the slope, in meters.
+  Ramp.LIFT_BAR_Y_EXTENSION = 5;
+
+  // @public {number} - the amount the stand extrudes rightwards past the edge of the slope, in meters.
+  Ramp.STAND_X_EXTENSION = 5;
 
   return Ramp;
 } );
