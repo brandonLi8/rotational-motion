@@ -35,6 +35,7 @@ define( require => {
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Range = require( 'SIM_CORE/util/Range' );
+  const Util = require( 'SIM_CORE/util/Util' );
 
   class Ramp {
 
@@ -87,6 +88,20 @@ define( require => {
      */
     reset() {
       this.angleProperty.reset();
+    }
+
+    /**
+     * Changes the height of the lift-bar, which changes the angle of the Ramp. This is called when the lift bar
+     * dots or double-headed arrow is dragged. Will ensure that the angle is inside of the angleRange before setting.
+     * @public
+     *
+     * @param {number} height - the attempted new height of the Ramp, in meters.
+     */
+    dragHeightTo( height ) {
+      const slopeHeight = height - Ramp.LIFT_BAR_Y_EXTENSION - Ramp.STAND_HEIGHT;
+
+      // Change the angle of the ramp.
+      this.angle = Util.clamp( Math.atan2( slopeHeight, this.slopeWidth ), this.angleRange.min, this.angleRange.max );
     }
 
     /**
