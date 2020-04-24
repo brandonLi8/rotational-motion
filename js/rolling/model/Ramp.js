@@ -16,13 +16,11 @@
  *              lift bar - allows the user to change the angle (the up-down arrow is draggable).
  *              stand - lifts the Ramp upwards to allow the user to see the ramp when it is completely horizontal.
  *
- *
  * Some responsibilities of Ramps are:
  *    - Keep track of the angle of the slope relative to the horizontal stand, in a Property.
  *    - Keep track of the model Bounds of the entire Ramp, including the lift-bar and stand.
  *    - Keep track of the height of the lift-bar, in meters.
  *    - Reference useful constants, like the width of the lift-bar and the height of the stand.
- *
  *
  * Ramps are created at the start of the Sim and are never disposed, so all links are left as is.
  *
