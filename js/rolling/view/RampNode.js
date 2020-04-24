@@ -1,10 +1,17 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * RampNode is the corresponding view for the Ramp model, in the 'rolling' screen.
+ * RampNode is the corresponding view for the entire Ramp model, in the 'rolling' screen.
  *
- * RampNode is responsible for:
- *
+ * The RampNode has the ramp-triangle but also has many additionally components that it renders:
+ *                  ┌┐
+ *   support-bar -  ││╲╲
+ *                  ││ ╲╲  - Ramp
+ *                  ││__╲╲_╷
+ *                  └──────┘
+ *              Ramp - the piece the RollingBall's roll down. Also is draggable to change the elevation.
+ *              Support-Bar - allows the user to change the angle (the dotted lines are draggable). Also lifts the Ramp
+ *                            up to allow the user to see the ramp when it is completely horizontal
  *
  * RampNodes are created at the start of the Sim and are never disposed, so all links are left as is.
  *
@@ -33,10 +40,7 @@ define( require => {
      * @param {Ramp} ramp
      * @param {ModelViewTransform} modelViewTransform
      */
-    constructor(
-      ramp,
-      modelViewTransform
-    ) {
+    constructor( ramp, modelViewTransform ) {
       assert( ramp instanceof Ramp, `invalid ramp: ${ ramp }` );
       assert( modelViewTransform instanceof ModelViewTransform, 'invalid modelViewTransform' );
 
@@ -44,23 +48,28 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Path} - the Path of the triangle that represents the Ramp.
-      this.trianglePath = new Path( null, {
-        fill: 'green'
-      } );
+      // @private {Path} - the Path of the support-bar. See the comment at the top of the file.
+      this._supportBarPath = new Path( null, { fill: 'yellow' } );
 
-      this.addChild( this.trianglePath );
+      // @private {Path} - the Path of the Ramp. See the comment at the top of the fil.
+      this._rampPath = new Path( null, { fill: 'brown' } );
+
+      // Set the children of the RampNode in the correct rendering order.
+      this.children = [
+        this._supportBarPath,
+        this._rampPath,
+      ];
+
 
       ramp.angleProperty.link( angle => {
 
         // Create the shape.
-        this.trianglePath.shape = modelViewTransform.modelToViewShape( new Shape()
+        this._rampPath.shape = modelViewTransform.modelToViewShape( new Shape()
           .moveTo( 0, 0 )
           .lineTo( ramp.playBounds.maxX, 0 )
           .lineTo( 0, Math.tan( angle ) * ramp.playBounds.maxX )
           .close()
         );
-        console.log( angle, Math.tan( angle ) * ramp.playBounds.maxX )
       } );
     }
 
@@ -75,6 +84,16 @@ define( require => {
      */
     _recomputeAncestorBounds() { /** do nothing **/ }
   }
+
+  //----------------------------------------------------------------------------------------
+  // Static Constants
+  //----------------------------------------------------------------------------------------
+
+  // @public {number} - the width of the ramp support bar
+  RampNode.SUPPORT_BAR_WIDTH = 60;
+
+  // @public {number} - the length of the bottom-side of the ramp
+  RampNode.RAMP_BOTTOM_LEG_LENGTH = 200;
 
   return RampNode;
 } );

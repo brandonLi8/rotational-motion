@@ -16,12 +16,15 @@ define( require => {
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
-  const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
-  const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
   const RampNode = require( 'ROTATIONAL_MOTION/rolling/view/RampNode' );
+  const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
+  const RotationalMotionConstants = require( 'ROTATIONAL_MOTION/common/RotationalMotionConstants' );
+  const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
 
   // constants
-  const HILL_BOTTOM_LEG_LENGTH = 400;
+  const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
+  const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
+  const MODEL_TO_VIEW_SCALE = 53; // meter to view coordinates (1 m = 53 coordinates)
 
   class RollingScreenView extends ScreenView {
 
@@ -33,43 +36,22 @@ define( require => {
 
       super();
 
-      // @public (read-only) {Bounds} - The Bounds of the entire browser window (excluding the navigation-bar), in
-      //                                scenery coordinates, relative to our layout bounds (can include negative Bounds)
-      this.windowSceneryBounds = Bounds.ZERO.copy();
-
-      //----------------------------------------------------------------------------------------
-
-      // Compute the bounds of the entire ramp area, in scenery coordinates. The ramp is put to the bottom-right of the
-      // ScreenView.
-      const rampViewBounds = new Bounds( 0,
-        this.layoutBounds.maxY - Math.tan( rollingModel.ramp.angleRange.max ) * HILL_BOTTOM_LEG_LENGTH,
-        HILL_BOTTOM_LEG_LENGTH,
-        this.layoutBounds.maxY
+      // Compute the bounds of the entire ramp area, in scenery coordinates.
+      const rampHeight = Math.tan( rollingModel.ramp.angleRange.max ) * RampNode.RAMP_BOTTOM_LEG_LENGTH;
+      const rampViewBounds = new Bounds(
+        SCREEN_VIEW_X_MARGIN + RampNode.SUPPORT_BAR_WIDTH,
+        this.layoutBounds.maxY - RampNode.SUPPORT_BAR_WIDTH - rampHeight,
+        SCREEN_VIEW_X_MARGIN + RampNode.SUPPORT_BAR_WIDTH + RampNode.RAMP_BOTTOM_LEG_LENGTH,
+        this.layoutBounds.maxY - RampNode.SUPPORT_BAR_WIDTH
       );
 
-      // @public (read-only) {ModelViewTransform} - create the model view transform for the screen
-      this.modelViewTransform = new ModelViewTransform( rollingModel.ramp.playBounds, rampViewBounds );
+      // Create the model view transform for the screen.
+      const modelViewTransform = new ModelViewTransform( rollingModel.ramp.playBounds, rampViewBounds );
 
       //----------------------------------------------------------------------------------------
 
-      const rampNode = new RampNode( rollingModel.ramp, this.modelViewTransform );
+      const rampNode = new RampNode( rollingModel.ramp, modelViewTransform );
       this.addChild( rampNode );
-    }
-
-    /**
-     * Layouts the Rolling screen. Called at the start of the simulation and when the browser window is resized.
-     * @public
-     *
-     * @param {number} width - Screen width, in pixels.
-     * @param {number} height - Screen height, in pixels.
-     */
-    layout( width, height ) {
-      super.layout( width, height );
-
-      // Recompute our window bounds.
-      const xExpand = ( width / this.layoutScale ) / 2;
-      const yExpand = ( height / this.layoutScale ) / 2;
-      this.windowSceneryBounds.set( this.layoutBounds ).expand( xExpand, yExpand, xExpand, yExpand );
     }
   }
 

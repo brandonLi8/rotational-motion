@@ -1,12 +1,28 @@
 // Copyright © 2019-2020 Brandon Li. All rights reserved.
 
 /**
- * Ramp is the model that represents the sloped surface for a Ball to roll down in the presence of gravity. This is
- * specific only to the 'Rolling' screen.
+ * Ramp is the model that represents the entire sloped surface for a Ball to roll down in the presence of gravity. This
+ * is specific only to the 'Rolling' screen.
  *
- * Primary responsibilities are:
- *    - Keep track of the angle of the slopped ramp relative to the horizontal in a Property.
- *    - Keep track of the model Bounds of the Ramp
+ * The Ramp Looks something like.
+ *               ┌─┐
+ *   lift-bar -  │↕ ╲ - slope
+ *               │   ╲
+ *               │    ╲__
+ *               │_______│ - stand
+ *
+ *            Functionality:
+ *              slope - the piece the RollingBall's roll down. Is draggable to change the elevation (and angle).
+ *              lift bar - allows the user to change the angle (the up-down arrow is draggable).
+ *              stand - lifts the Ramp upwards to allow the user to see the ramp when it is completely horizontal.
+ *
+ *
+ * Some responsibilities of Ramps are:
+ *    - Keep track of the angle of the slope relative to the horizontal stand, in a Property.
+ *    - Keep track of the model Bounds of the entire Ramp, including the lift-bar and stand.
+ *    - Keep track of the height of the lift-bar, in meters.
+ *    - Reference useful constants, like the width of the lift-bar and the height of the stand.
+ *
  *
  * Ramps are created at the start of the Sim and are never disposed, so all links are left as is.
  *
@@ -38,9 +54,6 @@ define( require => {
         // {Range} - the range of the angle of the ramp, in radians
         angleRange: new Range( 0, Math.PI * 3 / 8 ),
 
-        // {number} - the length of the bottom side of the ramp-triangle, in meters.
-        bottomLegLength: 8,
-
         // rewrite options such that it overrides the defaults above if provided.
         ...options
       };
@@ -59,15 +72,15 @@ define( require => {
       // @public (read-only) {Bounds} - the tentatively-chosen bounds of the entire ramp bounds, in meters.
       //
       // The Ramp model represents a right triangle shape that looks like:
-      //  |\
-      //  | \
-      //  |__\
+      //  |╲
+      //  | ╲
+      //  |__╲
       //
-      // The bottom-left corner of the triangle is the origin. The bottom side is the bottomLegLength provided in
-      // options. The angle is the angle between the bottom leg and the hypotenuse (the slope the ball rolls down).
+      // The bottom-left corner of the triangle is the origin. The bottom side is the BOTTOM_LEG_LENGTH. The angle is
+      // the angle between the bottom leg and the hypotenuse (the slope the ball rolls down).
       this.playBounds = new Bounds( 0, 0,
-        options.bottomLegLength,
-        Math.tan( this.angleRange.max ) * options.bottomLegLength
+        Ramp.BOTTOM_LEG_LENGTH,
+        Math.tan( this.angleRange.max ) * Ramp.BOTTOM_LEG_LENGTH
       );
     }
 
@@ -95,6 +108,9 @@ define( require => {
      */
     set angle( angle ) { this.angleProperty.value = angle; }
   }
+
+  // {number} - the length of the bottom side of the ramp-triangle, in meters.
+  Ramp.BOTTOM_LEG_LENGTH = 8;
 
   return Ramp;
 } );
