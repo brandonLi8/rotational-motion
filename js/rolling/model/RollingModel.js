@@ -12,14 +12,14 @@ define( require => {
   'use strict';
 
   // modules
-  const Hill = require( 'ROTATIONAL_MOTION/rolling/model/Hill' );
+  const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
 
   class RollingModel {
 
     constructor() {
 
-      // @public (read-only) {Hill} - create the Hill of the Rolling screen.
-      this.hill = new Hill();
+      // @public (read-only) {Ramp} - create the Ramp of the Rolling screen.
+      this.ramp = new Ramp();
     }
   }
 

@@ -18,7 +18,7 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
   const ScreenView = require( 'SIM_CORE/scenery/ScreenView' );
-  const HillNode = require( 'ROTATIONAL_MOTION/rolling/view/HillNode' );
+  const RampNode = require( 'ROTATIONAL_MOTION/rolling/view/RampNode' );
 
   // constants
   const HILL_BOTTOM_LEG_LENGTH = 400;
@@ -39,21 +39,21 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // Compute the bounds of the entire hill area, in scenery coordinates. The hill is put to the bottom-right of the
+      // Compute the bounds of the entire ramp area, in scenery coordinates. The ramp is put to the bottom-right of the
       // ScreenView.
-      const hillViewBounds = new Bounds( 0,
-        this.layoutBounds.maxY - Math.tan( rollingModel.hill.angleRange.max ) * HILL_BOTTOM_LEG_LENGTH,
+      const rampViewBounds = new Bounds( 0,
+        this.layoutBounds.maxY - Math.tan( rollingModel.ramp.angleRange.max ) * HILL_BOTTOM_LEG_LENGTH,
         HILL_BOTTOM_LEG_LENGTH,
         this.layoutBounds.maxY
       );
 
       // @public (read-only) {ModelViewTransform} - create the model view transform for the screen
-      this.modelViewTransform = new ModelViewTransform( rollingModel.hill.playBounds, hillViewBounds );
+      this.modelViewTransform = new ModelViewTransform( rollingModel.ramp.playBounds, rampViewBounds );
 
       //----------------------------------------------------------------------------------------
 
-      const hillNode = new HillNode( rollingModel.hill, this.modelViewTransform );
-      this.addChild( hillNode );
+      const rampNode = new RampNode( rollingModel.ramp, this.modelViewTransform );
+      this.addChild( rampNode );
     }
 
     /**
