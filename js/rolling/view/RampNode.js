@@ -86,15 +86,5 @@ define( require => {
     _recomputeAncestorBounds() { /** do nothing **/ }
   }
 
-  //----------------------------------------------------------------------------------------
-  // Static Constants
-  //----------------------------------------------------------------------------------------
-
-  // @public {number} - the width of the ramp support bar
-  RampNode.SUPPORT_BAR_WIDTH = 60;
-
-  // @public {number} - the length of the bottom-side of the ramp
-  RampNode.RAMP_BOTTOM_LEG_LENGTH = 200;
-
   return RampNode;
 } );
