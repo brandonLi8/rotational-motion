@@ -18,8 +18,7 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const Circle = require( 'SIM_CORE/scenery/Circle' );
-  const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
+  const DotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/DotsGrid' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
@@ -51,9 +50,16 @@ define( require => {
         strokeWidth: 1.2
       } );
 
+      // @private {DotsGrid} - the grid of small dots, used to indicate the the lift-bar of the Ramp is draggable.
+      this._dotsGrid = new DotsGrid( {
+        fill: RotationalMotionColors.RAMP_STROKE,
+        centerX: modelViewTransform.modelToViewX( -Ramp.LIFT_BAR_WIDTH / 2 )
+      } );
+
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
         this._rampPath,
+        this._dotsGrid
       ];
 
       //----------------------------------------------------------------------------------------
@@ -72,7 +78,11 @@ define( require => {
           .horizontalLineToRelative( -Ramp.STAND_WIDTH )
           .close();
 
+        // Set the shape of the ramp.
         this._rampPath.shape = modelViewTransform.modelToViewShape( rampShape );
+
+        // Reposition the dots grid.
+        this._dotsGrid.top = this._rampPath.top + 5; // margin is eye-balled
       } );
     }
 

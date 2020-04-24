@@ -29,13 +29,13 @@ define( require => {
       options = {
 
         // dots
-        radius: 8,     // {number} - the radius of the dots of the DotsGrid
+        radius: 2.2,    // {number} - the radius of the dots of the DotsGrid
         fill: 'white', // {string} - the fill of the dots of the DotsGrid
 
         // grid
-        rows: 2,    // {number} the numbers rows in the grid
-        cols: 3,    // {number} the numbers rows in the grid
-        spacing: 4, // {number} the spacing (both vertical and horizontal) between the Dots
+        rows: 2,      // {number} the numbers rows in the grid
+        cols: 3,      // {number} the numbers rows in the grid
+        spacing: 2.9, // {number} the spacing (both vertical and horizontal) between the Dots
 
         // rewrite options such that it overrides the defaults above if provided.
         ...options
