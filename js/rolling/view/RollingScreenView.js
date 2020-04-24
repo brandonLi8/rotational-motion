@@ -4,7 +4,6 @@
  * Top Level view for the 'Rolling' screen.
  *
  * Responsible for:
- *   - Keeping track of the window scenery Bounds
  *
  * @author Brandon Li <brandon.li820@gmail.com>
  */
@@ -37,12 +36,11 @@ define( require => {
       super();
 
       // Compute the bounds of the entire ramp area, in scenery coordinates.
-      const rampHeight = Math.tan( rollingModel.ramp.angleRange.max ) * RampNode.RAMP_BOTTOM_LEG_LENGTH;
       const rampViewBounds = new Bounds(
-        SCREEN_VIEW_X_MARGIN + RampNode.SUPPORT_BAR_WIDTH,
-        this.layoutBounds.maxY - RampNode.SUPPORT_BAR_WIDTH - rampHeight,
-        SCREEN_VIEW_X_MARGIN + RampNode.SUPPORT_BAR_WIDTH + RampNode.RAMP_BOTTOM_LEG_LENGTH,
-        this.layoutBounds.maxY - RampNode.SUPPORT_BAR_WIDTH
+        SCREEN_VIEW_X_MARGIN,
+        this.layoutBounds.maxY - rollingModel.ramp.playBounds.height * MODEL_TO_VIEW_SCALE
+        SCREEN_VIEW_X_MARGIN + rollingModel.ramp.playBounds.width * MODEL_TO_VIEW_SCALE,
+        this.layoutBounds.maxY
       );
 
       // Create the model view transform for the screen.
