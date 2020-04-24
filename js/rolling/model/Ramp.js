@@ -46,10 +46,10 @@ define( require => {
 
       options = {
 
-        // {number} - the initial angle of the ramp, in radians
+        // {number} - the initial angle of the slope relative to the horizontal, in radians
         initialAngle: Math.PI / 4,
 
-        // {Range} - the range of the angle of the ramp, in radians
+        // {Range} - the range of the angle of the slope relative to the horizontal, in radians
         angleRange: new Range( 0, Math.PI * 3 / 8 ),
 
         // rewrite options such that it overrides the defaults above if provided.
@@ -58,27 +58,27 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @public {Property} - Property of the current angle of the ramp relative to the horizontal, in radians.
+      // @public {Property} - Property of the current angle of the slope relative to the horizontal, in radians.
       this.angleProperty = new Property( options.initialAngle, {
         type: 'number',
         isValidValue: value => options.angleRange.contains( value )
       } );
 
-      // @public (read-only) {Range} - range of the angle of the ramp relative to the horizontal, in radians.
+      // @public (read-only) {Range} - range of the angle of the slope relative to the horizontal, in radians.
       this.angleRange = options.angleRange;
 
-      // @public (read-only) {Bounds} - the tentatively-chosen bounds of the entire ramp bounds, in meters.
-      //
-      // The Ramp model represents a right triangle shape that looks like:
-      //  |╲
-      //  | ╲
-      //  |__╲
-      //
-      // The bottom-left corner of the triangle is the origin. The bottom side is the BOTTOM_LEG_LENGTH. The angle is
-      // the angle between the bottom leg and the hypotenuse (the slope the ball rolls down).
-      this.playBounds = new Bounds( 0, 0,
-        Ramp.BOTTOM_LEG_LENGTH,
-        Math.tan( this.angleRange.max ) * Ramp.BOTTOM_LEG_LENGTH
+      // @public (read-only) {Bounds} - the bounds of the entire ramp bounds, including the lift-bar and stand,
+      //                                in meters. See the comment at the top of the file for context.
+      //                                ┌─┐
+      //                                │  ╲
+      //                                │ . ╲__  <- The origin of the Ramp Bounds is the dot inside the Ramp.
+      //                                │______│
+      const slopeWidth = Ramp.STAND_WIDTH - Ramp.LIFT_BAR_WIDTH - Ramp.STAND_X_EXTENSION;
+      this.playBounds = new Bounds(
+        -Ramp.LIFT_BAR_WIDTH,
+        -Ramp.STAND_HEIGHT,
+        -Ramp.LIFT_BAR_WIDTH + Ramp.STAND_WIDTH,
+        Math.tan( this.angleRange.max ) * slopeWidth + Ramp.LIFT_BAR_Y_EXTENSION
       );
     }
 
@@ -91,7 +91,7 @@ define( require => {
     }
 
     /**
-     * Gets the Ramp's angle, in radians.
+     * Gets the Ramp's slope angle, in radians.
      * @public
      *
      * @returns {number} - in radians.
@@ -99,7 +99,7 @@ define( require => {
     get angle() { return this.angleProperty.value; }
 
     /**
-     * Sets the Ramp's angle, in radians.
+     * Sets the Ramp's slope angle, in radians.
      * @public
      *
      * @param {number} angle - in radians.
