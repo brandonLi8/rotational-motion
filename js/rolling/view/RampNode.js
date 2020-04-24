@@ -18,6 +18,8 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
+  const Circle = require( 'SIM_CORE/scenery/Circle' );
+  const FlexBox = require( 'SIM_CORE/scenery/FlexBox' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
