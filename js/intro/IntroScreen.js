@@ -22,7 +22,7 @@ define( require => {
 
       super( {
         name: 'Intro',
-        background: RotationalMotionColors.INTRO_SCREEN_BACKGROUND,
+        background: RotationalMotionColors.SCREEN_BACKGROUND,
         icon: RotationalMotionIconFactory.createIntroScreenIcon(),
         model: IntroModel,
         view: IntroScreenView

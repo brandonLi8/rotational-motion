@@ -14,12 +14,8 @@ define( require => {
 
   const RotationalMotionColors = {
 
-    // screen backgrounds
-    INTRO_SCREEN_BACKGROUND: 'rgb( 255, 250, 227 )',
-    ROLLING_SCREEN_BACKGROUND: new LinearGradient( 0, 0, 0, 66 )
-                               .addColorStop( '#008CFF', 0 )
-                               .addColorStop( '#CFEFFC', 100 ),
-
+    // screen background
+    SCREEN_BACKGROUND: 'rgb( 255, 250, 227 )',
 
     // panels
     PANEL_COLORS: {

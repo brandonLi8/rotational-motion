@@ -12,6 +12,7 @@ define( require => {
   // modules
   const RollingModel = require( 'ROTATIONAL_MOTION/rolling/model/RollingModel' );
   const RollingScreenView = require( 'ROTATIONAL_MOTION/rolling/view/RollingScreenView' );
+  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Screen = require( 'SIM_CORE/Screen' );
 
   class RollingScreen extends Screen {
@@ -21,6 +22,7 @@ define( require => {
       super( {
         name: 'Rolling',
         model: RollingModel,
+        background: RotationalMotionColors.SCREEN_BACKGROUND,
         view: RollingScreenView
       } );
 
