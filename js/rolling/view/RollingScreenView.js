@@ -23,7 +23,7 @@ define( require => {
   // constants
   const SCREEN_VIEW_X_MARGIN = RotationalMotionConstants.SCREEN_VIEW_X_MARGIN;
   const SCREEN_VIEW_Y_MARGIN = RotationalMotionConstants.SCREEN_VIEW_Y_MARGIN;
-  const MODEL_TO_VIEW_SCALE = 53; // meter to view coordinates (1 m = 53 coordinates)
+  const MODEL_TO_VIEW_SCALE = 180; // meter to view coordinates (1 m = 180 coordinates)
 
   class RollingScreenView extends ScreenView {
 
@@ -38,7 +38,7 @@ define( require => {
       // Compute the bounds of the entire ramp area, in scenery coordinates.
       const rampViewBounds = new Bounds(
         SCREEN_VIEW_X_MARGIN,
-        this.layoutBounds.maxY - rollingModel.ramp.playBounds.height * MODEL_TO_VIEW_SCALE
+        this.layoutBounds.maxY - rollingModel.ramp.playBounds.height * MODEL_TO_VIEW_SCALE,
         SCREEN_VIEW_X_MARGIN + rollingModel.ramp.playBounds.width * MODEL_TO_VIEW_SCALE,
         this.layoutBounds.maxY
       );

@@ -18,7 +18,7 @@ define( require => {
   Sim.start( {
     name: 'Rotational Motion',
     screens: [
-      new IntroScreen(),
+      // new IntroScreen(),
       new RollingScreen()
     ]
   } );

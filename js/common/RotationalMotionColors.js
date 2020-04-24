@@ -34,7 +34,11 @@ define( require => {
     VECTOR_STROKE: 'black',
     LINEAR_VELOCITY_VECTOR_FILL: 'rgb( 10, 170, 250 )',
     LINEAR_ACCELERATION_VECTOR_FILL: 'rgb( 255, 0, 215 )',
-    TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 255, 144, 35 )'
+    TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 255, 144, 35 )',
+
+    // ramp
+    RAMP_FILL:'#E6BA54',
+    RAMP_STROKE: '#AA934F'
   };
 
   return RotationalMotionColors;

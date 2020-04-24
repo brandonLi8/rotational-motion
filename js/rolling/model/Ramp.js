@@ -47,7 +47,7 @@ define( require => {
       options = {
 
         // {number} - the initial angle of the slope relative to the horizontal, in radians
-        initialAngle: Math.PI / 4,
+        initialAngle: 2 * Math.PI / 11,
 
         // {Range} - the range of the angle of the slope relative to the horizontal, in radians
         angleRange: new Range( 0, Math.PI * 3 / 8 ),
@@ -73,12 +73,11 @@ define( require => {
       //                                │  ╲
       //                                │ . ╲__  <- The origin of the Ramp Bounds is the dot inside the Ramp.
       //                                │______│
-      const slopeWidth = Ramp.STAND_WIDTH - Ramp.LIFT_BAR_WIDTH - Ramp.STAND_X_EXTENSION;
       this.playBounds = new Bounds(
         -Ramp.LIFT_BAR_WIDTH,
         -Ramp.STAND_HEIGHT,
         -Ramp.LIFT_BAR_WIDTH + Ramp.STAND_WIDTH,
-        Math.tan( this.angleRange.max ) * slopeWidth + Ramp.LIFT_BAR_Y_EXTENSION
+        Math.tan( this.angleRange.max ) * this.slopeWidth + Ramp.LIFT_BAR_Y_EXTENSION
       );
     }
 
@@ -89,6 +88,30 @@ define( require => {
     reset() {
       this.angleProperty.reset();
     }
+
+    /**
+     * Gets the height of the slope, in meters.
+     * @public
+     *
+     * @returns {number} - in meters.
+     */
+    get slopeHeight() { return Math.tan( this.angle ) * this.slopeWidth; }
+
+    /**
+     * Gets the width of the slope, in meters.
+     * @public
+     *
+     * @returns {number} - in meters.
+     */
+    get slopeWidth() { return Ramp.STAND_WIDTH - Ramp.LIFT_BAR_WIDTH - Ramp.STAND_X_EXTENSION; }
+
+    /**
+     * Gets the height of the Ramp, in meters.
+     * @public
+     *
+     * @returns {number} - in meters.
+     */
+    get height() { return this.slopeHeight + Ramp.LIFT_BAR_Y_EXTENSION + Ramp.STAND_HEIGHT; }
 
     /**
      * Gets the Ramp's slope angle, in radians.
@@ -112,19 +135,19 @@ define( require => {
   //----------------------------------------------------------------------------------------
 
   // @public {number} - the height of the stand of the slope (see the comment at the top of the file) in meters.
-  Ramp.STAND_HEIGHT = 10;
+  Ramp.STAND_HEIGHT = 0.7;
 
   // @public {number} - the width of the stand of the slope (see the comment at the top of the file) in meters.
-  Ramp.STAND_WIDTH = 100;
+  Ramp.STAND_WIDTH = 5;
 
   // @public {number} - the width of the lift-bar (see the comment at the top of the file) in meters.
-  Ramp.LIFT_BAR_WIDTH = 30;
+  Ramp.LIFT_BAR_WIDTH = 0.8;
 
   // @public {number} - the amount the lift bar extrudes upwards past the top of the slope, in meters.
-  Ramp.LIFT_BAR_Y_EXTENSION = 5;
+  Ramp.LIFT_BAR_Y_EXTENSION = 0.25;
 
   // @public {number} - the amount the stand extrudes rightwards past the edge of the slope, in meters.
-  Ramp.STAND_X_EXTENSION = 5;
+  Ramp.STAND_X_EXTENSION = 2.4;
 
   return Ramp;
 } );

@@ -3,15 +3,9 @@
 /**
  * RampNode is the corresponding view for the entire Ramp model, in the 'rolling' screen.
  *
- * The RampNode has the ramp-triangle but also has many additionally components that it renders:
- *                  ┌┐
- *   support-bar -  ││╲╲
- *                  ││ ╲╲  - Ramp
- *                  ││__╲╲_╷
- *                  └──────┘
- *              Ramp - the piece the RollingBall's roll down. Also is draggable to change the elevation.
- *              Support-Bar - allows the user to change the angle (the dotted lines are draggable). Also lifts the Ramp
- *                            up to allow the user to see the ramp when it is completely horizontal
+ * RampNode is responsible for:
+ *  - Rendering the entire outline shape of the Ramp, including the lift bar and stand. See Ramp.js for context.
+ *  -
  *
  * RampNodes are created at the start of the Sim and are never disposed, so all links are left as is.
  *
@@ -24,15 +18,15 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
-  const Property = require( 'SIM_CORE/util/Property' );
-  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
-  const Shape = require( 'SIM_CORE/util/Shape' );
   const Path = require( 'SIM_CORE/scenery/Path' );
+  const Property = require( 'SIM_CORE/util/Property' );
+  const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
+  const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
+  const Shape = require( 'SIM_CORE/util/Shape' );
+  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class RampNode extends Node {
 
@@ -48,28 +42,35 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      // @private {Path} - the Path of the support-bar. See the comment at the top of the file.
-      this._supportBarPath = new Path( null, { fill: 'yellow' } );
-
-      // @private {Path} - the Path of the Ramp. See the comment at the top of the fil.
-      this._rampPath = new Path( null, { fill: 'brown' } );
+      // @private {Path} - the Path of the entire Ramp, including the slope, lift bar, and stand.
+      this._rampPath = new Path( null, {
+        fill: RotationalMotionColors.RAMP_FILL,
+        stroke: RotationalMotionColors.RAMP_STROKE,
+        strokeWidth: 1.2
+      } );
 
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
-        this._supportBarPath,
         this._rampPath,
       ];
 
+      //----------------------------------------------------------------------------------------
 
       ramp.angleProperty.link( angle => {
 
-        // Create the shape.
-        this._rampPath.shape = modelViewTransform.modelToViewShape( new Shape()
-          .moveTo( 0, 0 )
-          .lineTo( ramp.playBounds.maxX, 0 )
-          .lineTo( 0, Math.tan( angle ) * ramp.playBounds.maxX )
-          .close()
-        );
+        // Create the support-bar shape, in model coordinates.
+        const rampShape = new Shape()
+          .moveTo( -Ramp.LIFT_BAR_WIDTH, -Ramp.STAND_HEIGHT )
+          .verticalLineToRelative( ramp.height )
+          .horizontalLineTo( 0 )
+          .verticalLineToRelative( -Ramp.LIFT_BAR_Y_EXTENSION )
+          .lineToRelative( ramp.slopeWidth, -ramp.slopeHeight )
+          .horizontalLineToRelative( Ramp.STAND_X_EXTENSION )
+          .verticalLineToRelative( -Ramp.STAND_HEIGHT )
+          .horizontalLineToRelative( -Ramp.STAND_WIDTH )
+          .close();
+
+        this._rampPath.shape = modelViewTransform.modelToViewShape( rampShape );
       } );
     }
 
