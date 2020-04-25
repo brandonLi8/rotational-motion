@@ -44,12 +44,12 @@ define( require => {
       options = {
 
         // dots
-        radius: 2.2,    // {number} - the radius of the dots of the RampDotsGrid
+        radius: 2,    // {number} - the radius of the dots of the RampDotsGrid
 
         // grid
         rows: 2,      // {number} the numbers rows in the grid
         cols: 3,      // {number} the numbers rows in the grid
-        spacing: 2.9, // {number} the spacing (both vertical and horizontal) between the Dots
+        spacing: 2.5, // {number} the spacing (both vertical and horizontal) between the Dots
 
         // touch
         xTouchDilation: 6, // {number} the amount to increase the pointer-area on both sides in the x direction
