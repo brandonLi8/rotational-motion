@@ -156,7 +156,7 @@ define( require => {
   Ramp.STAND_WIDTH = 5;
 
   // @public {number} - the width of the lift-bar (see the comment at the top of the file) in meters.
-  Ramp.LIFT_BAR_WIDTH = 0.35;
+  Ramp.LIFT_BAR_WIDTH = 0.45;
 
   // @public {number} - the amount the lift bar extrudes upwards past the top of the slope, in meters.
   Ramp.LIFT_BAR_Y_EXTENSION = 0.25;

@@ -51,6 +51,12 @@ define( require => {
         strokeWidth: 1.2
       } );
 
+      // @private {Line} - dashed line that separates the slope and the lift-bar. For aesthetic purposes.
+      this._dashedSeparator = new Line( 0, 0, 0, 0, {
+        stroke: RotationalMotionColors.RAMP_DASHED_SEPARATOR_STROKE,
+        lineDash: [ 2.5, 6 ] // eye-balled
+      } );
+
       // @private {RampDotsGrid} - the grid of small dots, used to indicate the the lift-bar of the Ramp is draggable.
       this._dotsGrid = new RampDotsGrid( ramp, modelViewTransform, {
         centerX: modelViewTransform.modelToViewX( -Ramp.LIFT_BAR_WIDTH / 2 )
@@ -59,7 +65,8 @@ define( require => {
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
         this._rampPath,
-        this._dotsGrid
+        this._dotsGrid,
+        this._dashedSeparator
       ];
 
       //----------------------------------------------------------------------------------------
@@ -81,8 +88,12 @@ define( require => {
         // Set the shape of the ramp.
         this._rampPath.shape = modelViewTransform.modelToViewShape( rampShape );
 
-        // Reposition the dots grid.
-        this._dotsGrid.top = this._rampPath.top + 5; // margin is eye-balled
+        // Reposition the dots grid and dashedSeparator. Margins are eye-balled
+        this._dotsGrid.top = this._rampPath.top + 5;
+        this._dashedSeparator.start = modelViewTransform.modelToViewXY( 0, 0 );
+        this._dashedSeparator.end = modelViewTransform.modelToViewXY( 0, Math.max( ramp.slopeHeight - 0.1, 0 ) );
+
+
       } );
     }
 

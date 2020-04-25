@@ -38,7 +38,8 @@ define( require => {
 
     // ramp
     RAMP_FILL:'#E6BA54',
-    RAMP_STROKE: '#AA934F'
+    RAMP_STROKE: '#AA934F',
+    RAMP_DASHED_SEPARATOR_STROKE: '#AF7A45'
   };
 
   return RotationalMotionColors;
