@@ -90,10 +90,8 @@ define( require => {
 
         // Reposition the dots grid and dashedSeparator. Margins are eye-balled
         this._dotsGrid.top = this._rampPath.top + 5;
-        this._dashedSeparator.start = modelViewTransform.modelToViewXY( 0, 0 );
-        this._dashedSeparator.end = modelViewTransform.modelToViewXY( 0, Math.max( ramp.slopeHeight - 0.1, 0 ) );
-
-
+        this._dashedSeparator.start = modelViewTransform.modelToViewXY( 0, -Ramp.STAND_HEIGHT + 0.1 );
+        this._dashedSeparator.end = modelViewTransform.modelToViewXY( 0, Math.max( ramp.slopeHeight - 0.1, -0.1 ) );
       } );
     }
 
