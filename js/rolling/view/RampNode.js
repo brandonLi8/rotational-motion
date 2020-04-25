@@ -18,7 +18,6 @@ define( require => {
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
   const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const RampDotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/RampDotsGrid' );
   const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
@@ -26,6 +25,8 @@ define( require => {
   const Path = require( 'SIM_CORE/scenery/Path' );
   const Property = require( 'SIM_CORE/util/Property' );
   const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
+  const RampDotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/RampDotsGrid' );
+  const RampUpDownArrow = require( 'ROTATIONAL_MOTION/rolling/view/RampUpDownArrow' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Shape = require( 'SIM_CORE/util/Shape' );
   const Vector = require( 'SIM_CORE/util/Vector' );
@@ -62,10 +63,14 @@ define( require => {
         centerX: modelViewTransform.modelToViewX( -Ramp.LIFT_BAR_WIDTH / 2 )
       } );
 
+      // @private {RampUpDownArrow} - the up-down arrow, used to indicate the the lift-bar of the Ramp is draggable.
+      this._upDownArrow = new RampUpDownArrow( ramp, modelViewTransform, { centerX: this._dotsGrid.centerX } );
+
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
         this._rampPath,
         this._dotsGrid,
+        this._upDownArrow,
         this._dashedSeparator
       ];
 
@@ -88,10 +93,11 @@ define( require => {
         // Set the shape of the ramp.
         this._rampPath.shape = modelViewTransform.modelToViewShape( rampShape );
 
-        // Reposition the dots grid and dashedSeparator. Margins are eye-balled
+        // Reposition the other Nodes. Margins are eye-balled
         this._dotsGrid.top = this._rampPath.top + 5;
         this._dashedSeparator.start = modelViewTransform.modelToViewXY( 0, -Ramp.STAND_HEIGHT + 0.1 );
         this._dashedSeparator.end = modelViewTransform.modelToViewXY( 0, Math.max( ramp.slopeHeight - 0.1, -0.1 ) );
+        this._upDownArrow.centerY = modelViewTransform.modelToViewY( ( ramp.slopeHeight - Ramp.STAND_HEIGHT ) / 2 );
       } );
     }
 

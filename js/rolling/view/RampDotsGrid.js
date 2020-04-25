@@ -70,14 +70,18 @@ define( require => {
         // Create a row of dots for each row
         const dots = FlexBox.horizontal( { spacing: options.spacing } );
         for ( let col = 0; col < options.cols; col++ ) {
-          dots.addChild( new Circle( options.radius, { fill: RotationalMotionColors.RAMP_STROKE } ) );
+          dots.addChild( new Circle( options.radius, {
+            fill: RotationalMotionColors.RAMP_STROKE,
+            stroke: 'white',
+            strokeWidth: 0.2
+          } ) );
         }
 
         // Add the row of dots
         grid.addChild( dots );
       }
 
-      // Dilate the pointer-area fo the grid to allow for easier grabbing on mobile.
+      // Dilate the pointer-area of the grid to allow for easier grabbing on mobile.
       const spacer = new Rectangle( grid.width + 2 * options.xTouchDilation, grid.height + 2 * options.yTouchDilation, {
         fill: RotationalMotionColors.RAMP_FILL
       } );
