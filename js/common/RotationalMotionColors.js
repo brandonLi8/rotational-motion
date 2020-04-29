@@ -37,7 +37,7 @@ define( require => {
     TOTAL_ACCELERATION_VECTOR_FILL: 'rgb( 255, 144, 35 )',
 
     // ramp
-    RAMP_FILL:'#E6BA54',
+    RAMP_FILL:'#E6C772',
     RAMP_STROKE: '#AA934F',
     RAMP_DASHED_SEPARATOR_STROKE: '#AF7A45'
   };
