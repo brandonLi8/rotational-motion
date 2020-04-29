@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * Ramp is the model that represents the entire sloped surface for a Ball to roll down in the presence of gravity. This

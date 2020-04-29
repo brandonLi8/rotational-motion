@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * RampDotsGrid is a grid of dots displayed on the ramp. See https://ux.stackexchange.com/a/129551 for the inspiration

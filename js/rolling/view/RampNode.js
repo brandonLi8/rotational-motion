@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * RampNode is the corresponding view for the entire Ramp model, in the 'rolling' screen.
@@ -17,19 +17,15 @@ define( require => {
 
   // modules
   const assert = require( 'SIM_CORE/util/assert' );
-  const Bounds = require( 'SIM_CORE/util/Bounds' );
-  const DragListener = require( 'SIM_CORE/scenery/events/DragListener' );
   const Line = require( 'SIM_CORE/scenery/Line' );
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Path = require( 'SIM_CORE/scenery/Path' );
-  const Property = require( 'SIM_CORE/util/Property' );
   const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
   const RampDotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/RampDotsGrid' );
   const RampUpDownArrow = require( 'ROTATIONAL_MOTION/rolling/view/RampUpDownArrow' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Shape = require( 'SIM_CORE/util/Shape' );
-  const Vector = require( 'SIM_CORE/util/Vector' );
 
   class RampNode extends Node {
 
@@ -58,12 +54,12 @@ define( require => {
         lineDash: [ 2.5, 6 ] // eye-balled
       } );
 
-      // @private {RampDotsGrid} - the grid of small dots, used to indicate the the lift-bar of the Ramp is draggable.
+      // @private {RampDotsGrid} - the grid of small dots, used to indicate the lift-bar of the Ramp is draggable.
       this._dotsGrid = new RampDotsGrid( ramp, modelViewTransform, {
         centerX: modelViewTransform.modelToViewX( -Ramp.LIFT_BAR_WIDTH / 2 )
       } );
 
-      // @private {RampUpDownArrow} - the up-down arrow, used to indicate the the lift-bar of the Ramp is draggable.
+      // @private {RampUpDownArrow} - the up-down arrow, used to indicate the lift-bar of the Ramp is draggable.
       this._upDownArrow = new RampUpDownArrow( ramp, modelViewTransform, { centerX: this._dotsGrid.centerX } );
 
       // @private {Path} - the extra lines that map out the border of the ramp, for cosmetic purposes.

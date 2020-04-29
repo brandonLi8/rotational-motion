@@ -1,4 +1,4 @@
-// Copyright © 2019-2020 Brandon Li. All rights reserved.
+// Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
  * RampUpDownArrow is a double headed arrow that points up and down. It is placed on the lift-bar of the ramp, bellow
