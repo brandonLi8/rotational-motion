@@ -66,12 +66,20 @@ define( require => {
       // @private {RampUpDownArrow} - the up-down arrow, used to indicate the the lift-bar of the Ramp is draggable.
       this._upDownArrow = new RampUpDownArrow( ramp, modelViewTransform, { centerX: this._dotsGrid.centerX } );
 
+      // @private {Path} - the extra lines that map out the border of the ramp, for cosmetic purposes.
+      this._outlinePath = new Path( null, {
+        fill: 'none',
+        stroke: RotationalMotionColors.RAMP_STROKE,
+        strokeWidth: 0.5
+      } );
+
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
         this._rampPath,
         this._dotsGrid,
         this._upDownArrow,
-        this._dashedSeparator
+        this._dashedSeparator,
+        this._outlinePath
       ];
 
       //----------------------------------------------------------------------------------------
@@ -79,7 +87,7 @@ define( require => {
       ramp.angleProperty.link( angle => {
 
         // Create the support-bar shape, in model coordinates.
-        const rampShape = new Shape()
+        this._rampPath.shape = modelViewTransform.modelToViewShape( new Shape()
           .moveTo( -Ramp.LIFT_BAR_WIDTH, -Ramp.STAND_HEIGHT )
           .verticalLineToRelative( ramp.height )
           .horizontalLineTo( 0 )
@@ -88,10 +96,16 @@ define( require => {
           .horizontalLineToRelative( Ramp.STAND_X_EXTENSION )
           .verticalLineToRelative( -Ramp.STAND_HEIGHT )
           .horizontalLineToRelative( -Ramp.STAND_WIDTH )
-          .close();
+          .close() );
 
-        // Set the shape of the ramp.
-        this._rampPath.shape = modelViewTransform.modelToViewShape( rampShape );
+        // Create the outline-path shape.
+        this._outlinePath.shape = modelViewTransform.modelToViewShape( new Shape()
+          .moveTo( -Ramp.LIFT_BAR_WIDTH, ramp.slopeHeight + Ramp.LIFT_BAR_Y_EXTENSION - 0.01 )
+          .horizontalLineTo( -0.01 )
+          .verticalLineToRelative( -Ramp.LIFT_BAR_Y_EXTENSION )
+          .lineToRelative( ramp.slopeWidth, -ramp.slopeHeight )
+          .horizontalLineToRelative( Ramp.STAND_X_EXTENSION )
+          .verticalLineToRelative( -Ramp.STAND_HEIGHT - 0.01 ) );
 
         // Reposition the other Nodes. Margins are eye-balled
         this._dotsGrid.top = this._rampPath.top + 5;
