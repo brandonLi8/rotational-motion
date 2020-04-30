@@ -96,12 +96,12 @@ define( require => {
 
         // Create the outline-path shape.
         this._outlinePath.shape = modelViewTransform.modelToViewShape( new Shape()
-          .moveTo( -Ramp.LIFT_BAR_WIDTH, ramp.slopeHeight + Ramp.LIFT_BAR_Y_EXTENSION - 0.01 )
-          .horizontalLineTo( -0.01 )
+          .moveTo( -Ramp.LIFT_BAR_WIDTH, ramp.slopeHeight + Ramp.LIFT_BAR_Y_EXTENSION - 0.009 )
+          .horizontalLineTo( -0.009 )
           .verticalLineToRelative( -Ramp.LIFT_BAR_Y_EXTENSION )
           .lineToRelative( ramp.slopeWidth, -ramp.slopeHeight )
           .horizontalLineToRelative( Ramp.STAND_X_EXTENSION )
-          .verticalLineToRelative( -Ramp.STAND_HEIGHT - 0.01 ) );
+          .verticalLineToRelative( -Ramp.STAND_HEIGHT - 0.009 ) );
 
         // Reposition the other Nodes. Margins are eye-balled
         this._dotsGrid.top = this._rampPath.top + 5;
