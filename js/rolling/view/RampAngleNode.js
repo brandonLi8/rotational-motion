@@ -48,9 +48,9 @@ define( require => {
 
       options = {
 
-        curvedArrowRadius: 40, // {number} - radius of the curved arrow
-        baselineLength: 65,    // {number} - the length of the baseline
-        labelOffset: 3.5, // {number} - the offset of the angle label from the curved arrow
+        curvedArrowRadius: 55, // {number} - radius of the curved arrow
+        baselineLength: 75,    // {number} - the length of the baseline
+        labelOffset: 6.5,      // {number} - the offset of the angle label from the curved arrow
 
         // {number} - Angles greater than 35 deg, position the label between the Ramp slope and the baseline, and
         //            angles under 35 place the label on the other side of the baseline.
@@ -66,7 +66,8 @@ define( require => {
 
       // Create the base line that is parallel to the x-axis.
       const baseline = Line.withPoints( arcCenter, arcCenter.copy().subtractXY( options.baselineLength, 0 ), {
-        stroke: 'black'
+        stroke: 'black',
+        lineDash: [ 2.5, 6 ] // eye-balled
       } );
 
       // Create the CurvedArrow
@@ -101,11 +102,9 @@ define( require => {
           label.topCenter = baseline.bottomCenter.addXY( 0, options.labelOffset );
         }
         else {
-          const labelPosition = new Vector( 0, curvedArrow.radius + options.labelOffset )
-                                .setAngle( -ramp.angle / 2 )
+          label.centerRight = new Vector( 0, curvedArrow.radius + options.labelOffset )
+                                .setAngle( -Math.PI + 0.5 * ramp.angle )
                                 .add( arcCenter );
-          if ( ramp.angle <= Math.PI ) label.bottomLeft = labelPosition;
-          else label.bottomRight = labelPosition;
         }
       } );
     }
