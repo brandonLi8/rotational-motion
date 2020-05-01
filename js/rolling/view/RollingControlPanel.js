@@ -55,7 +55,7 @@ define( require => {
       // 'angles' checkbox
       this.content.addChild( new VisibilityCheckbox( angleVisibleProperty,
         new Text( 'Angle', RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
-        RotationalMotionIconFactory.createAngleIcon()
+        RotationalMotionIconFactory.createAngleIcon( 'backward' )
       ) );
 
       // Apply any additional bounds mutators
