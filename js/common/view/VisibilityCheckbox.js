@@ -28,7 +28,7 @@ define( require => {
     /**
      * @param {Property.<boolean>} visibilityProperty - the Property to toggle when the Checkbox is pressed. The initial
      *                                                  visibility of the check will be determined by the current value.
-     * @param {string} [label] - the label Node of the VisibilityCheckbox, placed to the right of the Checkbox
+     * @param {Node} [label] - the label Node of the VisibilityCheckbox, placed to the right of the Checkbox
      * @param {Node} [icon] - the icon of the VisibilityCheckbox, placed to the right of the label
      * @param {Object} [options] - Various key-value pairs that control the appearance and behavior. See the code where
      *                             the options are set in the early portion of the constructor for details.
