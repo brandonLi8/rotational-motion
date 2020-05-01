@@ -94,33 +94,41 @@ define( require => {
     /**
      * Creates the icon that appears next to the checkbox that toggles the 'Angle' visibility
      * @public
+     *
+     * @param {string} direction - either 'forward' or 'backward'
      * @returns {Node}
      */
-    createAngleIcon() {
+    createAngleIcon( direction ) {
       const wedgeLength = 20;
       const angle = Util.toRadians( 50 );
       const curvedArrowRadius = 14;
 
       const wedgeShape = new Shape()
-        .moveTo( wedgeLength, 0 )
+        .moveTo( direction === 'forward' ? wedgeLength : -wedgeLength, 0 )
         .horizontalLineTo( 0 )
-        .lineTo( Math.cos( angle ) * wedgeLength, -Math.sin( angle ) * wedgeLength );
+        .lineTo( ( direction === 'forward' ? 1 : -1 ) * Math.cos( angle ) * wedgeLength,
+          -Math.sin( angle ) * wedgeLength );
       const wedgeNode = new Path( wedgeShape, { stroke: 'black', fill: 'none', strokeWidth: 0.9 } );
 
       const icon = new Node().addChild( wedgeNode );
 
-      const curvedArrow = new CurvedArrow( wedgeNode.bottomLeft, curvedArrowRadius, 0, angle, {
-        headHeight: 6,
-        headWidth: 8,
-        tailWidth: 1.2
-      } );
+      const curvedArrow = new CurvedArrow( direction === 'forward' ? wedgeNode.bottomLeft : wedgeNode.bottomRight,
+        curvedArrowRadius,
+        direction === 'forward' ? 0 : Math.PI,
+        direction === 'forward' ? angle : Math.PI - angle, {
+          headHeight: 6,
+          headWidth: 8,
+          tailWidth: 1.2,
+          clockwise: direction === 'backward'
+        } );
 
       const thetaNode = new Text( Symbols.THETA, {
-        left: curvedArrow.right + 4,
         centerY: wedgeNode.centerY,
         ...RotationalMotionConstants.MATH_TEXT_OPTIONS,
         fontSize: 13.5
       } );
+      if ( direction === 'forward' ) thetaNode.left = curvedArrow.right + 4;
+      else thetaNode.right = curvedArrow.left - 4;
       return icon.addChild( curvedArrow ).addChild( thetaNode );
     },
 
