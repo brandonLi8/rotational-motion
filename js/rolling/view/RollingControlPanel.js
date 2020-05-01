@@ -1,6 +1,10 @@
 // Copyright © 2020 Brandon Li. All rights reserved.
 
 /**
+ * Control Panel at the top right of each 'rolling' screen that allows the user to modify the properties and states of
+ * the screen.
+ *
+ * A RollingControlPanel displays:
  *
  * @author Brandon Li
  */
@@ -29,8 +33,80 @@ define( require => {
   class RollingControlPanel extends Panel {
 
     /**
+     * @param {Spinner} spinner
+     * @param {Property.<boolean>} angleVisibleProperty
+     * @param {Object} [options]
      */
-    constructor( options ) {
+    constructor( spinner, angleVisibleProperty, options ) {
+      assert( spinner instanceof Spinner, `invalid spinner: ${ spinner }` );
+      assert( angleVisibleProperty instanceof Property, 'invalid angleVisibleProperty' );
+      assert( !options || Object.getPrototypeOf( options ) === Object.prototype, `invalid options: ${ options }` );
+
+      options = {
+
+        // Import the panel colors.
+        ...RotationalMotionColors.PANEL_COLORS,
+
+        // {number} - spacing between the content of the Panel.
+        spacing: 13,
+
+        // rewrite options such that it overrides the defaults above if provided.
+        ...options
+      };
+
+      //----------------------------------------------------------------------------------------
+
+      super( FlexBox.vertical( { align: 'left', spacing: options.spacing } ), options );
+
+      // 'Radius' NumberControlSet
+      this.content.addChild( new SpinnerNumberControlSet( spinner,
+        spinner.radiusProperty,
+        spinner.radiusRange,
+        new Text( 'Radius', RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+        UnitNode.text( 'm' ),
+        { minor: 0.1, minorLabel: 0.3, major: spinner.radiusRange.length, fractionalPi: false },
+        { numberDisplayOptions: { unitAlign: 'bottom' } }
+      ) );
+
+      if ( spinner.type === CircularMotionTypes.UNIFORM ) {
+
+        // 'Angular Velocity' NumberControlSet
+        this.content.addChild( new SpinnerNumberControlSet( spinner,
+          spinner.angularVelocityProperty,
+          spinner.angularVelocityRange,
+          new Text( `Angular Velocity (${ Symbols.OMEGA })`, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+          UnitNode.fraction( 'rad', 'sec' ),
+          { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularVelocityRange.length }
+        ) );
+      }
+      else {
+
+        const title = FlexBox.horizontal( { spacing: 6 } ).setChildren( [
+          new Text( Symbols.ALPHA, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+          new Text( Symbols.EQUAL_TO, RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+          FractionNode.withText( `d${ Symbols.OMEGA }`, 'dt', {
+            textOptions: RotationalMotionConstants.PANEL_TEXT_OPTIONS
+          } )
+        ] );
+
+        // 'Angular Acceleration' NumberControlSet
+        this.content.addChild( new SpinnerNumberControlSet( spinner,
+          spinner.angularAccelerationProperty,
+          spinner.angularAccelerationRange,
+          title,
+          UnitNode.richFraction( 'rad', 'sec<sup>2</sup>' ),
+          { minor: Math.PI / 16, minorLabel: Math.PI / 8, major: spinner.angularAccelerationRange.length / 2 }
+        ) );
+      }
+
+      // horizontal line separator
+      this.content.addChild( new Line( 0, 0, this.content.width, 0, { stroke: 'black', strokeWidth: 0.5 } ) );
+
+      // 'angles' checkbox
+      this.content.addChild( new VisibilityCheckbox( angleVisibleProperty,
+        new Text( 'Angle', RotationalMotionConstants.PANEL_TEXT_OPTIONS ),
+        RotationalMotionIconFactory.createAngleIcon()
+      ) );
 
       // Apply any additional bounds mutators
       this.mutate( options );
