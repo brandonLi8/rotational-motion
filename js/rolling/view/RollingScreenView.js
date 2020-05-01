@@ -55,7 +55,7 @@ define( require => {
 
       //----------------------------------------------------------------------------------------
 
-      const rampNode = new RampNode( rollingModel.ramp, modelViewTransform );
+      const rampNode = new RampNode( rollingModel.ramp, modelViewTransform, this.angleVisibleProperty );
 
       // Create the Control Panel
       const controlPanel = new RollingControlPanel( rollingModel, this.angleVisibleProperty, {

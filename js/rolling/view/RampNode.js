@@ -22,20 +22,24 @@ define( require => {
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Path = require( 'SIM_CORE/scenery/Path' );
   const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
+  const RampAngleNode = require( 'ROTATIONAL_MOTION/rolling/view/RampAngleNode' );
   const RampDotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/RampDotsGrid' );
   const RampUpDownArrow = require( 'ROTATIONAL_MOTION/rolling/view/RampUpDownArrow' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Shape = require( 'SIM_CORE/util/Shape' );
+  const Property = require( 'SIM_CORE/util/Property' );
 
   class RampNode extends Node {
 
     /**
      * @param {Ramp} ramp
      * @param {ModelViewTransform} modelViewTransform
+     * @param {Property.<boolean>} angleVisibleProperty
      */
-    constructor( ramp, modelViewTransform ) {
+    constructor( ramp, modelViewTransform, angleVisibleProperty ) {
       assert( ramp instanceof Ramp, `invalid ramp: ${ ramp }` );
       assert( modelViewTransform instanceof ModelViewTransform, 'invalid modelViewTransform' );
+      assert( angleVisibleProperty instanceof Property, 'invalid angleVisibleProperty' );
 
       super();
 
@@ -69,12 +73,16 @@ define( require => {
         strokeWidth: 0.5
       } );
 
+      // @private {RampAngleNode} - the angle, used to indicate the angle of the ramp slope relative to the horizontal.
+      this._angleNode = new RampAngleNode( ramp, angleVisibleProperty, modelViewTransform );
+
       // Set the children of the RampNode in the correct rendering order.
       this.children = [
         this._rampPath,
         this._dotsGrid,
         this._upDownArrow,
         this._dashedSeparator,
+        this._angleNode,
         this._outlinePath
       ];
 
