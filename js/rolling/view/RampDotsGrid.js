@@ -52,8 +52,8 @@ define( require => {
         spacing: 2.5, // {number} the spacing (both vertical and horizontal) between the Dots
 
         // touch
-        xTouchDilation: 6, // {number} the amount to increase the pointer-area on both sides in the x direction
-        yTouchDilation: 9, // {number} the amount to increase the pointer-area on both sides in the y direction
+        xTouchDilation: 12, // {number} the amount to increase the pointer-area on both sides in the x direction
+        yTouchDilation: 16, // {number} the amount to increase the pointer-area on both sides in the y direction
         cursor: 'scenery-drag',
 
         // rewrite options such that it overrides the defaults above if provided.
