@@ -48,9 +48,9 @@ define( require => {
 
       options = {
 
-        curvedArrowRadius: 55, // {number} - radius of the curved arrow
-        baselineLength: 75,    // {number} - the length of the baseline
-        labelOffset: 6.5,      // {number} - the offset of the angle label from the curved arrow
+        curvedArrowRadius: 65, // {number} - radius of the curved arrow
+        baselineLength: 80,    // {number} - the length of the baseline
+        labelOffset: 7,        // {number} - the offset of the angle label from the curved arrow
 
         // {number} - Angles greater than 35 deg, position the label between the Ramp slope and the baseline, and
         //            angles under 35 place the label on the other side of the baseline.
