@@ -21,13 +21,13 @@ define( require => {
   const ModelViewTransform = require( 'SIM_CORE/util/ModelViewTransform' );
   const Node = require( 'SIM_CORE/scenery/Node' );
   const Path = require( 'SIM_CORE/scenery/Path' );
+  const Property = require( 'SIM_CORE/util/Property' );
   const Ramp = require( 'ROTATIONAL_MOTION/rolling/model/Ramp' );
   const RampAngleNode = require( 'ROTATIONAL_MOTION/rolling/view/RampAngleNode' );
   const RampDotsGrid = require( 'ROTATIONAL_MOTION/rolling/view/RampDotsGrid' );
   const RampUpDownArrow = require( 'ROTATIONAL_MOTION/rolling/view/RampUpDownArrow' );
   const RotationalMotionColors = require( 'ROTATIONAL_MOTION/common/RotationalMotionColors' );
   const Shape = require( 'SIM_CORE/util/Shape' );
-  const Property = require( 'SIM_CORE/util/Property' );
 
   class RampNode extends Node {
 
