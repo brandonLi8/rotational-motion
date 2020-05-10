@@ -90,7 +90,6 @@ define( require => {
         if ( !this.visible ) return; // don't update when not visible
 
         const degrees = Util.toDegrees( ramp.angle );
-        const radiusView = modelViewTransform.modelToViewDeltaX( ramp.radius );
 
         // Update the curvedArrow angle and the text of the label.
         curvedArrow.endAngle = Math.PI - ramp.angle;
